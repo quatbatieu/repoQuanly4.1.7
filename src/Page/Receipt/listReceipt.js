@@ -518,7 +518,7 @@ function ListReceipt() {
           {/* Search/Filter Section */}
           <div className='row d-flex justify-content-between'>
             <div className='col-12 col-md-12 col-lg-12 mb-3'>
-              <div className='receipt_container__box' wrap={true} style={{ display: 'flex', gap: "24px", flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: "24px", flexWrap: 'wrap' }}>
                 <div className='flex-grow-xs'>
                   <Input.Search
                     autoFocus
