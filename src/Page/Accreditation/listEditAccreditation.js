@@ -51,7 +51,7 @@ import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app';
 const { TabPane } = Tabs
 
 //Để show hết toàn bộ xe trong ngày ==> size = 400
-const SIZE = 400
+const SIZE = 20
 
 const DEFAULT_FILTER = { filter: {}, skip: 0, limit: SIZE }
 
@@ -275,7 +275,8 @@ function ListEditAccreditation() {
       key: 'name',
       width: NORMAL_COLUMN_WIDTH,
       render: (_, __, index) => {
-        return dataFilter.skip ? dataAccreditation.total - (dataFilter.skip + index) : dataAccreditation.total - (index)
+        return dataFilter.skip + index + 1
+        // return dataFilter.skip ? dataAccreditation.total - (dataFilter.skip + index) : dataAccreditation.total - (index)
       }
     },
     {
@@ -525,7 +526,6 @@ function ListEditAccreditation() {
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record) => ({
