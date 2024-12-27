@@ -518,8 +518,8 @@ function ListReceipt() {
           {/* Search/Filter Section */}
           <div className='row d-flex justify-content-between'>
             <div className='col-12 col-md-12 col-lg-12 mb-3'>
-              <Space size={24} className='receipt_container__box' wrap={true}>
-                <div>
+              <div className='receipt_container__box' wrap={true} style={{ display: 'flex', gap: "24px", flexWrap: 'wrap' }}>
+                <div className='flex-grow-xs'>
                   <Input.Search
                     autoFocus
                     placeholder={translation('listCustomers.search')}
@@ -552,7 +552,7 @@ function ListReceipt() {
                     className="w-100"
                     placeholder={translation('receipt.filterByStatus')}
                     style={{
-                      minWidth: 150
+                      minWidth: 148.8
                     }}
                     onChange={onFilterByStatus}
                   >
@@ -569,7 +569,7 @@ function ListReceipt() {
                     className="w-100"
                     placeholder={translation('receipt.methods')}
                     style={{
-                      minWidth: 150
+                      minWidth: 148.8
                     }}
                     onChange={onFilterByMethod}
                   >
@@ -600,7 +600,7 @@ function ListReceipt() {
                     </Button>
                   </Space>
                 </div>
-              </Space>
+              </div>
             </div>
           </div>
   

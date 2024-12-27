@@ -139,3 +139,9 @@
     width: 100% !important;
   }
 }
+
+@media all and (max-width: 580px) { 
+  .flex-grow-xs {
+    flex-grow: 1;
+  }
+}
