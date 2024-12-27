@@ -13,6 +13,11 @@
     justify-content: flex-start;
 }
 
+  &-dflex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &-body {
     border: 1px solid #252525;
     padding: 12px;
