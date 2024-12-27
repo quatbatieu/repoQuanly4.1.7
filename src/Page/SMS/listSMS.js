@@ -595,22 +595,25 @@ const ListSMS = () => {
       }
     }
     const response = await MessageService.findMessages({
-        filter: {
-          ...filter.filter
-        },
-        ...filter,
-        skip: param * DefaultFilterExport.limit,
-        limit:  DefaultFilterExport.limit,
-        startDate: filter.startDate,
-        endDate: filter.endDate,
-    })
+      filter: {
+        ...filter.filter,
+      },
+      ...filter,
+      skip: param * DefaultFilterExport.limit,
+      limit: DefaultFilterExport.limit,
+      startDate: filter.startDate,
+      endDate: filter.endDate,
+    });
     const data = await response.data;
     return data;
   };
 
   const handleExportExcel = async () => {
-    let number = Math.ceil(data.data.length / DefaultFilterExport.limit)
-    let params = Array.from(Array.from(new Array(number)), (element, index) => index);
+    let number = Math.ceil(data.data.length / DefaultFilterExport.limit);
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
     let results = [];
 
     const percentPlus = 100 / params.length;
@@ -621,7 +624,7 @@ const ListSMS = () => {
     while (true) {
       const result = await fetchExportData(_counter++);
       if (result && result.length > 0) {
-        setPercent(prev => prev + percentPlus);
+        setPercent((prev) => prev + percentPlus);
         results = [...results, ...result];
       } else {
         break;
@@ -788,15 +791,15 @@ const ListSMS = () => {
               <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
                 <Button
                   onClick={handleExportExcel}
-                  className="d-flex align-items-center"
+                  className="d-flex align-items-center gap-1 mobies"
                   icon={<AnphaIcon />}
-                > 
+                >
                   {translation("listCustomers.export")}
                 </Button>
 
                 <Button
                   className="d-flex align-items-center gap-1"
-                  type="primary" 
+                  type="primary"
                   icon={<PlusOutlined />}
                   onClick={() => {
                     setIsSendMessageDrawer(true);
