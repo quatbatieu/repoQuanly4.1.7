@@ -722,7 +722,7 @@ export default function ListDevice() {
                     options={getStationDeviceStatusOptions(translation)}
                   />
                 </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2}>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="pr-0">
                   <Button
                     onClick={toggleUploadModal}
                     className="d-flex align-items-center justify-content-center gap-1"
@@ -731,7 +731,7 @@ export default function ListDevice() {
                     {translation("listCustomers.upload")}
                   </Button>
                 </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2}>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
                   <Button
                     onClick={handleExportExcel}
                     className="d-flex align-items-center justify-content-center gap-1"
@@ -740,7 +740,7 @@ export default function ListDevice() {
                     {translation("listCustomers.export")}
                   </Button>
                 </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2} style={{ paddingLeft : '22px'}}>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
                   <Button
                     type="primary"
                     className="d-flex align-items-center justify-content-center"
