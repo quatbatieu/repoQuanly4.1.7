@@ -365,7 +365,7 @@ export default function DocumentaryList() {
           </label>
         </div>
         <div className="col-12 col-xl-1" /> */}
-        <div className="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-2 mb-3">
+        <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-3">
            <BasicSearch 
             onsearch={onSearch}
             onchange={onChangeSearchText}
@@ -381,7 +381,7 @@ export default function DocumentaryList() {
             onSearch={onSearch}
           /> */}
         </div>
-        <div className="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-2 mb-3">
+        <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-2 mb-3">
           <DatePicker
             className="w-100"
             format="DD/MM/YYYY"

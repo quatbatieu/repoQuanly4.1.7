@@ -699,26 +699,15 @@ export default function ListDevice() {
       ) : (
         <main className="list_customers">
           <Row gutter={[24, 24]} className="mb-3">
-            {/* <Col xs={24} sm={24} md={24} lg={5} xl={5}>
-              <label className="section-title pl-3">
-                {translation("device.list")}
-              </label>
-            </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Row gutter={[24, 24]}>
-                <Col xs={24} sm={12} md={12} lg={6} xl={6}>
+                <Col xs={24} sm={12} md={6} lg={6} xl={6}>
                    <BasicSearch
                     onsearch={onSearch}
                     onchange={onChangeSearchText}
                     placeholder={translation("device.searchByNameSerial")}
                     value={dataFilter.searchText}
                     />
-                  {/* <Input.Search
-                    placeholder={translation("device.searchByNameSerial")}
-                    onChange={onChangeSearchText}
-                    value={dataFilter.searchText}
-                    onSearch={onSearch}
-                  /> */}
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={6} xl={4}>
                   <Select

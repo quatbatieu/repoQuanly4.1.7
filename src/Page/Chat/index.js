@@ -19,6 +19,7 @@ import { handleChangeChat } from 'actions/chatAction';
 
 import "./chat.scss";
 import { useSelector, useDispatch } from 'react-redux';
+import BasicSearch from 'components/BasicSearch';
 
 timeago.register("vi", vi);
 
@@ -205,14 +206,22 @@ function Chat(props) {
               <Typography.Title level={4}>
                 {translation("chat.title")}
               </Typography.Title>
-              <Input.Search
+              <BasicSearch 
+                placeholder={translation("chat.searchPlaceholder")}
+                style={{
+                  width: "100%",
+                }}
+                onsearch={handleSearch}
+                className="mb-2 pb-1"
+              />
+              {/* <Input.Search
                 placeholder={translation("chat.searchPlaceholder")}
                 style={{
                   width: "100%",
                 }}
                 onSearch={handleSearch}
                 className="mb-2 pb-1"
-              />
+              /> */}
             </div>
             <div className='chat__list'>
               {dataListConversation.data.length !== 0 ?
