@@ -443,60 +443,60 @@ export default function VehicleList() {
 
   return (
     <Fragment>
-      {setting.enableVehicleRegistrationMenu === 0 ? (
-        <UnLock />
-      ) : (
-        <main className="list_customers">
-          <Row gutter={[24, 24]} className="mb-3">
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Row gutter={[24, 24]}>
-                <Col xs={24} sm={12} md={6} lg={6} xl={6}>
-                  <BasicSearch
-                    className="w-100"
-                    placeholder={translation("listCustomers.search")}
-                    onchange={onChangeSearchText}
-                    value={dataFilter.searchText}
-                    onsearch={onSearch}
-                  />
-                </Col>
-                <Col xs={24} sm={12} md={12} lg={6} xl={4}>
-                  <Select
-                    onChange={onFilterUserByStationId}
-                    className="w-100"
-                    placeholder="Mã trạm"
-                  >
-                    <Select.Option value={0}>
-                      {translation("PhoneBook.allStations")}
-                    </Select.Option>
-                    {dataStation?.length > 0 &&
-                      dataStation.map((item) => (
-                        <Select.Option
-                          key={item.stationsId}
-                          value={item.stationsId}
-                        >
-                          {item.stationCode}
-                        </Select.Option>
-                      ))}
-                  </Select>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <div className="list_customers__body">
-            <Table
-              dataSource={listDocumentary.data}
-              columns={columns}
-              scroll={{ x: 1510 }}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={listDocumentary?.data?.length < dataFilter?.limit}
-            ></BasicTablePaging>
-          </div>
-        </main>
-      )}
-    </Fragment>
+    {setting.enableVehicleRegistrationMenu === 0 ? (
+      <UnLock />
+    ) : (
+      <main className="list_customers">
+        <Row gutter={[24, 24]} className="mb-3">
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Row gutter={[24, 24]}>
+              <Col xs={24} sm={12} md={6} lg={6} xl={4}>
+                <BasicSearch
+                  className="w-100"
+                  placeholder={translation("listCustomers.search")}
+                  onchange={onChangeSearchText}
+                  value={dataFilter.searchText}
+                  onsearch={onSearch}
+                />
+              </Col>
+              <Col xs={24} sm={12} md={12} lg={6} xl={4}>
+                <Select
+                  onChange={onFilterUserByStationId}
+                  className="w-100"
+                  placeholder="Mã trạm"
+                >
+                  <Select.Option value={0}>
+                    {translation("PhoneBook.allStations")}
+                  </Select.Option>
+                  {dataStation?.length > 0 &&
+                    dataStation.map((item) => (
+                      <Select.Option
+                        key={item.stationsId}
+                        value={item.stationsId}
+                      >
+                        {item.stationCode}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <div className="list_customers__body">
+          <Table
+            dataSource={listDocumentary.data}
+            columns={columns}
+            scroll={{ x: 1510 }}
+            pagination={false}
+          />
+          <BasicTablePaging
+            handlePaginations={handleChangePage}
+            skip={dataFilter.skip}
+            count={listDocumentary?.data?.length < dataFilter?.limit}
+          ></BasicTablePaging>
+        </div>
+      </main>
+    )}
+  </Fragment>
   );
 }

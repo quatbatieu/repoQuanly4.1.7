@@ -359,13 +359,7 @@ export default function DocumentaryList() {
       {setting.enableDocumentMenu === 0 ? <UnLock /> :
        <main className="list_customers">
       <div className="row">
-        {/* <div className="col-12 col-md-6 col-lg-4 col-xl-7">
-          <label className="section-title pl-3">
-            {translation("listDocumentary.listDocumentary")}
-          </label>
-        </div>
-        <div className="col-12 col-xl-1" /> */}
-        <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-3">
+        <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-2 mb-3">
            <BasicSearch 
             onsearch={onSearch}
             onchange={onChangeSearchText}
@@ -373,13 +367,6 @@ export default function DocumentaryList() {
             value={dataFilter.searchText}
             className='w-100'
             />
-          {/* <Input.Search
-            autoFocus
-            placeholder={translation("listCustomers.search")}
-            onChange={onChangeSearchText}
-            value={dataFilter.searchText}
-            onSearch={onSearch}
-          /> */}
         </div>
         <div className="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-2 mb-3">
           <DatePicker

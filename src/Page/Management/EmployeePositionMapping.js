@@ -609,38 +609,6 @@ function EmployeePositionMapping() {
           >{translation('management.createAssignmentTicket')}
           </Button>
         </div>
-        {/* <div className='col-12 col-md-4 col-lg-3 col-xl-2'>
-          <Button
-            className='w-100 d-flex align-items-center justify-content-center'
-            onClick={() => {
-              setIsPrint(true)
-              setTypePrint(LIST_TYPE_PRINT.EXPORT_FILE);
-              setTimeout(() => {
-                if (inputAddRef && inputAddRef.current) {
-                  inputAddRef.current.focus();
-                }
-              }, 10)
-            }}
-            type="primary"
-          >{translation('management.print.employeeAssignmentBook')}
-          </Button>
-        </div>
-        <div className='col-12 col-md-4 col-lg-3 col-xl-2'>
-          <Button
-            className='w-100 d-flex align-items-center justify-content-center'
-            onClick={() => {
-              setIsPrint(true)
-              setTypePrint(LIST_TYPE_PRINT.PRINT_SLIP);
-              setTimeout(() => {
-                if (inputAddRef && inputAddRef.current) {
-                  inputAddRef.current.focus();
-                }
-              }, 10)
-            }}
-            type="primary"
-          >{translation('management.print.printAssignment')}
-          </Button>
-        </div> */}
       </div>
 
       <div className="management__body">

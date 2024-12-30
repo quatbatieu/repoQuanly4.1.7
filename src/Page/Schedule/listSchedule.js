@@ -1069,7 +1069,7 @@ const ListSchedule = () => {
                 className=" row d-flex justify-content-start"
                 wrap={true}
               >
-                <div className="col-md-6 col-lg-3 col-xl-3 mb-3">
+                <div className="col-md-6 col-lg-3 col-xl-2 mb-3">
                   <BasicSearch
                     placeholder={translation("listSchedules.searchText")}
                     onchange={onChangeSearchText}

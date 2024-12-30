@@ -585,77 +585,74 @@ function ListUser() {
         <UnLock />
       ) : (
         <div className="management">
-          <Row gutter={[24, 24]} className="mb-3">
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Row gutter={[24, 24]}>
-                <Col xs={24} sm={12} md={6} lg={6} xl={6}>
-                  <BasicSearch
-                    className="w-100"
-                    value={searchText}
-                    onpressenter={handleFilter}
-                    onsearch={handleFilter}
-                    onchange={(e) => setSearchText(e.target.value)}
-                    placeholder={translation("landing.search")}
-                    style={{
-                      minWidth: 160,
-                    }}
-                  />
-                </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
-                  <Select
-                    onChange={onFilterUserByStatus}
-                    className="w-100"
-                    placeholder="Trạng thái"
-                    style={{
-                      minWidth: 180,
-                    }}
-                  >
-                    <Select.Option value="">
-                      {translation("new.allPost")}
-                    </Select.Option>
-                    <Select.Option value={1}>
-                      {translation("management.active")}
-                    </Select.Option>
-                    <Select.Option value={0}>
-                      {translation("management.inActive")}
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
-                  <div className="d-flex gap-4">
-                    <Button
-                      className="w-100 d-flex align-items-center justify-content-center"
-                      icon={<PlusOutlined />}
-                      onClick={() => {
-                        setIsAdd(true);
-                        setTimeout(() => {
-                          if (inputAddRef && inputAddRef.current) {
-                            inputAddRef.current.focus();
-                          }
-                        }, 10);
-                      }}
-                      type="primary"
-                    >
-                      {translation("inspectionProcess.add")}
-                    </Button>
-                    <Button
-                      className="d-flex align-items-center justify-content-center"
-                      loading={loading}
-                      onClick={() => {
-                        setLoading(true);
-                        setTimeout(() => {
-                          fetchData(dataFilter);
-                          setLoading(false);
-                        }, BUTTON_LOADING_TIME);
-                      }}
-                    >
-                      {!loading && <ReloadOutlined />}
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <div className="receipt_container-dflex-wrap row">
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+              <BasicSearch
+                className="w-100"
+                value={searchText}
+                onpressenter={handleFilter}
+                onsearch={handleFilter}
+                onchange={(e) => setSearchText(e.target.value)}
+                placeholder={translation("landing.search")}
+                style={{
+                  minWidth: 160,
+                }}
+              />
+            </div>
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+              <Select
+                onChange={onFilterUserByStatus}
+                className="w-100"
+                placeholder="Trạng thái"
+                style={{
+                  minWidth: 180,
+                }}
+              >
+                <Select.Option value="">
+                  {translation("new.allPost")}
+                </Select.Option>
+                <Select.Option value={1}>
+                  {translation("management.active")}
+                </Select.Option>
+                <Select.Option value={0}>
+                  {translation("management.inActive")}
+                </Select.Option>
+              </Select>
+            </div>
+
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+              <div className="d-flex gap-4">
+                <Button
+                  className="w-100 d-flex align-items-center justify-content-center"
+                  icon={<PlusOutlined />}
+                  onClick={() => {
+                    setIsAdd(true);
+                    setTimeout(() => {
+                      if (inputAddRef && inputAddRef.current) {
+                        inputAddRef.current.focus();
+                      }
+                    }, 10);
+                  }}
+                  type="primary"
+                >
+                  {translation("inspectionProcess.add")}
+                </Button>
+                <Button
+                  className="d-flex align-items-center justify-content-center"
+                  loading={loading}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      fetchData(dataFilter);
+                      setLoading(false);
+                    }, BUTTON_LOADING_TIME);
+                  }}
+                >
+                  {!loading && <ReloadOutlined />}
+                </Button>
+              </div>
+            </div>
+          </div>
           <div className="management__body">
             <Table
               dataSource={dataUser.data}

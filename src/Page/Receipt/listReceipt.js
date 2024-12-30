@@ -516,11 +516,10 @@ function ListReceipt() {
     <>
       {setting.enableInvoiceMenu === 0 ? <UnLock />:(
         <main className="receipt_container mt-0">
-          {/* Search/Filter Section */}
           <div className='row d-flex justify-content-between'>
             <div className='col-12 col-md-12 col-lg-12 mb-3'>
-              <div className='receipt_container-dflex-wrap row' style={{ gap: "24px" }}>
-                <div className='col-md-3 col-lg-3 col-xl-3'>
+              <div className='receipt_container-dflex-wrap row'>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3'>
                   <BasicSearch 
                      onsearch={onSearch}
                      onchange={onChangeSearchText}
@@ -528,7 +527,7 @@ function ListReceipt() {
                      className='w-100'
                      />
                 </div>
-                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3'>
                   <DatePicker
                     className="w-100"
                     format="DD/MM/YYYY"
@@ -537,7 +536,7 @@ function ListReceipt() {
                   />
                 </div>
   
-                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3'>
                   <DatePicker
                     className="w-100"
                     format="DD/MM/YYYY"
@@ -546,7 +545,7 @@ function ListReceipt() {
                   />
                 </div>
   
-                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3'>
                   <Select
                     className="w-100"
                     placeholder={translation('receipt.filterByStatus')}
@@ -563,7 +562,7 @@ function ListReceipt() {
                   </Select>
                 </div>
   
-                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3'>
                   <Select
                     className="w-100"
                     placeholder={translation('receipt.methods')}

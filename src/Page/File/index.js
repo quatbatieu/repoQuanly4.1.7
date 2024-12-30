@@ -428,12 +428,7 @@ export default function File() {
       {setting.enableDocumentMenu === 0 ? <UnLock /> :
       <main className="list_customers">
         <div className="row">
-          {/* <div className="col-12 col-md-12 col-lg-12 col-xl-4">
-            <label className="section-title pl-3">
-              {translation("file.list")}
-            </label>
-          </div> */}
-          <div className="col-md-3 col-lg-3 col-xl-3 mb-3">
+          <div className="col-md-3 col-lg-3 col-xl-2 mb-3">
             <BasicSearch
               onchange={onChangeSearchText}
               placeholder={translation("listCustomers.search")}

@@ -12,7 +12,6 @@ const { TabPane } = Tabs
 
 const LIST_NEWS_KEY = '#1'
 const POST_NEW_KEY = '#2'
-const CREATE_CATEGORY_KEY = "#3"
 
 function New(props) {
   const { t: translation } = useTranslation()
