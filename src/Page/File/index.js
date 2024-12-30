@@ -433,20 +433,13 @@ export default function File() {
               {translation("file.list")}
             </label>
           </div> */}
-          <div className="col-md-3 col-lg-3 col-xl-2 mb-3">
+          <div className="col-md-3 col-lg-3 col-xl-3 mb-3">
             <BasicSearch
               onchange={onChangeSearchText}
               placeholder={translation("listCustomers.search")}
               value={dataFilter.searchText}
               onsearch={onSearch}
               />
-            {/* <Input.Search
-              autoFocus
-              placeholder={translation("listCustomers.search")}
-              onChange={onChangeSearchText}
-              value={dataFilter.searchText}
-              onSearch={onSearch}
-            /> */}
           </div>
           <div className="col-6 col-xs-6 col-md-3 col-lg-3 col-xl-2 mb-3">
             <DatePicker

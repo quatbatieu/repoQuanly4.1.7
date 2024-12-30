@@ -1,26 +1,28 @@
+import { ReloadOutlined } from "@ant-design/icons";
 import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeInvisibleFilled,
-  EyeOutlined,
-  LoadingOutlined,
-  ReloadOutlined,
-} from '@ant-design/icons'
-import { Card, DatePicker, Select, Image, Input, notification, Table, Button, Popconfirm, Typography } from 'antd'
-import React, { useState, useEffect, Fragment } from 'react'
-import './newStyle.scss'
-import NewService from '../../services/newService'
-import { useTranslation } from 'react-i18next'
-import moment from 'moment'
-import { DATE_DISPLAY_FORMAT } from 'constants/dateFormats'
-import ModalEditUserInfo from 'Page/Management/ModalEditUserInfo'
-import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
-import { useSelector } from 'react-redux'
-import UnLock from 'components/UnLock/UnLock';
-import { MIN_COLUMN_WIDTH } from 'constants/app'
-import { VERY_BIG_COLUMN_WIDTH } from 'constants/app'
-import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app'
-import BasicSearch from 'components/BasicSearch'
+  DatePicker,
+  notification,
+  Table,
+  Button,
+  Popconfirm,
+  Row,
+  Col,
+  Typography,
+} from "antd";
+import React, { useState, useEffect, Fragment } from "react";
+import "./newStyle.scss";
+import NewService from "../../services/newService";
+import { useTranslation } from "react-i18next";
+import moment from "moment";
+import { DATE_DISPLAY_FORMAT } from "constants/dateFormats";
+import ModalEditUserInfo from "Page/Management/ModalEditUserInfo";
+import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
+import { useSelector } from "react-redux";
+import UnLock from "components/UnLock/UnLock";
+import { MIN_COLUMN_WIDTH } from "constants/app";
+import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
+import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
+import BasicSearch from "components/BasicSearch";
 
 const DEFAULT_FILTER = {
   filter: {
@@ -33,10 +35,10 @@ const DEFAULT_FILTER = {
   startDate: undefined,
   endDate: undefined,
   order: {
-    "key": "createdAt",
-    "value": "desc"
-  }
-}
+    key: "createdAt",
+    value: "desc",
+  },
+};
 
 export default function ListNews({
   isReload,
@@ -45,12 +47,12 @@ export default function ListNews({
   setIsReload,
   onSelectPostEdit,
 }) {
-  const [dataNews, setDataNews] = useState([])
-  const [total, setTotal] = useState(0)
-  const { t: translation } = useTranslation()
-  const [dataFilter, setDataFilter] = useState(DEFAULT_FILTER)
-  const [creatorId, setCreatorId]=useState(undefined)
-  const [isOpenModalDetail, setIsOpenModalDetail]=useState(false)
+  const [dataNews, setDataNews] = useState([]);
+  const [total, setTotal] = useState(0);
+  const { t: translation } = useTranslation();
+  const [dataFilter, setDataFilter] = useState(DEFAULT_FILTER);
+  const [creatorId, setCreatorId] = useState(undefined);
+  const [isOpenModalDetail, setIsOpenModalDetail] = useState(false);
   const setting = useSelector((state) => state.setting);
 
   const columns = [
@@ -60,22 +62,22 @@ export default function ListNews({
       key: "index",
       width: MIN_COLUMN_WIDTH,
       render: (_, __, index) => {
-        return dataFilter.skip ? dataFilter.skip + index + 1 : index + 1
+        return dataFilter.skip ? dataFilter.skip + index + 1 : index + 1;
       },
     },
     {
       title: translation("new.title"),
       key: "newspaper",
       dataIndex: "newspaper",
-      width : EXTRA_BIG_COLUMND_WITDTH,
+      width: EXTRA_BIG_COLUMND_WITDTH,
       render: (_, rowData) => {
         return (
-          <div className='d-flex gap-2'>
+          <div className="d-flex gap-2">
             {/* <Image alt='img' width={35} height={35} src={rowData.stationNewsAvatar} /> */}
             <span>{rowData.stationNewsTitle}</span>
           </div>
-        )
-      }
+        );
+      },
     },
     {
       title: translation("new.categories"),
@@ -88,7 +90,7 @@ export default function ListNews({
       dataIndex: "stationNewsCreators",
       key: "stationNewsCreators",
       // width: VERY_BIG_COLUMN_WIDTH,
-      render: (_,record) => {
+      render: (_, record) => {
         return (
           <Typography.Paragraph
             className="sms-content"
@@ -96,15 +98,17 @@ export default function ListNews({
             ellipsis={{
               rows: 2,
             }}
-            onClick={()=>{
-              setCreatorId(record?.stationNewsCreators?.appUserId)
-              setIsOpenModalDetail(true)
+            onClick={() => {
+              setCreatorId(record?.stationNewsCreators?.appUserId);
+              setIsOpenModalDetail(true);
             }}
           >
-            <span style={{ cursor: "pointer", color: "var(--primary-color)" }}>{record?.stationNewsCreators?.firstName}</span>
+            <span style={{ cursor: "pointer", color: "var(--primary-color)" }}>
+              {record?.stationNewsCreators?.firstName}
+            </span>
           </Typography.Paragraph>
-        )
-      }
+        );
+      },
     },
     {
       title: translation("listSchedules.time"),
@@ -112,24 +116,9 @@ export default function ListNews({
       key: "createdAt",
       width: VERY_BIG_COLUMN_WIDTH,
       render: (createdAt) => {
-        return moment(createdAt).format("DD/MM/YYYY")
+        return moment(createdAt).format("DD/MM/YYYY");
       },
     },
-    // {
-    //   title: translation("totalView"),
-    //   dataIndex: "totalViewed",
-    //   key: "totalViewed",
-    //   width: 207,
-    //   height: 55,
-    //   render: (totalViewed) => {
-    //     return (
-    //       <div className='d-flex align-items-center gap-2'>
-    //         <EyeOutlined />
-    //         <span>{getTotalView(totalViewed)}</span>
-    //       </div>
-    //     )
-    //   },
-    // },
     {
       title: translation("receipt.action"),
       dataIndex: "customerRecordPhone",
@@ -137,14 +126,16 @@ export default function ListNews({
       width: VERY_BIG_COLUMN_WIDTH,
       render: (_, record) => {
         return (
-          <div className='d-flex justify-content-between'>
+          <div className="d-flex justify-content-between">
             <Button
               type="link"
               onClick={() => {
-                onChangePostStatus(record)
+                onChangePostStatus(record);
               }}
             >
-              {translation(record.isHidden === 0 ? "setting.hide" : "setting.show")}
+              {translation(
+                record.isHidden === 0 ? "setting.hide" : "setting.show"
+              )}
             </Button>
             <Button
               type="link"
@@ -155,19 +146,15 @@ export default function ListNews({
             <Popconfirm
               title={translation("new.confirm-delete")}
               onConfirm={() => {
-                onDeletePost(record.stationNewsId)
+                onDeletePost(record.stationNewsId);
               }}
               okText={translation("category.yes")}
               cancelText={translation("category.no")}
             >
-              <Button
-                type="link"
-              >
-                {translation("listCustomers.delete")}
-              </Button>
+              <Button type="link">{translation("listCustomers.delete")}</Button>
             </Popconfirm>
           </div>
-        )
+        );
       },
     },
   ];
@@ -175,130 +162,67 @@ export default function ListNews({
   const fetchDataNews = (filter) => {
     NewService.adminGetList(filter).then((result) => {
       if (result.data && result.data.length > 0) {
-        setDataNews(dataNews.concat(result.data))
+        setDataNews(dataNews.concat(result.data));
       }
-    })
-  }
+    });
+  };
 
   const fetchDataNewsNoConcat = (filter) => {
     NewService.adminGetList(filter).then((result) => {
       if (result.data) {
-        setDataNews(result.data)
-        setTotal(result.total)
+        setDataNews(result.data);
+        setTotal(result.total);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    fetchDataNewsNoConcat(DEFAULT_FILTER)
-  }, [])
+    fetchDataNewsNoConcat(DEFAULT_FILTER);
+  }, []);
 
   useEffect(() => {
     if (isReload) {
-      fetchDataNewsNoConcat(DEFAULT_FILTER)
-      setDataFilter(DEFAULT_FILTER)
+      fetchDataNewsNoConcat(DEFAULT_FILTER);
+      setDataFilter(DEFAULT_FILTER);
     }
-    setIsReload(false)
-  }, [isReload])
+    setIsReload(false);
+  }, [isReload]);
 
   const onScrollToFetchData = (page) => {
     // Prevent fetch when scroll in another tab
     if (!isActive) {
-      return
+      return;
     }
-    let newSkip = (page - 1) * 20
-    dataFilter.skip = newSkip
-    setDataFilter({ ...dataFilter })
-    fetchDataNews(dataFilter)
-  }
-
-  const preventScroll = () => {
-    if (dataNews.length !== 0) {
-      if (dataNews.length !== total) {
-        return true
-      }
-      return false
-    }
-
-    return false
-  }
-
-  const getTime = (time) => {
-    if (time) {
-      return `${moment(time.createdAt).format('LT')} ${moment(
-        time.createdAt
-      ).format('DD/MM/YYYY')}`
-    }
-  }
-
-  const getTotalView = (view) => {
-    if (view) {
-      if (view <= 1000) {
-        return view
-      } else if (view > 1000 && view < 1000000) {
-        return (view / 1000).toFixed(2) + ' K'
-      } else {
-        return (view / 1000000).toFixed(2) + ' M'
-      }
-    } else {
-      return '0'
-    }
-  }
-
-  function renderDescription(text = '') {
-    if (!text) return ''
-    else return text.replace(/\n/g, '<br />')
-  }
+    let newSkip = (page - 1) * 20;
+    dataFilter.skip = newSkip;
+    setDataFilter({ ...dataFilter });
+    fetchDataNews(dataFilter);
+  };
 
   const onChangeSearchText = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setDataFilter({
       ...dataFilter,
       searchText: e.target.value ? e.target.value : undefined,
-      skip:0
-    })
-  }
+      skip: 0,
+    });
+  };
 
   const onSearchPost = () => {
-    fetchDataNewsNoConcat(dataFilter)
-  }
-
-  const onFilterByStatus = (e) => {
-    if (e === 'ALL') {
-      dataFilter.filter.isHidden = undefined
-    } else {
-      dataFilter.filter.isHidden = e
-    }
-    setDataFilter({ ...dataFilter, skip: 0 })
-    fetchDataNewsNoConcat({ ...dataFilter, skip: 0 })
-  }
+    fetchDataNewsNoConcat(dataFilter);
+  };
 
   const onChooseDate = (_, dateString) => {
     if (dateString && dateString[0].length > 0) {
-      dataFilter.startDate = dateString[0]
-      dataFilter.endDate = dateString[1]
+      dataFilter.startDate = dateString[0];
+      dataFilter.endDate = dateString[1];
     } else {
-      dataFilter.startDate = undefined
-      dataFilter.endDate = undefined
+      dataFilter.startDate = undefined;
+      dataFilter.endDate = undefined;
     }
-    setDataFilter({ ...dataFilter, skip: 0 })
-    fetchDataNewsNoConcat({ ...dataFilter, skip: 0 })
-  }
-
-  const POST_STATUS = [
-    {
-      label: translation('new.allPost'),
-      value: 'ALL',
-    },
-    {
-      label: translation('new.hidePost'),
-      value: 1,
-    },
-    {
-      label: translation('new.showPost'),
-      value: 0,
-    },
-  ]
+    setDataFilter({ ...dataFilter, skip: 0 });
+    fetchDataNewsNoConcat({ ...dataFilter, skip: 0 });
+  };
 
   const onChangePostStatus = (post) => {
     onUpdatePost({
@@ -306,152 +230,113 @@ export default function ListNews({
       data: {
         isHidden: post.isHidden === 1 ? 0 : 1,
       },
-    })
-  }
+    });
+  };
 
   const onDeletePost = async (postId) => {
-    //delete by id
     onUpdatePost({
       id: postId,
       data: {
         isDeleted: 1,
       },
-    })
-  }
+    });
+  };
 
   const onUpdatePost = (data) => {
     NewService.updateANew(data).then((result) => {
       if (result && result.isSuccess) {
-        fetchDataNewsNoConcat(dataFilter)
+        fetchDataNewsNoConcat(dataFilter);
         notification.success({
-          message: '',
-          description: translation('new.updateSuccess'),
-        })
+          message: "",
+          description: translation("new.updateSuccess"),
+        });
       } else {
         notification.error({
-          message: '',
-          description: translation('new.updateFailed'),
-        })
+          message: "",
+          description: translation("new.updateFailed"),
+        });
       }
-    })
-  }
-
-  function handleFilterCategory(value) {
-    if (value === null || value === undefined || value === '') {
-      dataFilter.filter.stationNewsCategories = undefined
-    } else {
-      dataFilter.filter.stationNewsCategories = value.toString()
-    }
-    setDataFilter({ ...dataFilter, skip: 0 })
-    fetchDataNewsNoConcat({ ...dataFilter, skip: 0 })
-  }
+    });
+  };
 
   const options = listCategory.map((item) => {
     return {
       value: item.stationNewsCategoryId,
       label: item.stationNewsCategoryTitle,
-    }
-  })
+    };
+  });
   // lấy ra 3 danh mục : ưu đãi, tuyển dụng, chuyên ra chia sẻ
-  const newList = options?.slice(2,5)
-  function renderNewCategory(categoryId) {
-    if (!categoryId) return ''
-    for (let i = 0; i < listCategory.length; i++) {
-      if (listCategory[i].stationNewsCategoryId === parseInt(categoryId)) {
-        return listCategory[i].stationNewsCategoryContent
-      }
-    }
-    return ''
-  }
-
   const handleChangePage = (pageNum) => {
     const newFilter = {
       ...dataFilter,
-      skip : (pageNum -1) * dataFilter.limit
-    }
-    setDataFilter(newFilter)
-    fetchDataNewsNoConcat(newFilter)
-  }
+      skip: (pageNum - 1) * dataFilter.limit,
+    };
+    setDataFilter(newFilter);
+    fetchDataNewsNoConcat(newFilter);
+  };
 
   return (
     <Fragment>
-      {setting.enableNewsMenu === 0 ? <UnLock /> : (
-      <div>
-      <div className='row d-flex justify-content-between'>
-        {/* <div className='section-title col-12 col-lg-3'> {translation('listNew')}</div> */}
-
-        <div className='col-12 col-lg-9'>
-          <div className='row'>
-            {/* <div className='col-12 col-lg-1 col-xl-1' /> */}
-            <div className='col-12 col-md-4 col-lg-3 col-xl-3 mb-3'>
-              <BasicSearch
-                onchange={onChangeSearchText}
-                onsearch={onSearchPost}
-                onpressenter={onSearchPost}
-                placeholder={translation('listSchedules.searchText')}
-                className='w-100'
-                value={dataFilter.searchText}
-                />
-              {/* <Input.Search
-                autoFocus
-                onChange={onChangeSearchText}
-                onSearch={onSearchPost}
-                placeholder={translation('listSchedules.searchText')}
-                className='w-100'
-                value={dataFilter.searchText}
-              /> */}
-            </div>
-
-            <div className='col-12 col-md-4 col-lg-4 col-xl-4 mb-3'>
-              <DatePicker.RangePicker
-                className='w-100'
-                format={DATE_DISPLAY_FORMAT}
-                placeholder={[
-                  translation('listCustomers.startDate'),
-                  translation('listCustomers.endDate'),
-                ]}
-                onChange={onChooseDate}
-              />
-            </div>
-            
-            <div className='col-12 col-md-4 col-lg-3 col-xl-3 mb-3'>
-              <Select
-                className='w-100'
-                rows={40}
-                placeholder={translation('new.selectCategory')}
-                // defaultValue={{ value: '', label: translation('new.all')}}
-                options={[{ value: '', label: translation('new.all')}, ...newList]}
-                value={dataFilter.stationNewsCategories}
-                onSelect={handleFilterCategory}
-              />
-            </div>
-
-            <div className='col-12 col-lg-1 col-xl-1 mb-3'>
-              <Button
-                onClick={() => fetchDataNewsNoConcat(dataFilter)}
-                className='d-flex justify-content-center align-items-center'
-              >
-                <ReloadOutlined />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Table
-        scroll={{ x: 1200 }}
-        columns={columns}
-        dataSource={dataNews}
-        pagination={false}
-      />
-      <BasicTablePaging handlePaginations={handleChangePage} skip={dataFilter.skip} count={dataNews?.length < dataFilter?.limit}></BasicTablePaging>
-      <ModalEditUserInfo 
-        isEditing={isOpenModalDetail}
-        toggleEditModal={() => setIsOpenModalDetail(!isOpenModalDetail)}
-        selectedUserId={creatorId}  
-        preventEdit={true}
-        titlePopup= {translation("new.infoCreator")}
-      />
-      {/* <InfiniteScroll
+      {setting.enableNewsMenu === 0 ? (
+        <UnLock />
+      ) : (
+        <div>
+          <Row gutter={[24, 24]} className="mb-3">
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Row gutter={[24, 24]}>
+                <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                  <BasicSearch
+                    onchange={onChangeSearchText}
+                    onsearch={onSearchPost}
+                    onpressenter={onSearchPost}
+                    placeholder={translation("listSchedules.searchText")}
+                    className="w-100"
+                    value={dataFilter.searchText}
+                  />
+                </Col>
+                <Col xs={24} sm={24} md={6} lg={3} xl={4} className="pr-0">
+                  <div>
+                    <DatePicker.RangePicker
+                      className="w-100"
+                      format={DATE_DISPLAY_FORMAT}
+                      placeholder={[
+                        translation("listCustomers.startDate"),
+                        translation("listCustomers.endDate"),
+                      ]}
+                      onChange={onChooseDate}
+                    />
+                  </div>
+                </Col>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="">
+                  <Button
+                    onClick={() => fetchDataNewsNoConcat(dataFilter)}
+                    className="d-flex justify-content-center align-items-center"
+                  >
+                    <ReloadOutlined />
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Table
+            scroll={{ x: 1200 }}
+            columns={columns}
+            dataSource={dataNews}
+            pagination={false}
+          />
+          <BasicTablePaging
+            handlePaginations={handleChangePage}
+            skip={dataFilter.skip}
+            count={dataNews?.length < dataFilter?.limit}
+          ></BasicTablePaging>
+          <ModalEditUserInfo
+            isEditing={isOpenModalDetail}
+            toggleEditModal={() => setIsOpenModalDetail(!isOpenModalDetail)}
+            selectedUserId={creatorId}
+            preventEdit={true}
+            titlePopup={translation("new.infoCreator")}
+          />
+          {/* <InfiniteScroll
         dataLength={dataNews.length}
         next={onScrollToFetchData}
         hasMore={preventScroll()}
@@ -533,8 +418,8 @@ export default function ListNews({
           </div>
         )}
       </InfiniteScroll> */}
-      </div>
-    )}
+        </div>
+      )}
     </Fragment>
-  )
+  );
 }

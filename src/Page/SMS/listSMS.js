@@ -740,7 +740,7 @@ const ListSMS = () => {
       ) : (
         <main className="sms">
           <div className="row d-flex justify-content-start">
-            <div className="section-title col-lg-3 mb-3 col-xl-2">
+            <div className="section-title col-lg-3 mb-3 col-xl-3">
               <BasicSearch placeholder={translation("sms.search")} onpressenter={handleFilter} onsearch={handleFilter} />
               {/* <Input.Search
                 onPressEnter={handleFilter}
