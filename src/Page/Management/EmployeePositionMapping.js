@@ -581,7 +581,7 @@ function EmployeePositionMapping() {
      {setting.enableManagerMenu === 0 ? <UnLock /> :
       <div className="management managementEmployee">
       <div className="row mb-3">
-        <div className="col-md-3 col-lg-3 col-xl-3">
+        <div className="col-md-3 col-lg-3 col-xl-2">
           <BasicSearch
             className="w-100"
             value={searchText}
