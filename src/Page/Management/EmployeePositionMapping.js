@@ -581,7 +581,7 @@ function EmployeePositionMapping() {
      {setting.enableManagerMenu === 0 ? <UnLock /> :
       <div className="management managementEmployee">
       <div className="row mb-3">
-        <div className="col-md-3 col-lg-3 col-xl-2">
+        <div className="col-md-3 col-lg-3 col-xl-3">
           <BasicSearch
             className="w-100"
             value={searchText}
@@ -590,14 +590,6 @@ function EmployeePositionMapping() {
             onchange={(e) => setSearchText(e.target.value)}
             placeholder={translation('landing.search')}
             />
-          {/* <Input.Search
-            className="w-100"
-            value={searchText}
-            onPressEnter={handleFilter}
-            onSearch={handleFilter}
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder={translation('landing.search')}
-          /> */}
         </div>
 
         <div className='col-12 col-md-4 col-lg-3 col-xl-2'>

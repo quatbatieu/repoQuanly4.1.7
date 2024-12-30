@@ -519,24 +519,16 @@ function ListReceipt() {
           {/* Search/Filter Section */}
           <div className='row d-flex justify-content-between'>
             <div className='col-12 col-md-12 col-lg-12 mb-3'>
-              <div className='receipt_container-dflex-wrap' style={{ gap: "24px" }}>
-                <div className='flex-grow-xs'>
+              <div className='receipt_container-dflex-wrap row' style={{ gap: "24px" }}>
+                <div className='col-md-3 col-lg-3 col-xl-3'>
                   <BasicSearch 
                      onsearch={onSearch}
                      onchange={onChangeSearchText}
                      placeholder={translation('listCustomers.search')}
                      className='w-100'
                      />
-                  {/* <Input.Search
-                    autoFocus
-                    placeholder={translation('listCustomers.search')}
-                    onChange={onChangeSearchText}
-                    onSearch={onSearch}
-                    className="w-100"
-                  /> */}
                 </div>
-  
-                <div>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
                   <DatePicker
                     className="w-100"
                     format="DD/MM/YYYY"
@@ -545,7 +537,7 @@ function ListReceipt() {
                   />
                 </div>
   
-                <div>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
                   <DatePicker
                     className="w-100"
                     format="DD/MM/YYYY"
@@ -554,7 +546,7 @@ function ListReceipt() {
                   />
                 </div>
   
-                <div>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
                   <Select
                     className="w-100"
                     placeholder={translation('receipt.filterByStatus')}
@@ -571,7 +563,7 @@ function ListReceipt() {
                   </Select>
                 </div>
   
-                <div>
+                <div className='col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2'>
                   <Select
                     className="w-100"
                     placeholder={translation('receipt.methods')}
@@ -588,7 +580,7 @@ function ListReceipt() {
                   </Select>
                 </div>
   
-                <div>
+                <div className='col-lg-5'>
                   <Space size={25}>
                     <Button
                       onClick={handleExportExcel}

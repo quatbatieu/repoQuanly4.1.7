@@ -869,13 +869,7 @@ export default function ListCustomer() {
           </label>
         </div> */}
         {/* <div className="col-md-0 col-lg-0 col-xl-3 mb-3" /> */}
-        <div className="col-md-6 col-lg-3 mb-3">
-          {/* <Input.Search
-            autoFocus
-            placeholder={translation("listCustomers.search")}
-            onChange={onChangeSearchText}
-            onSearch={onSearch}
-          /> */}
+        <div className="col-md-6 col-lg-3 col-xl-3 mb-3">
           <BasicSearch placeholder={translation("listCustomers.search")} onchange={onChangeSearchText} onsearch={onSearch} />
         </div>
         <div className="col-md-6 col-sm-12 col-lg-3 mb-3">
@@ -905,7 +899,7 @@ export default function ListCustomer() {
 								}
 					</Select>
 				</div> */}
-        <div className="col-12 col-md-12 col-lg-5 col-xl-4 mb-3">
+        <div className="col-12 col-md-12 col-lg-6 col-xl-4 mb-3">
           <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
             <Button
               onClick={toggleUploadModal}

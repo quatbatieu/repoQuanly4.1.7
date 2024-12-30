@@ -7,9 +7,12 @@ import {
   Space,
   Popconfirm,
   Table,
-  notification
+  notification,
+  Col,
+  Row,
+  Select,
 } from "antd";
-import { BrowserView } from 'react-device-detect';
+import { BrowserView } from "react-device-detect";
 import { isMobileDevice } from "constants/account";
 import { useEffect, useRef, useState, Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +20,12 @@ import { AnphaIcon, VectorIcon } from "../../assets/icons";
 import listDocumentaryService from "../../services/listDocumentaryService";
 import ModalAddVehicleRecords from "./ModalAddVehicleRecords";
 import ModalEditVehicleRecords from "./ModalEditVehicleRecords";
-import { EyeOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import ModalUpload from "./ModalUpload";
 import "./index.scss";
 import TagVehicle from "components/TagVehicle/TagVehicle";
@@ -33,13 +41,16 @@ import { getVehicleProfile } from "constants/errorMessage";
 import moment from "moment";
 import ModalProgress from "./ModalProgress";
 import { convertFileToBase64 } from "../../helper/common";
-import { ExportFile, handleParse, convertFileToArray } from 'hooks/FileHandler';
-import { LIST_STATUS } from 'constants/logBox';
-import { VEHICLE_TYPES_STATES_EXPORT , VEHICLE_TYPES_STATES_IMPORT } from "constants/vehicleRecordsImportExport";
-import useWindowDimensions from 'hooks/window-dimensions'
+import { ExportFile, handleParse, convertFileToArray } from "hooks/FileHandler";
+import { LIST_STATUS } from "constants/logBox";
+import {
+  VEHICLE_TYPES_STATES_EXPORT,
+  VEHICLE_TYPES_STATES_IMPORT,
+} from "constants/vehicleRecordsImportExport";
+import useWindowDimensions from "hooks/window-dimensions";
 import { isMobileDisplaySize } from "pageUtililiy/isMobileDisplaySize";
-import UnLock from 'components/UnLock/UnLock';
-import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
+import UnLock from "components/UnLock/UnLock";
+import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
 import { useModalDirectLinkContext } from "components/ModalDirectLink";
 import { XLSX_TYPE } from "constants/excelFileType";
 import { MIN_COLUMN_WIDTH } from "constants/app";
@@ -52,8 +63,8 @@ const { RangePicker } = DatePicker;
 
 const listMode = {
   add: "ADD",
-  import: "IMPORT"
-}
+  import: "IMPORT",
+};
 
 const FIELDS_EXPORT_IMPORT = [
   { api: "vehiclePlateNumber", content: "Biển số xe *" },
@@ -62,8 +73,8 @@ const FIELDS_EXPORT_IMPORT = [
   { api: "vehicleRegistrationCode", content: "Số quản lý" },
   { api: "vehicleBrandModel", content: "Số loại" },
   { api: "chassisNumber", content: "Số khung" },
-  { api: "engineNumber", content: "Số máy" }
-]
+  { api: "engineNumber", content: "Số máy" },
+];
 
 const DefaultFilterExport = {
   limit: 100,
@@ -77,10 +88,10 @@ export default function VehicleList() {
     total: 0,
   });
   const [isEditing, setIsEditing] = useState(false);
-  const setting = useSelector(state => state.setting);
+  const setting = useSelector((state) => state.setting);
   const [isAdd, setIsAdd] = useState(false);
   const [isSync, setIsSync] = useState(false);
-  const [formAdd] = Form.useForm()
+  const [formAdd] = Form.useForm();
   const [formEdit] = Form.useForm();
   const [crimePlateNumber, setCrimePlateNumber] = useState("");
   const [loading, setLoading] = useState(false);
@@ -95,11 +106,11 @@ export default function VehicleList() {
   });
   const [dataFilter, setDataFilter] = useState({
     filter: {
-      documentPublishedDay: undefined
+      documentPublishedDay: undefined,
     },
-    skip: 0, 
+    skip: 0,
     limit: 20,
-    searchText: undefined
+    searchText: undefined,
   });
   const [dateBySelect, setDateBySelect] = useState("");
   const [fileSelected, setFileSelected] = useState(undefined);
@@ -110,8 +121,8 @@ export default function VehicleList() {
   const [messageType, setMessageType] = useState("");
   const [isModalSMSOpen, setIsModalSMSOpen] = useState(false);
   const [customerId, setCustomerId] = useState();
-  const [item, setItem] = useState([])
-  const { width } = useWindowDimensions()
+  const [item, setItem] = useState([]);
+  const { width } = useWindowDimensions();
   const { setUrlForModalDirectLink } = useModalDirectLinkContext();
 
   // Những Thứ dùng chung export và import
@@ -126,7 +137,7 @@ export default function VehicleList() {
   const [importSummary, setImportSummary] = useState({
     logs: [],
     numberError: 0,
-    numberSuccess: 0
+    numberSuccess: 0,
   });
 
   const inputRef = useRef();
@@ -150,10 +161,10 @@ export default function VehicleList() {
       align: "center",
       render: (_, __, index) => {
         return (
-          <div className='d-flex justify-content-center aligns-items-center'>
-            {dataFilter.skip ? dataFilter.skip + index + 1 : index + 1 }
+          <div className="d-flex justify-content-center aligns-items-center">
+            {dataFilter.skip ? dataFilter.skip + index + 1 : index + 1}
           </div>
-        )
+        );
       },
     },
     {
@@ -163,21 +174,18 @@ export default function VehicleList() {
       align: "center",
       width: BIG_COLUMN_WIDTH,
       render: (value, values) => {
-
         const colorList = {
-          WHITE : 1 , 
-          BLUE : 2 , 
-          YELLOW : 3,
-          RED : 4
-        }
-        const color = values.vehiclePlateColor ? colorList[values.vehiclePlateColor] - 1 : 0;
+          WHITE: 1,
+          BLUE: 2,
+          YELLOW: 3,
+          RED: 4,
+        };
+        const color = values.vehiclePlateColor
+          ? colorList[values.vehiclePlateColor] - 1
+          : 0;
 
-        return (
-          <TagVehicle color={color}>
-            {value}
-          </TagVehicle>
-        )
-      }
+        return <TagVehicle color={color}>{value}</TagVehicle>;
+      },
     },
     {
       title: translation("vehicleRecords.vehicleType"),
@@ -186,10 +194,8 @@ export default function VehicleList() {
       align: "center",
       width: VERY_BIG_COLUMN_WIDTH,
       render: (value) => {
-        return (
-          <div>{VEHICLE_TYPES?.[value] || "-"}</div>
-        )
-      }
+        return <div>{VEHICLE_TYPES?.[value] || "-"}</div>;
+      },
     },
     {
       title: translation("vehicleRecords.managementUnit"),
@@ -207,8 +213,8 @@ export default function VehicleList() {
       render: (value) => {
         return (
           <div className="text_record">{value?.vehicleRegistrationCode}</div>
-        )
-      }
+        );
+      },
     },
     {
       title: translation("vehicleRecords.typeNumber"),
@@ -236,12 +242,17 @@ export default function VehicleList() {
       key: "fileList",
       dataIndex: "fileList",
       align: "center",
-      width : NORMAL_COLUMN_WIDTH,
+      width: NORMAL_COLUMN_WIDTH,
       render: (value, record) => {
         return value?.length ? (
-          <div onClick={() => {
-            history.push(`${routes.vehicleRecords.path}/${record.vehicleProfileId}`)
-          }} style={{ color: "var(--primary-color)" }}>
+          <div
+            onClick={() => {
+              history.push(
+                `${routes.vehicleRecords.path}/${record.vehicleProfileId}`
+              );
+            }}
+            style={{ color: "var(--primary-color)" }}
+          >
             {translation("vehicleRecords.image")}
           </div>
         ) : (
@@ -260,7 +271,9 @@ export default function VehicleList() {
             <EyeOutlined
               style={{ cursor: "pointer", color: "var(--primary-color)" }}
               onClick={() => {
-                history.push(`${routes.vehicleRecords.path}/${record.vehicleProfileId}`)
+                history.push(
+                  `${routes.vehicleRecords.path}/${record.vehicleProfileId}`
+                );
               }}
             />
             <EditOutlined
@@ -314,12 +327,12 @@ export default function VehicleList() {
       const convertData = convertFileToArray({
         data,
         FIELD_IMPORT_API: FIELDS_EXPORT_IMPORT.map((item) => item.api),
-        FIELD_IMPORT_FULL: FIELDS_EXPORT_IMPORT.map((item) => item.content)
+        FIELD_IMPORT_FULL: FIELDS_EXPORT_IMPORT.map((item) => item.content),
       });
 
       const converters = {
-        vehicleType: (data) => +VEHICLE_TYPES_STATES_IMPORT[data]
-      }
+        vehicleType: (data) => +VEHICLE_TYPES_STATES_IMPORT[data],
+      };
 
       if (convertData.isError) {
         notification["error"]({
@@ -337,22 +350,22 @@ export default function VehicleList() {
             object[key] = value;
             return;
           }
-          object[key] = converters[key](value)
+          object[key] = converters[key](value);
         });
         return object;
-      })
+      });
 
-      // xóa index 
+      // xóa index
       const dataResultRemoveIndex = [...dataResult].map((item) => {
-        const { index , ...newItem } = item;
+        const { index, ...newItem } = item;
         return {
           ...newItem,
-          vehicleRegistrationCode : item.vehicleRegistrationCode?.toString(),
-          vehicleBrandModel : item.vehicleBrandModel?.toString(),
-          chassisNumber : item.chassisNumber?.toString(),
-          engineNumber : item.engineNumber?.toString()
+          vehicleRegistrationCode: item.vehicleRegistrationCode?.toString(),
+          vehicleBrandModel: item.vehicleBrandModel?.toString(),
+          chassisNumber: item.chassisNumber?.toString(),
+          engineNumber: item.engineNumber?.toString(),
         };
-      })
+      });
 
       setIsUploadFile(false);
       setPercent(0);
@@ -419,8 +432,8 @@ export default function VehicleList() {
   };
 
   useEffect(() => {
-    if(isMobileDevice() === true){
-      dataFilter.limit = 10
+    if (isMobileDevice() === true) {
+      dataFilter.limit = 10;
     }
     fetchData(dataFilter);
   }, []);
@@ -433,32 +446,32 @@ export default function VehicleList() {
     } else {
       newFilter.searchText = value;
     }
-    setDataFilter(newFilter)
+    setDataFilter(newFilter);
     fetchData(newFilter);
   };
 
   const clearSearchText = () => {
     setDataFilter((prevDataFilter) => ({
       ...prevDataFilter,
-      searchText: ""
+      searchText: "",
     }));
   };
 
   const onFilterByDate = (date, dateString) => {
     const newDataFilter = { ...dataFilter };
     if (dateString) {
-      newDataFilter.filter.documentPublishedDay = dateString
+      newDataFilter.filter.documentPublishedDay = dateString;
     } else {
-      delete newDataFilter.filter.documentPublishedDay
+      delete newDataFilter.filter.documentPublishedDay;
     }
-    setDataFilter(newDataFilter)
-    fetchData(newDataFilter)
+    setDataFilter(newDataFilter);
+    fetchData(newDataFilter);
   };
 
   const toggleEditModal = () => {
     // Nếu tắt modal xem chi tiết gọi thêm fetchData.
     if (isEditing) {
-      fetchData(dataFilter)
+      fetchData(dataFilter);
     }
 
     setIsEditing((prev) => !prev);
@@ -487,9 +500,9 @@ export default function VehicleList() {
       }
 
       if (Object.keys(VEHICLE_ERROR).includes(result.error)) {
-        notification['error']({
-          message: '',
-          description: VEHICLE_ERROR[result.error]
+        notification["error"]({
+          message: "",
+          description: VEHICLE_ERROR[result.error],
         });
         return false;
       }
@@ -503,98 +516,110 @@ export default function VehicleList() {
   };
 
   const inserVehicleRecords = (values, mode = listMode.add) => {
-    Object.keys(values).forEach(k => {
+    Object.keys(values).forEach((k) => {
       if (!values[k] && values[k] !== 0) {
-        delete values[k]
+        delete values[k];
       }
-    })
+    });
 
-    vehicleProfileService.insert({
-      ...values
-    }).then(async (result) => {
-      setArrImport(prev => {
-        prev.shift();
-        return [...prev]
+    vehicleProfileService
+      .insert({
+        ...values,
       })
-      setPercent(prev => prev + percentPlus);
+      .then(async (result) => {
+        setArrImport((prev) => {
+          prev.shift();
+          return [...prev];
+        });
+        setPercent((prev) => prev + percentPlus);
 
-      const handleStatus = (text, mode, status) => {
+        const handleStatus = (text, mode, status) => {
+          // xử lý số lượng trạng thái Import
+          if (status === LIST_STATUS.success) {
+            setImportSummary((prev) => ({
+              ...prev,
+              numberSuccess: prev.numberSuccess + 1,
+            }));
+          } else {
+            setImportSummary((prev) => ({
+              ...prev,
+              numberError: prev.numberError + 1,
+            }));
+          }
 
-        // xử lý số lượng trạng thái Import
-        if (status === LIST_STATUS.success) {
-          setImportSummary(prev => ({
+          if (mode === listMode.add) {
+            notification["error"]({
+              message: "",
+              description: VEHICLE_TYPES[result.error],
+            });
+            return;
+          }
+          setImportSummary((prev) => ({
             ...prev,
-            numberSuccess: prev.numberSuccess + 1
-          }))
-        } else {
-          setImportSummary(prev => ({
-            ...prev,
-            numberError: prev.numberError + 1
-          }))
-        }
+            logs: [
+              ...prev.logs,
+              {
+                id: Math.random(),
+                message: `BSX : ${values.vehiclePlateNumber} : ${text}`,
+                status: status,
+              },
+            ],
+          }));
+        };
 
-        if (mode === listMode.add) {
-          notification['error']({
-            message: '',
-            description: VEHICLE_TYPES[result.error]
-          });
+        if (!result.isSuccess) {
+          if (Object.keys(VEHICLE_ERROR).includes(result.error)) {
+            handleStatus(VEHICLE_ERROR[result.error], mode, LIST_STATUS.error);
+            return;
+          } else {
+            handleStatus(
+              translation("vehicleRecords.addFailed"),
+              mode,
+              LIST_STATUS.error
+            );
+            return;
+          }
           return;
         }
-        setImportSummary(prev => ({
-          ...prev,
-          logs: [...prev.logs, {
-            id: Math.random(),
-            message: `BSX : ${values.vehiclePlateNumber} : ${text}`,
-            status: status
-          }]
-        }))
-      };
 
-      if (!result.isSuccess) {
-        if (Object.keys(VEHICLE_ERROR).includes(result.error)) {
-          handleStatus(VEHICLE_ERROR[result.error], mode, LIST_STATUS.error)
-          return;
-        } else {
-          handleStatus(translation('vehicleRecords.addFailed'), mode, LIST_STATUS.error)
+        if (mode === listMode.import) {
+          handleStatus(
+            translation("progress.messageSuccess"),
+            listMode.import,
+            LIST_STATUS.success
+          );
           return;
         }
-        return;
-      }
-
-      if (mode === listMode.import) {
-        handleStatus(translation("progress.messageSuccess"), listMode.import, LIST_STATUS.success)
-        return;
-      }
-    })
-  }
+      });
+  };
 
   const onCrateNew = (newData, callback) => {
-    vehicleProfileService.insert(newData).then(async result => {
+    vehicleProfileService.insert(newData).then(async (result) => {
       callback();
       if (result && result.isSuccess) {
         notification.success({
           message: "",
-          description: translation('vehicleRecords.createSuccess')
-        })
-        isAdd && setIsAdd(false)
-        formAdd.resetFields()
-        fetchData(dataFilter)
+          description: translation("vehicleRecords.createSuccess"),
+        });
+        isAdd && setIsAdd(false);
+        formAdd.resetFields();
+        fetchData(dataFilter);
       } else {
         if (Object.keys(VEHICLE_ERROR).includes(result.error)) {
-          notification['error']({
-            message: '',
-            description: VEHICLE_ERROR[result.error]
+          notification["error"]({
+            message: "",
+            description: VEHICLE_ERROR[result.error],
           });
           return;
         } else {
           notification.error({
             message: "",
-            description: translation('vehicleRecords.addFailed')
-          })
+            description: translation("vehicleRecords.addFailed"),
+          });
         }
       }
-    })
-  }
+    });
+  };
 
   function handleSelectAll() {
     if (message.message.includes(listDocumentary.total.toString())) {
@@ -616,8 +641,12 @@ export default function VehicleList() {
   }
 
   const onChangeSearchText = (e) => {
-    e.preventDefault()
-    setDataFilter({ ...dataFilter,skip:0, searchText: e.target.value ? e.target.value : undefined })
+    e.preventDefault();
+    setDataFilter({
+      ...dataFilter,
+      skip: 0,
+      searchText: e.target.value ? e.target.value : undefined,
+    });
   };
 
   const toggleUploadModal = () => {
@@ -627,23 +656,28 @@ export default function VehicleList() {
   const fetchExportData = async (param, filter) => {
     for (let key in filter) {
       if (!filter[key]) {
-        delete filter[key]
+        delete filter[key];
       }
     }
 
     const response = await vehicleProfileService.find({
       ...filter,
       limit: DefaultFilterExport.limit,
-      skip: param * DefaultFilterExport.limit
-    })
+      skip: param * DefaultFilterExport.limit,
+    });
 
     const data = await response.data;
     return data;
-  }
+  };
 
   const handleExportExcel = async () => {
-    let number = Math.ceil(listDocumentary.data.length / DefaultFilterExport.limit)
-    let params = Array.from(Array.from(new Array(number)), (element, index) => index);
+    let number = Math.ceil(
+      listDocumentary.data.length / DefaultFilterExport.limit
+    );
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
     let results = [];
 
     const percentPlus = 100 / params.length;
@@ -654,7 +688,7 @@ export default function VehicleList() {
     while (true) {
       const result = await fetchExportData(_counter++, dataFilter);
       if (result && result.length > 0) {
-        setPercent(prev => prev + percentPlus);
+        setPercent((prev) => prev + percentPlus);
         results = [...results, ...result];
       } else {
         break;
@@ -664,7 +698,7 @@ export default function VehicleList() {
     const newResult = results.map((item, index) => ({
       ...item,
       vehicleType: VEHICLE_TYPES_STATES_EXPORT[item.vehicleType] || "",
-    }))
+    }));
 
     await setTimeout(() => {
       setisModalProgress(false);
@@ -675,15 +709,20 @@ export default function VehicleList() {
         data: newResult,
         informationColumn: [
           [setting.stationsName, "", "", "Danh sách hồ sơ phương tiện"],
-          [`Mã: ${setting.stationCode}`, "", "", `Danh sách ngày ${moment().format("DD/MM/YYYY")}`],
-          ['']
+          [
+            `Mã: ${setting.stationCode}`,
+            "",
+            "",
+            `Danh sách ngày ${moment().format("DD/MM/YYYY")}`,
+          ],
+          [""],
         ],
         timeWait: 0,
         nameFile: "data.xlsx",
-        setUrlForModalDirectLink : setUrlForModalDirectLink
-      })
-    }, 1000)
-  }
+        setUrlForModalDirectLink: setUrlForModalDirectLink,
+      });
+    }, 1000);
+  };
 
   const onUploadFile = (e) => {
     const file = e.target.files[0] || undefined;
@@ -722,129 +761,144 @@ export default function VehicleList() {
       setIsImport(false);
       setPercent(0);
       setPercentPlus(0);
-      setArrImport([])
+      setArrImport([]);
       setImportSummary({
         logs: [],
         numberError: 0,
-        numberSuccess: 0
+        numberSuccess: 0,
       });
-      fetchData(dataFilter)
+      fetchData(dataFilter);
     }
   }, [arrImport, isModalProgress, isImport]);
 
   const handleChangePage = (pageNum) => {
     const newFilter = {
       ...dataFilter,
-      skip : (pageNum -1) * dataFilter.limit
-    }
-    setDataFilter(newFilter)
-    fetchData(newFilter)
-  }
+      skip: (pageNum - 1) * dataFilter.limit,
+    };
+    setDataFilter(newFilter);
+    fetchData(newFilter);
+  };
 
   return (
     <Fragment>
-    {setting.enableVehicleRegistrationMenu === 0 ? <UnLock /> :
-    <main className="list_customers">
-      <Space className="w-100 d-flex justify-content-between flex-column flex-md-column flex-lg-row mb-3">
-        {/* <div className="vehicleRecords-header">
-          <label className="section-title pl-3">
-            {translation("vehicleRecords.list")}
-          </label>
-        </div> */}
-        <Space size={16} className="w-100 d-flex vehicleRecords-action" wrap={true}>
-          <div className="w-100">
-            <BasicSearch
-              placeholder={translation("listCustomers.search")}
-              onchange={onChangeSearchText}
-              value={dataFilter.searchText}
-              onsearch={onSearch}
-              />
-            {/* <Input.Search
-              autoFocus
-              placeholder={translation("listCustomers.search")}
-              onChange={onChangeSearchText}
-              value={dataFilter.searchText}
-              onSearch={onSearch}
-            /> */}
+      {setting.enableVehicleRegistrationMenu === 0 ? (
+        <UnLock />
+      ) : (
+        <main className="list_customers">
+          <Row gutter={[24, 24]} className="mb-3">
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Row gutter={[24, 24]}>
+                <Col xs={24} sm={12} md={6} lg={12} xl={6}>
+                  <BasicSearch
+                    onsearch={onSearch}
+                    onchange={onChangeSearchText}
+                    placeholder={translation("listCustomers.search")}
+                    value={dataFilter.searchText}
+                    className="w-100"
+                  />
+                </Col>
+                <Col xs={8} sm={4} md={4} lg={12} xl={2} className="pr-0">
+                  <Button
+                    onClick={toggleUploadModal}
+                    className="d-flex align-items-center justify-content-center gap-1"
+                    icon={<VectorIcon />}
+                  >
+                    {translation("listCustomers.upload")}
+                  </Button>
+                </Col>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+                  <Button
+                    onClick={handleExportExcel}
+                    className="d-flex align-items-center justify-content-center gap-1"
+                    icon={<AnphaIcon />}
+                  >
+                    {translation("listCustomers.export")}
+                  </Button>
+                </Col>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+                  <Button
+                    type="primary"
+                    className="d-flex align-items-center justify-content-center"
+                    onClick={toggleAddModal}
+                    icon={<PlusOutlined />}
+                  >
+                    {/* {translation("inspectionProcess.add")} */}
+                    Tạo mới
+                  </Button>
+                </Col>
+                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+                  {isMobileDisplaySize(width) && (
+                    <BrowserView>
+                      <Button onClick={() => setIsSync(true)}>
+                        {translation("syncComputer.syncComputer")}
+                      </Button>
+                      {isSync && (
+                        <ModalSyncComputer
+                          visible={isSync}
+                          setVisible={setIsSync}
+                          fetchData={() => fetchData(dataFilter)}
+                        />
+                      )}
+                    </BrowserView>
+                  )}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <div className="list_customers__body">
+            <Table
+              dataSource={listDocumentary.data}
+              columns={columns}
+              scroll={{ x: 1600 }}
+              pagination={false}
+            />
+            <BasicTablePaging
+              handlePaginations={handleChangePage}
+              skip={dataFilter.skip}
+              count={listDocumentary?.data?.length < dataFilter?.limit}
+            ></BasicTablePaging>
           </div>
-          <Space size={16} className="vehicleRecords-boxBtn" wrap={true}>
-            <Button
-              onClick={toggleUploadModal}
-              className="d-flex align-items-center gap-1 justify-content-center"
-              icon={<VectorIcon />}
-            >
-              {translation("listCustomers.upload")}
-            </Button>
-            <Button
-              onClick={handleExportExcel}
-              className="d-flex align-items-center gap-1 justify-content-center"
-              icon={<AnphaIcon />}
-            >
-              {translation("listCustomers.export")}
-            </Button>
-            <Button type="primary" className="w-100 d-flex align-items-center justify-content-center" onClick={() => setIsAdd(true)} icon={<PlusOutlined />}>
-              {translation("vehicleRecords.btnNew")}
-            </Button>
-            {isMobileDisplaySize(width) &&
-              <BrowserView>
-                <Button onClick={() => setIsSync(true)}>{translation('syncComputer.syncComputer')}</Button>
-                {isSync && (
-                  <ModalSyncComputer visible={isSync} setVisible={setIsSync} fetchData={() => fetchData(dataFilter)} />
-                )}
-              </BrowserView>
-            }
-          </Space>
-        </Space>
-      </Space>
-      <div className="list_customers__body">
-        <Table
-          dataSource={listDocumentary.data}
-          columns={columns}
-          scroll={{ x: 1600 }}
-          pagination={false}
-        />
-        <BasicTablePaging handlePaginations={handleChangePage} skip={dataFilter.skip} count={listDocumentary?.data?.length < dataFilter?.limit}></BasicTablePaging>
-      </div>
-      {isEditing && (
-        <ModalEditVehicleRecords
-          isEditing={isEditing}
-          form={formEdit}
-          toggleEditModal={toggleEditModal}
-          onUpdateCustomer={onUpdateCustomer}
-          id={item.vehicleProfileId}
-        />
+          {isEditing && (
+            <ModalEditVehicleRecords
+              isEditing={isEditing}
+              form={formEdit}
+              toggleEditModal={toggleEditModal}
+              onUpdateCustomer={onUpdateCustomer}
+              id={item.vehicleProfileId}
+            />
+          )}
+          {isAdd && (
+            <ModalAddVehicleRecords
+              isAdd={isAdd}
+              form={formAdd}
+              inputRef={inputRef}
+              onCrateNew={onCrateNew}
+              toggleAddModal={toggleAddModal}
+            />
+          )}
+          <ModalUpload
+            visible={isUploadFile}
+            toggleUploadModal={toggleUploadModal}
+            onUploadFile={onUploadFile}
+            file={fileSelected}
+            onImportFileToDb={onImportFileToDb}
+            isLoading={isLoading}
+          />
+          {isModalProgress && (
+            <ModalProgress
+              visible={isModalProgress}
+              setVisible={setisModalProgress}
+              percent={percent}
+              logs={importSummary.logs}
+              isLoading={arrImport.length !== 0}
+              isImport={isImport}
+              numberError={importSummary.numberError}
+              numberSuccess={importSummary.numberSuccess}
+            />
+          )}
+        </main>
       )}
-      {isAdd && (
-        <ModalAddVehicleRecords
-          isAdd={isAdd}
-          form={formAdd}
-          inputRef={inputRef}
-          onCrateNew={onCrateNew}
-          toggleAddModal={toggleAddModal}
-        />
-      )}
-      <ModalUpload
-        visible={isUploadFile}
-        toggleUploadModal={toggleUploadModal}
-        onUploadFile={onUploadFile}
-        file={fileSelected}
-        onImportFileToDb={onImportFileToDb}
-        isLoading={isLoading}
-      />
-      {isModalProgress && (
-        <ModalProgress
-          visible={isModalProgress}
-          setVisible={setisModalProgress}
-          percent={percent}
-          logs={importSummary.logs}
-          isLoading={arrImport.length !== 0}
-          isImport={isImport}
-          numberError={importSummary.numberError}
-          numberSuccess={importSummary.numberSuccess}
-        />
-      )}
-    </main>
-    }
     </Fragment>
   );
 }
