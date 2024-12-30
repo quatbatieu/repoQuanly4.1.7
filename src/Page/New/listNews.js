@@ -284,7 +284,7 @@ export default function ListNews({
           <Row gutter={[24, 24]} className="mb-3">
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Row gutter={[24, 24]}>
-                <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                <Col xs={24} sm={24} md={6} lg={6} xl={4}>
                   <BasicSearch
                     onchange={onChangeSearchText}
                     onsearch={onSearchPost}

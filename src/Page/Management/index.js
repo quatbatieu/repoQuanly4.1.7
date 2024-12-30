@@ -586,7 +586,7 @@ function ListUser() {
       ) : (
         <div className="management">
           <div className="receipt_container-dflex-wrap row">
-            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-3 mb-3">
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
               <BasicSearch
                 className="w-100"
                 value={searchText}

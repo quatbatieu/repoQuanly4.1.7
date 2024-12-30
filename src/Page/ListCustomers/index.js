@@ -863,7 +863,7 @@ export default function ListCustomer() {
     {setting.enableCustomerMenu === 0 ? <UnLock /> : 
      <main className="list_customers">
       <div className="row">
-        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-3 mb-3">
+        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
           <BasicSearch placeholder={translation("listCustomers.search")} onchange={onChangeSearchText} onsearch={onSearch} />
         </div>
         <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
