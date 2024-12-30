@@ -58,6 +58,7 @@ import { MIN_COLUMN_WIDTH } from "constants/app";
 import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
+import BasicSearch from "components/BasicSearch";
 
 const { Option } = Select
 const { RangePicker } = DatePicker;
@@ -869,12 +870,13 @@ export default function ListCustomer() {
         </div> */}
         {/* <div className="col-md-0 col-lg-0 col-xl-3 mb-3" /> */}
         <div className="col-md-6 col-lg-3 mb-3">
-          <Input.Search
+          {/* <Input.Search
             autoFocus
             placeholder={translation("listCustomers.search")}
             onChange={onChangeSearchText}
             onSearch={onSearch}
-          />
+          /> */}
+          <BasicSearch placeholder={translation("listCustomers.search")} onchange={onChangeSearchText} onsearch={onSearch} />
         </div>
         <div className="col-md-6 col-sm-12 col-lg-3 mb-3">
 					<RangePicker

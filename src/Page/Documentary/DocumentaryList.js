@@ -41,6 +41,7 @@ import { NORMAL_COLUMN_WIDTH } from "constants/app";
 import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
+import BasicSearch from "components/BasicSearch";
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -365,13 +366,20 @@ export default function DocumentaryList() {
         </div>
         <div className="col-12 col-xl-1" /> */}
         <div className="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-2 mb-3">
-          <Input.Search
+           <BasicSearch 
+            onsearch={onSearch}
+            onchange={onChangeSearchText}
+            placeholder={translation("listCustomers.search")}
+            value={dataFilter.searchText}
+            className='w-100'
+            />
+          {/* <Input.Search
             autoFocus
             placeholder={translation("listCustomers.search")}
             onChange={onChangeSearchText}
             value={dataFilter.searchText}
             onSearch={onSearch}
-          />
+          /> */}
         </div>
         <div className="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-2 mb-3">
           <DatePicker

@@ -72,6 +72,7 @@ import { MIN_COLUMN_WIDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import { NORMAL_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
+import BasicSearch from "components/BasicSearch";
 
 const { Text } = Typography;
 
@@ -740,11 +741,12 @@ const ListSMS = () => {
         <main className="sms">
           <div className="row d-flex justify-content-start">
             <div className="section-title col-lg-3 mb-3 col-xl-2">
-              <Input.Search
+              <BasicSearch placeholder={translation("sms.search")} onpressenter={handleFilter} onsearch={handleFilter} />
+              {/* <Input.Search
                 onPressEnter={handleFilter}
                 onSearch={handleFilter}
                 placeholder={translation("sms.search")}
-              />
+              /> */}
             </div>
 
             <div className="col-md-6 col-lg-3 col-xl-2 mb-3">

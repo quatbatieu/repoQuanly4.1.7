@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import UnLock from 'components/UnLock/UnLock';
 import { useSelector } from 'react-redux'
 import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
+import BasicSearch from 'components/BasicSearch';
 
 const { useBreakpoint } = Grid;
 const FILTER = {
@@ -99,13 +100,19 @@ function LookSchedule(props) {
           {translation('lookSchedule.lookSchedule')}
         </div>
         <div>
-          <Input.Search
+          <BasicSearch 
+          onsearch={onSearchSchedule}
+          placeholder={translation("listSchedules.searchText")} 
+          className='look_schedule_search'
+          style={{ minWidth: screens.md ? 250 : "100%" }}
+          />
+          {/* <Input.Search
             autoFocus
             onSearch={onSearchSchedule}
             placeholder={translation("listSchedules.searchText")}
             className='look_schedule_search'
             style={{ minWidth: screens.md ? 250 : "100%" }}
-          />
+          /> */}
         </div>
       </Space>
       {LIST_TABLE.map((item) => (
