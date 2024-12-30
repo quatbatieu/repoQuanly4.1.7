@@ -1,16 +1,21 @@
 import React from "react";
 import {
+  DatePicker,
+  Form,
+  Input,
   Select,
   Table,
   notification,
   Row,
   Col,
 } from "antd";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import { useTranslation } from "react-i18next";
+import listDocumentaryService from "../../services/listDocumentaryService";
 import "./index.scss";
 import { widthLicensePlate } from "constants/licenseplates";
 import TagVehicle from "components/TagVehicle/TagVehicle";
+import { CloseOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import vehicleProfileService from "services/vehicleProfileService";
 import { routes } from "App";
@@ -20,6 +25,8 @@ import { getListVehicleTypes } from "constants/listSchedule";
 import { useSelector } from "react-redux";
 import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
 import BasicSearch from "components/BasicSearch";
+
+const { RangePicker } = DatePicker;
 
 const LIMIT = 10;
 export default function VehicleList() {
@@ -31,9 +38,22 @@ export default function VehicleList() {
   const setting = useSelector((state) => state.setting);
   const VEHICLE_TYPES = getListVehicleTypes(translation);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);
+  const [formAdd] = Form.useForm();
+  const [formEdit] = Form.useForm();
+  const [crimePlateNumber, setCrimePlateNumber] = useState("");
+  const [loading, setLoading] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
+  const [isSendMessage, setIsSendMessage] = useState(false);
+  const [isUploadFile, setIsUploadFile] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState({});
   const history = useHistory();
-
+  const [message, setMessage] = useState({
+    message: "",
+    button: translation("listCustomers.selectAll", {
+      total: listDocumentary.total,
+    }),
+  });
   const [dataFilter, setDataFilter] = useState({
     filter: {
       documentPublishedDay: undefined,
@@ -41,11 +61,30 @@ export default function VehicleList() {
     limit: LIMIT,
     searchText: undefined,
   });
+  const [dateBySelect, setDateBySelect] = useState("");
+  const [fileSelected, setFileSelected] = useState(undefined);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedCustomers, setSelectedCustomers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [messageType, setMessageType] = useState("");
+  const [isModalSMSOpen, setIsModalSMSOpen] = useState(false);
+  const [customerId, setCustomerId] = useState();
+  const [item, setItem] = useState([]);
+  const inputRef = useRef();
 
   const [dataStation, setDataStation] = useState({
     total: 0,
     data: [],
   });
+
+  const fetchDocumentById = (id) => {
+    listDocumentaryService.getDetailDocument(id).then((result) => {
+      if (result) {
+        setItem(result);
+      }
+    });
+    fetchData(dataFilter);
+  };
 
   const columns = [
     {
@@ -164,6 +203,71 @@ export default function VehicleList() {
     fetchData(newFilter);
   };
 
+  const onDeleteCustomer = (id) => {
+    listDocumentaryService.removeDocument({ id }).then((result) => {
+      if (result && result.isSuccess) {
+        notification["success"]({
+          message: "",
+          description: translation("file.deleteSuccess"),
+        });
+        fetchData(dataFilter);
+      } else {
+        notification["error"]({
+          message: "",
+          description: translation("file.deleteFailed"),
+        });
+      }
+    });
+  };
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      if (selectedRowKeys.length > 0) {
+        if (selectedRowKeys.length === listDocumentary.total) {
+          setMessage({
+            button: translation("listCustomers.undo"),
+            message: `${listDocumentary.total} ${translation(
+              "listCustomers.selected"
+            )}`,
+          });
+        } else if (selectedRowKeys.length === listDocumentary.data.length) {
+          setMessage({
+            button: translation("listCustomers.selectAll", {
+              total: listDocumentary.total,
+            }),
+            message: `${selectedRowKeys.length} ${translation(
+              "listCustomers.selected"
+            )}`,
+          });
+        } else {
+          setMessage({
+            button: translation("listCustomers.selectAll", {
+              total: listDocumentary.total,
+            }),
+            message: `${selectedRowKeys.length} ${translation(
+              "listCustomers.selected"
+            )}`,
+          });
+        }
+        let arrCustomers = [];
+        selectedRows.forEach((cus) => {
+          arrCustomers.push(cus.customerRecordId);
+        });
+        setSelectedCustomers(arrCustomers);
+        setSelectedRowKeys(selectedRowKeys);
+      } else {
+        setMessage({
+          button: translation("listCustomers.selectAll", {
+            total: listDocumentary.total,
+          }),
+          message: "",
+        });
+        setSelectedCustomers([]);
+        setSelectedRowKeys([]);
+      }
+    },
+  };
+
   const fetchData = (filter) => {
     vehicleProfileService.search(filter).then((result) => {
       if (result) {
@@ -214,6 +318,17 @@ export default function VehicleList() {
     fetchData(newFilter);
   };
 
+  const onFilterByDate = (date, dateString) => {
+    const newDataFilter = { ...dataFilter };
+    if (dateString) {
+      newDataFilter.filter.documentPublishedDay = dateString;
+    } else {
+      delete newDataFilter.filter.documentPublishedDay;
+    }
+    setDataFilter(newDataFilter);
+    fetchData(newDataFilter);
+  };
+
   const toggleEditModal = () => {
     // Nếu tắt modal xem chi tiết gọi thêm fetchData.
     if (isEditing) {
@@ -223,12 +338,98 @@ export default function VehicleList() {
     setIsEditing((prev) => !prev);
   };
 
+  const toggleDetailModal = () => {
+    // Nếu tắt modal xem chi tiết gọi thêm fetchData.
+    if (isDetail) {
+      fetchData(dataFilter);
+    }
+
+    setIsDetail((prev) => !prev);
+  };
+
+  const toggleAddModal = () => {
+    setIsAdd((prev) => !prev);
+  };
+
+  const onOpenModal = (customer) => {
+    toggleEditModal();
+    setSelectedCustomer(customer);
+  };
+
+  const onUpdateCustomer = (data, callback) => {
+    listDocumentaryService.updateDocument(data).then((result) => {
+      callback();
+      if (result && result.isSuccess) {
+        notification["success"]({
+          message: "",
+          description: translation("file.updateSuccess"),
+        });
+        toggleEditModal();
+        fetchData(dataFilter);
+        return true;
+      }
+      notification["error"]({
+        message: "",
+        description: translation("file.updateFailed"),
+      });
+      return false;
+    });
+  };
+
+  const onCrateNew = (newData, callback) => {
+    listDocumentaryService.uploadDocument(newData).then(async (result) => {
+      callback();
+      if (result && result.isSuccess) {
+        notification.success({
+          message: "",
+          description: translation("file.createSuccess"),
+        });
+        isAdd && setIsAdd(false);
+        formAdd.resetFields();
+        fetchData(dataFilter);
+      } else {
+        notification.error({
+          message: "",
+          description: translation(
+            result.error ? result.error : "management.addFailed"
+          ),
+        });
+      }
+    });
+  };
+
+  function handleSelectAll() {
+    if (message.message.includes(listDocumentary.total.toString())) {
+      rowSelection.onChange([], []);
+    } else {
+      let arrKey = [];
+      listDocumentary.data.forEach((item) => {
+        arrKey.push(item.key);
+      });
+      //click select all => send message by filter
+      setSelectedRowKeys(arrKey);
+      setMessage({
+        button: translation("listCustomers.undo"),
+        message: `${listDocumentary.total} ${translation(
+          "listCustomers.selected"
+        )}`,
+      });
+    }
+  }
+
   const onChangeSearchText = (e) => {
     e.preventDefault();
     setDataFilter({
       ...dataFilter,
       searchText: e.target.value ? e.target.value : undefined,
     });
+  };
+
+  const clearSearchText = () => {
+    setDataFilter((prevDataFilter) => ({
+      ...prevDataFilter,
+      searchText: "",
+    }));
   };
 
   const handleChangePage = (pageNum) => {
@@ -242,60 +443,60 @@ export default function VehicleList() {
 
   return (
     <Fragment>
-      {setting.enableVehicleRegistrationMenu === 0 ? (
-        <UnLock />
-      ) : (
-        <main className="list_customers">
-          <Row gutter={[24, 24]} className="mb-3">
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Row gutter={[24, 24]}>
-                <Col xs={24} sm={12} md={6} lg={6} xl={4}>
-                  <BasicSearch
-                    className="w-100"
-                    placeholder={translation("listCustomers.search")}
-                    onchange={onChangeSearchText}
-                    value={dataFilter.searchText}
-                    onsearch={onSearch}
-                  />
-                </Col>
-                <Col xs={24} sm={12} md={12} lg={6} xl={4}>
-                  <Select
-                    onChange={onFilterUserByStationId}
-                    className="w-100"
-                    placeholder="Mã trạm"
-                  >
-                    <Select.Option value={0}>
-                      {translation("PhoneBook.allStations")}
-                    </Select.Option>
-                    {dataStation?.length > 0 &&
-                      dataStation.map((item) => (
-                        <Select.Option
-                          key={item.stationsId}
-                          value={item.stationsId}
-                        >
-                          {item.stationCode}
-                        </Select.Option>
-                      ))}
-                  </Select>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <div className="list_customers__body">
-            <Table
-              dataSource={listDocumentary.data}
-              columns={columns}
-              scroll={{ x: 1510 }}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={listDocumentary?.data?.length < dataFilter?.limit}
-            ></BasicTablePaging>
-          </div>
-        </main>
-      )}
-    </Fragment>
+    {setting.enableVehicleRegistrationMenu === 0 ? (
+      <UnLock />
+    ) : (
+      <main className="list_customers">
+        <Row gutter={[24, 24]} className="mb-3">
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Row gutter={[24, 24]}>
+              <Col xs={24} sm={12} md={6} lg={6} xl={4}>
+                <BasicSearch
+                  className="w-100"
+                  placeholder={translation("listCustomers.search")}
+                  onchange={onChangeSearchText}
+                  value={dataFilter.searchText}
+                  onsearch={onSearch}
+                />
+              </Col>
+              <Col xs={24} sm={12} md={12} lg={6} xl={4}>
+                <Select
+                  onChange={onFilterUserByStationId}
+                  className="w-100"
+                  placeholder="Mã trạm"
+                >
+                  <Select.Option value={0}>
+                    {translation("PhoneBook.allStations")}
+                  </Select.Option>
+                  {dataStation?.length > 0 &&
+                    dataStation.map((item) => (
+                      <Select.Option
+                        key={item.stationsId}
+                        value={item.stationsId}
+                      >
+                        {item.stationCode}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <div className="list_customers__body">
+          <Table
+            dataSource={listDocumentary.data}
+            columns={columns}
+            scroll={{ x: 1510 }}
+            pagination={false}
+          />
+          <BasicTablePaging
+            handlePaginations={handleChangePage}
+            skip={dataFilter.skip}
+            count={listDocumentary?.data?.length < dataFilter?.limit}
+          ></BasicTablePaging>
+        </div>
+      </main>
+    )}
+  </Fragment>
   );
 }
