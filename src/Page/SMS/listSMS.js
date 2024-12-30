@@ -740,16 +740,14 @@ const ListSMS = () => {
       ) : (
         <main className="sms">
           <div className="row d-flex justify-content-start">
-            <div className="section-title col-lg-3 mb-3 col-xl-3">
-              <BasicSearch placeholder={translation("sms.search")} onpressenter={handleFilter} onsearch={handleFilter} />
-              {/* <Input.Search
-                onPressEnter={handleFilter}
-                onSearch={handleFilter}
+            <div className="section-title col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-3 mb-3">
+              <BasicSearch
                 placeholder={translation("sms.search")}
-              /> */}
+                onpressenter={handleFilter}
+                onsearch={handleFilter}
+              />
             </div>
-
-            <div className="col-md-6 col-lg-3 col-xl-2 mb-3">
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
               <DatePicker.RangePicker
                 className="w-100"
                 format={DATE_DISPLAY_FORMAT}
@@ -789,7 +787,7 @@ const ListSMS = () => {
                 ))}
               </Select>
             </div>
-            <div className="col-12 col-md-12 col-lg-5 col-xl-4 mb-3">
+            <div className="col-12 col-md-12 col-lg-5 col-xl-3 mb-3">
               <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
                 <Button
                   onClick={handleExportExcel}

@@ -307,7 +307,7 @@ export default function ListNews({
                     />
                   </div>
                 </Col>
-                <Col xs={8} sm={4} md={4} lg={3} xl={2} className="">
+                <Col xs={6} sm={4} md={4} lg={3} xl={2}>
                   <Button
                     onClick={() => fetchDataNewsNoConcat(dataFilter)}
                     className="d-flex justify-content-center align-items-center"

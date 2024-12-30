@@ -863,16 +863,10 @@ export default function ListCustomer() {
     {setting.enableCustomerMenu === 0 ? <UnLock /> : 
      <main className="list_customers">
       <div className="row">
-        {/* <div className="col-12 col-md-12 col-lg-12 col-xl-2">
-          <label className="section-title pl-3">
-            {translation("listCustomers.listCustomers")}
-          </label>
-        </div> */}
-        {/* <div className="col-md-0 col-lg-0 col-xl-3 mb-3" /> */}
-        <div className="col-md-6 col-lg-3 col-xl-3 mb-3">
+        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-3 mb-3">
           <BasicSearch placeholder={translation("listCustomers.search")} onchange={onChangeSearchText} onsearch={onSearch} />
         </div>
-        <div className="col-md-6 col-sm-12 col-lg-3 mb-3">
+        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
 					<RangePicker
 						className="w-100"
 						format="DD/MM/YYYY"
