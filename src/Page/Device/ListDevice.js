@@ -43,6 +43,7 @@ import { useModalDirectLinkContext } from "components/ModalDirectLink";
 import ModalProgress from "./ModalProgress";
 import moment from "moment";
 import { LIST_STATUS } from "constants/logBox";
+import BasicSearch from "components/BasicSearch";
 const { RangePicker } = DatePicker;
 
 const { Option } = Select;
@@ -706,12 +707,18 @@ export default function ListDevice() {
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Row gutter={[24, 24]}>
                 <Col xs={24} sm={12} md={12} lg={6} xl={6}>
-                  <Input.Search
+                   <BasicSearch
+                    onsearch={onSearch}
+                    onchange={onChangeSearchText}
+                    placeholder={translation("device.searchByNameSerial")}
+                    value={dataFilter.searchText}
+                    />
+                  {/* <Input.Search
                     placeholder={translation("device.searchByNameSerial")}
                     onChange={onChangeSearchText}
                     value={dataFilter.searchText}
                     onSearch={onSearch}
-                  />
+                  /> */}
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={6} xl={4}>
                   <Select

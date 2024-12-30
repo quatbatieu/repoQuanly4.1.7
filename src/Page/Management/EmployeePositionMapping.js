@@ -25,6 +25,7 @@ import debounce from 'lodash/debounce';
 import ModalPrint from './ModalPrint';
 import { isMobileDevice } from "constants/account";
 import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
+import BasicSearch from 'components/BasicSearch';
 
 export const LIST_TYPE_PRINT = {
   ADD_NEW: "ADD_NEW",
@@ -581,14 +582,22 @@ function EmployeePositionMapping() {
       <div className="management managementEmployee">
       <div className="row mb-3">
         <div className="col-md-3 col-lg-3 col-xl-2">
-          <Input.Search
+          <BasicSearch
+            className="w-100"
+            value={searchText}
+            onpressenter={handleFilter}
+            onsearch={handleFilter}
+            onchange={(e) => setSearchText(e.target.value)}
+            placeholder={translation('landing.search')}
+            />
+          {/* <Input.Search
             className="w-100"
             value={searchText}
             onPressEnter={handleFilter}
             onSearch={handleFilter}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder={translation('landing.search')}
-          />
+          /> */}
         </div>
 
         <div className='col-12 col-md-4 col-lg-3 col-xl-2'>

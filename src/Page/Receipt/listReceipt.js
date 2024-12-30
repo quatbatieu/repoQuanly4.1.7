@@ -35,6 +35,7 @@ import { NORMAL_COLUMN_WIDTH } from 'constants/app';
 import { BIG_COLUMN_WIDTH } from 'constants/app';
 import { VERY_BIG_COLUMN_WIDTH } from 'constants/app';
 import UnLock from 'components/UnLock/UnLock';
+import BasicSearch from 'components/BasicSearch';
 
 const DefaultFilterExport = {
   limit: 100,
@@ -520,13 +521,19 @@ function ListReceipt() {
             <div className='col-12 col-md-12 col-lg-12 mb-3'>
               <div className='receipt_container-dflex-wrap' style={{ gap: "24px" }}>
                 <div className='flex-grow-xs'>
-                  <Input.Search
+                  <BasicSearch 
+                     onsearch={onSearch}
+                     onchange={onChangeSearchText}
+                     placeholder={translation('listCustomers.search')}
+                     className='w-100'
+                     />
+                  {/* <Input.Search
                     autoFocus
                     placeholder={translation('listCustomers.search')}
                     onChange={onChangeSearchText}
                     onSearch={onSearch}
                     className="w-100"
-                  />
+                  /> */}
                 </div>
   
                 <div>

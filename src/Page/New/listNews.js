@@ -20,6 +20,7 @@ import UnLock from 'components/UnLock/UnLock';
 import { MIN_COLUMN_WIDTH } from 'constants/app'
 import { VERY_BIG_COLUMN_WIDTH } from 'constants/app'
 import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app'
+import BasicSearch from 'components/BasicSearch'
 
 const DEFAULT_FILTER = {
   filter: {
@@ -383,14 +384,22 @@ export default function ListNews({
           <div className='row'>
             {/* <div className='col-12 col-lg-1 col-xl-1' /> */}
             <div className='col-12 col-md-4 col-lg-3 col-xl-3 mb-3'>
-              <Input.Search
+              <BasicSearch
+                onchange={onChangeSearchText}
+                onsearch={onSearchPost}
+                onpressenter={onSearchPost}
+                placeholder={translation('listSchedules.searchText')}
+                className='w-100'
+                value={dataFilter.searchText}
+                />
+              {/* <Input.Search
                 autoFocus
                 onChange={onChangeSearchText}
                 onSearch={onSearchPost}
                 placeholder={translation('listSchedules.searchText')}
                 className='w-100'
                 value={dataFilter.searchText}
-              />
+              /> */}
             </div>
 
             <div className='col-12 col-md-4 col-lg-4 col-xl-4 mb-3'>

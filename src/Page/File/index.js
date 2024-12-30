@@ -41,6 +41,7 @@ import UnLock from 'components/UnLock/UnLock';
 import { useSelector } from 'react-redux'
 import { isMobileDevice } from "constants/account";
 import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
+import BasicSearch from "components/BasicSearch";
 
 const { RangePicker } = DatePicker;
 
@@ -433,13 +434,19 @@ export default function File() {
             </label>
           </div> */}
           <div className="col-md-3 col-lg-3 col-xl-2 mb-3">
-            <Input.Search
+            <BasicSearch
+              onchange={onChangeSearchText}
+              placeholder={translation("listCustomers.search")}
+              value={dataFilter.searchText}
+              onsearch={onSearch}
+              />
+            {/* <Input.Search
               autoFocus
               placeholder={translation("listCustomers.search")}
               onChange={onChangeSearchText}
               value={dataFilter.searchText}
               onSearch={onSearch}
-            />
+            /> */}
           </div>
           <div className="col-6 col-xs-6 col-md-3 col-lg-3 col-xl-2 mb-3">
             <DatePicker

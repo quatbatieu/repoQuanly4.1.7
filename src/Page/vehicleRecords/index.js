@@ -46,6 +46,7 @@ import { MIN_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import { NORMAL_COLUMN_WIDTH } from "constants/app";
+import BasicSearch from "components/BasicSearch";
 
 const { RangePicker } = DatePicker;
 
@@ -752,13 +753,19 @@ export default function VehicleList() {
         </div> */}
         <Space size={16} className="w-100 d-flex vehicleRecords-action" wrap={true}>
           <div className="w-100">
-            <Input.Search
+            <BasicSearch
+              placeholder={translation("listCustomers.search")}
+              onchange={onChangeSearchText}
+              value={dataFilter.searchText}
+              onsearch={onSearch}
+              />
+            {/* <Input.Search
               autoFocus
               placeholder={translation("listCustomers.search")}
               onChange={onChangeSearchText}
               value={dataFilter.searchText}
               onSearch={onSearch}
-            />
+            /> */}
           </div>
           <Space size={16} className="vehicleRecords-boxBtn" wrap={true}>
             <Button

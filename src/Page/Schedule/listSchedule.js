@@ -52,6 +52,7 @@ import { VERY_BIG_COLUMN_WIDTH } from 'constants/app';
 import { BIG_COLUMN_WIDTH } from 'constants/app';
 import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app';
 import { NORMAL_COLUMN_WIDTH } from 'constants/app';
+import BasicSearch from 'components/BasicSearch';
 
 const { Option } = Select
 const listMode = {
@@ -943,13 +944,14 @@ const ListSchedule = () => {
         <div className='col-12 col-md-12 col-lg-12 mb-3'>
           <Space size={24} className='list_schedules__box' wrap={true}>
             <div>
-              <Input.Search
+              <BasicSearch placeholder={translation("listSchedules.searchText")} onchange={onChangeSearchText} onsearch={onSearchSchedule} />
+              {/* <Input.Search
                 autoFocus
                 onSearch={onSearchSchedule}
                 onChange={onChangeSearchText}
                 placeholder={translation("listSchedules.searchText")}
                 className="w-100"
-              />
+              /> */}
             </div>
 
             <div>

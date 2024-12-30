@@ -29,6 +29,7 @@ import { MIN_COLUMN_WIDTH } from 'constants/app';
 import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app';
 import { BIG_COLUMN_WIDTH } from 'constants/app';
 import { VERY_BIG_COLUMN_WIDTH } from 'constants/app';
+import BasicSearch from 'components/BasicSearch';
 
 function ListUser() {
   const { t: translation } = useTranslation()
@@ -563,7 +564,18 @@ function ListUser() {
         <div className="col-12 col-lg-2 col-xl-3" /> */}
         <Space size={16} className="d-flex vehicleRecords-action" wrap={true}>
          <div className="w-100">
-          <Input.Search
+            <BasicSearch
+              className="w-100"
+              value={searchText}
+              onpressenter={handleFilter}
+              onsearch={handleFilter}
+              onchange={(e) => setSearchText(e.target.value)}
+              placeholder={translation('landing.search')}
+              style={{
+                minWidth: 160
+              }} 
+              />
+          {/* <Input.Search
             className="w-100"
             value={searchText}
             onPressEnter={handleFilter}
@@ -573,7 +585,7 @@ function ListUser() {
             style={{
               minWidth: 160
             }} 
-          />
+          /> */}
          </div>
          <div className="w-100">
            <Select onChange={onFilterUserByStatus} className="w-100" placeholder='Trạng thái' style={{
