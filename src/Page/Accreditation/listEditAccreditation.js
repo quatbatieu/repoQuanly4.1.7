@@ -258,6 +258,12 @@ function ListEditAccreditation() {
     handleFetchAccreditation(newFilter)
   }
 
+  const isMobileDevice = (value) =>{
+    if(value < 768 ){
+      dataFilter.limit = 10
+    }
+  }
+
   useEffect(() => {
     isMobileDevice(window.outerWidth)
     handleFetchAccreditation(dataFilter)
@@ -614,12 +620,6 @@ function ListEditAccreditation() {
     };
     setDataFilter(newFilter);
     handleFetchAccreditation(newFilter);
-  }
-
-  const isMobileDevice = (value) =>{
-    if(value < 768 ){
-      dataFilter.limit = 10
-    }
   }
 
   return (

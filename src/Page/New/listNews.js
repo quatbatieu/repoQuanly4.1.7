@@ -23,6 +23,7 @@ import { MIN_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
 import BasicSearch from "components/BasicSearch";
+import { isMobileDevice } from "constants/account";
 
 const DEFAULT_FILTER = {
   filter: {
@@ -177,7 +178,12 @@ export default function ListNews({
   };
 
   useEffect(() => {
-    fetchDataNewsNoConcat(DEFAULT_FILTER);
+    if (isMobileDevice() == true) {
+      setDataFilter({ ...DEFAULT_FILTER, limit: 10 });
+      fetchDataNewsNoConcat({ skip: 0, limit: 10 });
+    } else {
+      fetchDataNewsNoConcat(DEFAULT_FILTER);
+    }
   }, []);
 
   useEffect(() => {
