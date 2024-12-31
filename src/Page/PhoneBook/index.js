@@ -14,6 +14,7 @@ import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
 import { NORMAL_COLUMN_WIDTH } from 'constants/app';
 import { EXTRA_BIG_COLUMND_WITDTH } from 'constants/app';
 import { VERY_BIG_COLUMN_WIDTH } from 'constants/app';
+import BasicSearch from 'components/BasicSearch';
 
 function ListUser() {
   const { t: translation } = useTranslation()
@@ -247,18 +248,17 @@ function ListUser() {
           </label>
         </div>
         <div className="col-12 col-lg-2 col-xl-1" /> */}
-        <div className="col-md-3 col-lg-2 col-xl-3">
-          <Input.Search
+        <div className="col-md-3 col-lg-2 col-xl-2 mb-3">
+          <BasicSearch
             className="w-100"
             value={searchText}
-            onPressEnter={handleFilter}
-            onSearch={handleFilter}
-            onChange={(e) => setSearchText(e.target.value)}
+            onpressenter={handleFilter}
+            onsearch={handleFilter}
+            onchange={(e) => setSearchText(e.target.value)}
             placeholder={translation('landing.search')}
-          />
+            />
         </div>
-
-        <div className="col-md-3 col-lg-2">
+        <div className="col-md-3 col-lg-2 col-xl-2 mb-3">
           <Select onChange={onFilterUserByStationId} className="w-100" placeholder='Tất cả mã trạm'>
               <Select.Option value={0}>{translation('PhoneBook.allStations')}</Select.Option>
             {dataStation?.length > 0 && dataStation.map(item=>(
@@ -266,7 +266,7 @@ function ListUser() {
             ))}
           </Select>
         </div>
-        <div className="col-md-3 col-lg-2">
+        <div className="col-md-3 col-lg-2 col-xl-2 mb-3">
           <Select onChange={onFilterUserByRole} className="w-100" placeholder='Tất cả vai trò'>
             <Select.Option value=''>{translation('allRole')}</Select.Option>
             {dataUserRole.length>0 && dataUserRole.map(item=>(
@@ -275,7 +275,7 @@ function ListUser() {
           </Select>
         </div>
 
-        <div className='col-6 col-md-2 col-lg-1 col-xl-1'>
+        <div className='col-md-3 col-lg-2 col-xl-2 mb-3'>
           <Button
             className='d-flex align-items-center justify-content-center'
             loading={loading}
