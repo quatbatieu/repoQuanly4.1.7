@@ -421,6 +421,14 @@
   }
 }
 
+.vehicle{
+  &__chart{
+    &--canvas{
+      height: 500px !important;
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .list_customers {
     
@@ -477,4 +485,12 @@
   .licensePlateColor{
     display: grid !important;
   }
+  .vehicle{
+    &__chart{
+      &--canvas{
+        height: 500px !important;
+      }
+    }
+  }
 }
+

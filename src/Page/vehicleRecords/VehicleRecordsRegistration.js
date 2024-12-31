@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Tabs } from 'antd';
 import VehicleList from './index';
 import VehicleSearch from './VehicleSearch';
+import VehicleStatiscal from './VehicleStatistical';
 
 const { TabPane } = Tabs;
 
@@ -16,6 +17,9 @@ const VehicleRecordsRegistration = () => {
       </TabPane>
       <TabPane tab={translation("vehicleRecords.tabs.search")} key="search">
         <VehicleSearch />
+      </TabPane>
+      <TabPane tab={translation("vehicleRecords.tabs.statistical")} key="statistical">
+        <VehicleStatiscal />
       </TabPane>
     </Tabs>
   );

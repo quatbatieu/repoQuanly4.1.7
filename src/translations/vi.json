@@ -1659,7 +1659,8 @@
     },
     "tabs": {
       "list": "Danh sách hồ sơ phương tiện",
-      "search": "Tra cứu hồ sơ phương tiện"
+      "search": "Tra cứu hồ sơ phương tiện",
+      "statistical": "Thống kê hồ sơ phương tiện"
     }
   },
   "category": {
@@ -1934,5 +1935,20 @@
     "errorMessage" :"Gửi thử nghiệm thất bại",
     "updateSuccess" :"Thiết lập thành công",
     "error" : "Thiết lập thất bại"
+  },
+  "months":{
+    "January" : "Tháng 1",
+    "February" : "Tháng 2",
+    "March" : "Tháng 3",
+    "April" : "Tháng 4",
+    "May" : "Tháng 5",
+    "June" : "Tháng 6",
+    "July" : "Tháng 7",
+    "August" : "Tháng 8",
+    "September" : "Tháng 9",
+    "October" : "Tháng 10",
+    "November" : "Tháng 11",
+    "December" : "Tháng 12"
   }
 }
+
