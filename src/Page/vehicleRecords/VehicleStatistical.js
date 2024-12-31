@@ -27,7 +27,7 @@ ChartJS.register(
 
 const getVehicleTypeColor = (vehicleType) => {
   const vehicleTypeColors = {
-    0: {
+    1: {
       backgroundColor: "rgba(221, 26, 68, 0.5)",
       borderColor: "rgba(255, 99, 132, 1)",
     },
@@ -82,6 +82,7 @@ const VehicleStatiscal = () => {
   useEffect(() => {
     const groupedVehicles = statisticalData.reduce((acc, vehicle) => {
       const { vehicleType, createdAt } = vehicle;
+      console.log(vehicleType);
       const vehicleColor = getVehicleTypeColor(vehicleType);
       const month = new Date(createdAt).getMonth();
 
