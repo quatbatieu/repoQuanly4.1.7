@@ -260,13 +260,11 @@ function ListEditAccreditation() {
 
   const isMobileDevice = (value) =>{
     if(value < 768 ){
-      console.log(value < 768)
       dataFilter.limit = 10
     }
   }
 
   useEffect(() => {
-    console.log("isMobileDevice(window.outerWidth)",isMobileDevice(window.outerWidth))
     isMobileDevice(window.outerWidth)
     handleFetchAccreditation(dataFilter)
   }, [])
