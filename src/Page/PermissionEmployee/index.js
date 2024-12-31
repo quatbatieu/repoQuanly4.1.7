@@ -9,6 +9,7 @@ import EditableRow from 'components/EditableRow';
 import EditableCell from 'components/EditableCell';
 import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
 import { NORMAL_COLUMN_WIDTH } from "constants/app";
+import { isMobileDevice } from "constants/account";
 
 const PermissionEmployee = () => {
   const { t: translation } = useTranslation();
@@ -27,7 +28,7 @@ const PermissionEmployee = () => {
         setData(result.data);
       }
     });
-  };
+  }; 
 
   const handleUpdatePer = (appUserId, permissionList) => {
     const newParam = {
@@ -53,8 +54,18 @@ const PermissionEmployee = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    if(isMobileDevice() == true){
+      setDataFilter({
+        ...dataFilter,
+        limit: 10
+      })
+      fetchData({skip: 0, limit: 10});
+    }
+    else{
+      fetchData();
+    }
   }, []);
+
   const handleChangePage = (pageNum) => {
     const newFilter = {
       ...dataFilter,
