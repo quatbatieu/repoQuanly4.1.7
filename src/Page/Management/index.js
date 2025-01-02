@@ -585,8 +585,8 @@ function ListUser() {
         <UnLock />
       ) : (
         <div className="management">
-          <div className="receipt_container-dflex-wrap row">
-            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+          <Row gutter={[24, 24]}>
+            <Col xs={24} sm={12} md={6} lg={6} xl={4}>
               <BasicSearch
                 className="w-100"
                 value={searchText}
@@ -598,8 +598,8 @@ function ListUser() {
                   minWidth: 160,
                 }}
               />
-            </div>
-            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6} xl={4}>
               <Select
                 onChange={onFilterUserByStatus}
                 className="w-100"
@@ -618,41 +618,41 @@ function ListUser() {
                   {translation("management.inActive")}
                 </Select.Option>
               </Select>
-            </div>
-
-            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
-              <div className="d-flex gap-4">
-                <Button
-                  className="w-100 d-flex align-items-center justify-content-center"
-                  icon={<PlusOutlined />}
-                  onClick={() => {
-                    setIsAdd(true);
-                    setTimeout(() => {
-                      if (inputAddRef && inputAddRef.current) {
-                        inputAddRef.current.focus();
-                      }
-                    }, 10);
-                  }}
-                  type="primary"
-                >
-                  {translation("inspectionProcess.add")}
-                </Button>
-                <Button
-                  className="d-flex align-items-center justify-content-center"
-                  loading={loading}
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => {
-                      fetchData(dataFilter);
-                      setLoading(false);
-                    }, BUTTON_LOADING_TIME);
-                  }}
-                >
-                  {!loading && <ReloadOutlined />}
-                </Button>
-              </div>
-            </div>
-          </div>
+            </Col>
+            <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+              <Button
+                type="primary"
+                className="d-flex align-items-center justify-content-center"
+                onClick={() => {
+                  setIsAdd(true);
+                  setTimeout(() => {
+                    if (inputAddRef && inputAddRef.current) {
+                      inputAddRef.current.focus();
+                    }
+                  }, 10);
+                }}
+                icon={<PlusOutlined />}
+              >
+                {/* {translation("inspectionProcess.add")} */}
+                Tạo mới
+              </Button>
+            </Col>
+            <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+              <Button
+                className="d-flex align-items-center justify-content-center"
+                loading={loading}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    fetchData(dataFilter);
+                    setLoading(false);
+                  }, BUTTON_LOADING_TIME);
+                }}
+              >
+                {!loading && <ReloadOutlined />}
+              </Button>
+            </Col>
+          </Row>
           <div className="management__body">
             <Table
               dataSource={dataUser.data}
