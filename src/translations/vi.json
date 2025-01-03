@@ -318,7 +318,8 @@
     "service": "Dịch vụ",
     "punish": "Kiểm tra phạt nguội",
     "explainPower" : "Giải thích quyền hạn",
-    "permission_employee" : "Phân quyền cho nhân viên"
+    "permission_employee" : "Phân quyền cho nhân viên",
+    "encryption": "Mã hóa"
   },
   "integrated" : {
    "title" : "Tích hợp",
@@ -1949,6 +1950,12 @@
     "October" : "Tháng 10",
     "November" : "Tháng 11",
     "December" : "Tháng 12"
+  },
+  "encryption":{
+    "tabs":{
+      "encryption":"Mã hóa",
+      "decryption":"Giải mã"
+    }
   }
 }
 

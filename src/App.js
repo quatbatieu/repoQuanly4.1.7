@@ -71,6 +71,8 @@ import ModalDetailBooking from "Page/AddBooking/ModalDetailBooking";
 import { setMetaData } from "actions";
 import ListSchedulesService from "services/listSchedulesService";
 import { MOBILE_APP_PERMISSION_TYPE } from "constants/app";
+import EncryptionPage from "Page/Encryption";
+import EncryptNDecryptPage from "Page/Encryption";
 // import { onMessage , getMessaging , isSupported } from "firebase/messaging";
 // import { firebaseConfig } from "firebase/messaging_init_in_sw";
 // import { initializeApp } from "firebase/app";
@@ -584,6 +586,18 @@ export const routes = {
       isHeaderTextOnly: false
     },
     component: SettingLandingPage
+  },
+  encryption:{
+    path:"/security",
+    permissionName:"MASTER",
+    isAuth:true,
+    props:{
+      isShowHeader:true,
+      isShowFooter:false,
+      isShowMenu:true,
+      isHeaderTextOnly:false
+    },
+    component:EncryptNDecryptPage
   }
 }
 
