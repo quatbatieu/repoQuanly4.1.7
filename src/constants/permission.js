@@ -1,4 +1,4 @@
-import {DeploymentUnitOutlined , FileTextOutlined , DesktopOutlined , BranchesOutlined , CarOutlined , MoneyCollectOutlined , FileOutlined , ApartmentOutlined, CalendarOutlined, ContainerOutlined, DatabaseOutlined, FileSearchOutlined , WechatOutlined, InsertRowBelowOutlined, MessageOutlined, QrcodeOutlined, SettingOutlined, UserOutlined , QuestionCircleOutlined,TeamOutlined } from "@ant-design/icons"
+import {DeploymentUnitOutlined , FileTextOutlined , DesktopOutlined , BranchesOutlined , CarOutlined , MoneyCollectOutlined , FileOutlined , ApartmentOutlined, CalendarOutlined, ContainerOutlined, DatabaseOutlined, FileSearchOutlined , WechatOutlined, InsertRowBelowOutlined, MessageOutlined, QrcodeOutlined, SettingOutlined, UserOutlined , QuestionCircleOutlined,TeamOutlined, CodeSandboxCircleFilled } from "@ant-design/icons"
 import { routes , privilegedRouter } from "App"
 import React from "react"
 
@@ -119,6 +119,13 @@ const staticRoutes = (translation) => {
       href: routes.vehicleRecords.path,
       icon: <CarOutlined  />,
       permissionName : routes.vehicleRecords.permissionName,
+      routerChildren: []
+    },
+    {
+      name: translation('header.encryption'),
+      href: routes.encryption.path,
+      icon: <CodeSandboxCircleFilled  />,
+      permissionName : routes.encryption.permissionName,
       routerChildren: []
     },
     // {
