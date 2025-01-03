@@ -51,6 +51,7 @@ import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import BasicSearch from "components/BasicSearch";
+import { AnphaIcon } from "assets/icons";
 
 function ListUser() {
   const { t: translation } = useTranslation();
@@ -579,6 +580,8 @@ function ListUser() {
     setLock(false);
   };
 
+  const handleExportExcel = () => {}
+
   return (
     <Fragment>
       {setting.enableManagerMenu === 0 ? (
@@ -635,6 +638,15 @@ function ListUser() {
               >
                 {/* {translation("inspectionProcess.add")} */}
                 Tạo mới
+              </Button>
+            </Col>
+            <Col xs={8} sm={8} md={4} lg={3} xl={2} className="px-3">
+              <Button
+                onClick={handleExportExcel}
+                className="d-flex align-items-center gap-1 mobies"
+                icon={<AnphaIcon />}
+              >
+                {translation("listCustomers.export")}
               </Button>
             </Col>
             <Col xs={8} sm={4} md={4} lg={3} xl={2} className="sm-ml-3">
