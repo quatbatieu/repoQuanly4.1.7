@@ -1188,7 +1188,7 @@ const ListSchedule = () => {
                   </Select>
                 </div>
                 <div
-                  className="col-md-6 col-lg-3 col-xl-2 mb-3 d-flex"
+                  className="col-md-6 col-lg-3 col-xl-2 d-flex"
                   style={{ gap: "25px" }}
                 >
                   <Button

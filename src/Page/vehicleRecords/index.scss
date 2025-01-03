@@ -482,6 +482,9 @@
   }
 }
 @media (max-width: 480px) {
+  .sm-mb-0{
+    margin-bottom: 0rem !important;
+  }
   .licensePlateColor{
     display: grid !important;
   }

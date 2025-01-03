@@ -42,6 +42,9 @@
   }
 
   @media(max-width: 426px) {
+    .sm-ml-3{
+      margin-left: 12px;
+    }
     .d-m-none {
       display: none;
     }

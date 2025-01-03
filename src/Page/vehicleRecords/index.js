@@ -786,7 +786,7 @@ export default function VehicleList() {
         <UnLock />
       ) : (
         <main className="list_customers">
-          <Row gutter={[24, 24]} className="mb-3">
+          <Row gutter={[24, 24]} className="mb-3 sm-mb-0">
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Row gutter={[24, 24]}>
                 <Col xs={24} sm={12} md={6} lg={12} xl={4}>

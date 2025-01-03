@@ -241,7 +241,7 @@ function ListUser() {
     <Fragment>
       {setting.enableContactMenu === 0 ? <UnLock /> :
     <div className="phonebook">
-      <div className="row mb-3">
+      <div className="row">
         {/* <div className="col-12 col-md-3 col-lg-3">
           <label className="section-title pl-3 ">
             {translation('management.phonebookManagement')}
