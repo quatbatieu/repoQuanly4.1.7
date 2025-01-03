@@ -580,7 +580,7 @@ function EmployeePositionMapping() {
     <Fragment>
      {setting.enableManagerMenu === 0 ? <UnLock /> :
       <div className="management managementEmployee">
-      <div className="row mb-3">
+      <div className="row">
         <div className="col-12 col-md-4 col-lg-3 col-xl-2 mb-3">
           <BasicSearch
             className="w-100"

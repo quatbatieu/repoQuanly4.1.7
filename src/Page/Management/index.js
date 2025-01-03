@@ -585,7 +585,7 @@ function ListUser() {
         <UnLock />
       ) : (
         <div className="management">
-          <Row gutter={[24, 24]}>
+          <Row gutter={[24, 24]} className="mb-3">
             <Col xs={24} sm={12} md={6} lg={6} xl={4}>
               <BasicSearch
                 className="w-100"
@@ -619,7 +619,7 @@ function ListUser() {
                 </Select.Option>
               </Select>
             </Col>
-            <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+            <Col xs={8} sm={4} md={4} lg={3} xl={2}>
               <Button
                 type="primary"
                 className="d-flex align-items-center justify-content-center"
@@ -637,7 +637,7 @@ function ListUser() {
                 Tạo mới
               </Button>
             </Col>
-            <Col xs={8} sm={4} md={4} lg={3} xl={2} className="px-0">
+            <Col xs={8} sm={4} md={4} lg={3} xl={2} className="sm-ml-3">
               <Button
                 className="d-flex align-items-center justify-content-center"
                 loading={loading}

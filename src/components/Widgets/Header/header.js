@@ -416,7 +416,7 @@ const ModalMobile = ({ isOpen , menu , toggleModal }) => {
       visible={isOpen}
       title={`${translation("header.hello")}, ${username}`}
       onClose={toggleModal}
-      footer={<span className='ant-drawer-title'>version web : </span>}
+      footer={<span className='ant-drawer-title'>Cổng thông tin điện tử Cục Đăng Kiểm Việt Nam</span>}
       width="100%"
       className="drawer"
     >
