@@ -52,6 +52,9 @@ import { BIG_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import BasicSearch from "components/BasicSearch";
 import { AnphaIcon } from "assets/icons";
+import { ExportFile } from "hooks/FileHandler";
+import { useModalDirectLinkContext } from "components/ModalDirectLink";
+import ModalProgress from "./ModalProgress";
 
 function ListUser() {
   const { t: translation } = useTranslation();
@@ -580,7 +583,100 @@ function ListUser() {
     setLock(false);
   };
 
-  const handleExportExcel = () => {}
+  const { setUrlForModalDirectLink } = useModalDirectLinkContext();
+  // Những Thứ dùng chung export và import
+  const { onExportExcel, isLoading: isLoadingExport } = ExportFile();
+  const [isModalProgress, setisModalProgress] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [percentPlus, setPercentPlus] = useState(0);
+
+  // Những Thứ dùng chung Import
+  const [arrImport, setArrImport] = useState([]);
+  const [isImport, setIsImport] = useState(false);
+  const [importSummary, setImportSummary] = useState({
+    logs: [],
+    numberError: 0,
+    numberSuccess: 0,
+  });
+
+  const DefaultFilterExport = {
+    limit: 100,
+  };
+
+  const FIELDS_EXPORT_IMPORT = [
+    { api: "index", content: "Số TT" },
+    { api: "firstName", content: "Họ và tên" },
+    { api: "username", content: "Tài khoản" },
+    { api: "phoneNumber", content: "Số điện thoại" },
+  ];
+  const fetchExportData = async (param, filter) => {
+    for (let key in filter) {
+      if (!filter[key]) {
+        delete filter[key];
+      }
+    }
+
+    const response = await ManagementService.getListUser({
+      ...filter,
+      limit: DefaultFilterExport.limit,
+      skip: param * DefaultFilterExport.limit,
+    })
+    
+    const data = await response.data;
+    return data;
+  };
+
+  const handleExportExcel = async () => {
+    let number = Math.ceil(dataUser.data.length / DefaultFilterExport.limit);
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
+    let results = [];
+
+    const percentPlus = 100 / params.length;
+    setPercent(0);
+    setisModalProgress(true);
+
+    let _counter = 0;
+    while (true) {
+      const result = await fetchExportData(_counter++, dataFilter);
+      if (result && result.length > 0) {
+        setPercent((prev) => prev + percentPlus);
+        results = [...results, ...result];
+      } else {
+        break;
+      }
+    }
+
+    const newResult = results.map((item, index) => ({
+      ...item,
+      index: index + 1,
+    }));
+
+    await setTimeout(() => {
+      setisModalProgress(false);
+      setPercent(0);
+      onExportExcel({
+        fieldApi: FIELDS_EXPORT_IMPORT.map((item) => item.api),
+        fieldExport: FIELDS_EXPORT_IMPORT.map((item) => item.content),
+        data: newResult,
+        informationColumn: [
+          ["Trung tâm đăng kiểm", "", "", "Danh sách nhân sự"],
+          [
+            `Mã: Trung Tâm đăng kiểm xe cơ giới 123`,
+            "",
+            "",
+            `Danh sách nhân sự ngày ${moment().format("DD/MM/YYYY")}`,
+          ],
+          [""],
+        ],
+        timeWait: 0,
+        nameFile: "data.xlsx",
+        setUrlForModalDirectLink: setUrlForModalDirectLink,
+      });
+    }, 1000);
+  };
 
   return (
     <Fragment>
@@ -722,6 +818,18 @@ function ListUser() {
               </div>
             </div>
           </Modal>
+          {isModalProgress && (
+            <ModalProgress
+              visible={isModalProgress}
+              setVisible={setisModalProgress}
+              percent={percent}
+              logs={importSummary.logs}
+              isLoading={arrImport.length !== 0}
+              isImport={isImport}
+              numberError={importSummary.numberError}
+              numberSuccess={importSummary.numberSuccess}
+            />
+          )}
         </div>
       )}
     </Fragment>
