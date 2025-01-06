@@ -128,6 +128,13 @@ const staticRoutes = (translation) => {
       permissionName : routes.encryption.permissionName,
       routerChildren: []
     },
+    {
+      name: translation('header.overview'),
+      href: routes.overview.path,
+      icon: <CodeSandboxCircleFilled  />,
+      permissionName : routes.overview.permissionName,
+      routerChildren: []
+    },
     // {
     //   name: translation('header.integrated'),
     //   href: routes.integrated.path,
