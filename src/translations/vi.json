@@ -319,7 +319,8 @@
     "punish": "Kiểm tra phạt nguội",
     "explainPower" : "Giải thích quyền hạn",
     "permission_employee" : "Phân quyền cho nhân viên",
-    "encryption": "Mã hóa"
+    "encryption": "Mã hóa",
+    "overview": "Tổng quan"
   },
   "integrated" : {
    "title" : "Tích hợp",

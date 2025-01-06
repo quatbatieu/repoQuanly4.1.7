@@ -73,6 +73,7 @@ import ListSchedulesService from "services/listSchedulesService";
 import { MOBILE_APP_PERMISSION_TYPE } from "constants/app";
 import EncryptionPage from "Page/Encryption";
 import EncryptNDecryptPage from "Page/Encryption";
+import Overview from "Page/Overview";
 // import { onMessage , getMessaging , isSupported } from "firebase/messaging";
 // import { firebaseConfig } from "firebase/messaging_init_in_sw";
 // import { initializeApp } from "firebase/app";
@@ -598,6 +599,18 @@ export const routes = {
       isHeaderTextOnly:false
     },
     component:EncryptNDecryptPage
+  },
+  overview:{
+    path:"/overview",
+    permissionName:"MASTER",
+    isAuth:true,
+    props:{
+      isShowHeader:true,
+      isShowFooter:false,
+      isShowMenu:true,
+      isHeaderTextOnly:false
+    },
+    component:Overview
   }
 }
 
