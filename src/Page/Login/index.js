@@ -56,7 +56,9 @@ function Login(props) {
     }
 
     if(isLoading) {
-      return (<Spin />)
+      return (<div className='d-flex justify-content-center align-items-center' style={{height:'75vh'}}>
+          <Spin />
+        </div>)
     }
 
     return (

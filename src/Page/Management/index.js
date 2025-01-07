@@ -20,6 +20,7 @@ import {
   Typography,
   Row,
   Col,
+  Spin,
 } from "antd";
 import ModalEditUserInfo from "./ModalEditUserInfo";
 import React, { useEffect, useRef, useState, Fragment } from "react";
@@ -424,6 +425,7 @@ function ListUser() {
   function fetchData(paramFilter) {
     ManagementService.getListUser(paramFilter).then((result) => {
       if (result) {
+        setLoading(false);
         setDataUser(result);
       } else {
         notification.error({
@@ -435,6 +437,7 @@ function ListUser() {
   }
 
   useEffect(() => {
+    setLoading(true);
     isMobileDevice(window.outerWidth);
     if (isMobileDevice(window.outerWidth) === true) {
       dataFilter.limit = 10;
@@ -620,8 +623,8 @@ function ListUser() {
       ...filter,
       limit: DefaultFilterExport.limit,
       skip: param * DefaultFilterExport.limit,
-    })
-    
+    });
+
     const data = await response.data;
     return data;
   };
@@ -762,18 +765,29 @@ function ListUser() {
             </Col>
           </Row>
           <div className="management__body">
-            <Table
-              dataSource={dataUser.data}
-              columns={columnsEdit}
-              scroll={{ x: 1300 }}
-              components={components}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={dataUser?.data?.length < dataFilter.limit}
-            ></BasicTablePaging>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={dataUser.data}
+                  columns={columnsEdit}
+                  scroll={{ x: 1300 }}
+                  components={components}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={dataUser?.data?.length < dataFilter.limit}
+                ></BasicTablePaging>
+              </>
+            )}
           </div>
           <ModalRole modal={role} onCancel={() => setRole(false)} />
           <ModalLock modal={lock} onCancel={() => setLock(false)} />

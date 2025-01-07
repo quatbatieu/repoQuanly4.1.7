@@ -11,6 +11,7 @@ import {
   Col,
   Row,
   Select,
+  Spin,
 } from "antd";
 import { BrowserView } from "react-device-detect";
 import { isMobileDevice } from "constants/account";
@@ -427,11 +428,13 @@ export default function VehicleList() {
     vehicleProfileService.find(filter).then((result) => {
       if (result) {
         setListDocumentary(result);
+        setLoading(false);
       }
     });
   };
 
   useEffect(() => {
+    setLoading(true);
     if (isMobileDevice() === true) {
       dataFilter.limit = 10;
     }
@@ -847,17 +850,28 @@ export default function VehicleList() {
             </Col>
           </Row>
           <div className="list_customers__body">
-            <Table
-              dataSource={listDocumentary.data}
-              columns={columns}
-              scroll={{ x: 1600 }}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={listDocumentary?.data?.length < dataFilter?.limit}
-            ></BasicTablePaging>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={listDocumentary.data}
+                  columns={columns}
+                  scroll={{ x: 1600 }}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={listDocumentary?.data?.length < dataFilter?.limit}
+                ></BasicTablePaging>
+              </>
+            )}
           </div>
           {isEditing && (
             <ModalEditVehicleRecords

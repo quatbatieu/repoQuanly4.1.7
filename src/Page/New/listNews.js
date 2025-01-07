@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Typography,
+  Spin,
 } from "antd";
 import React, { useState, useEffect, Fragment } from "react";
 import "./newStyle.scss";
@@ -49,6 +50,7 @@ export default function ListNews({
   onSelectPostEdit,
 }) {
   const [dataNews, setDataNews] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const { t: translation } = useTranslation();
   const [dataFilter, setDataFilter] = useState(DEFAULT_FILTER);
@@ -173,11 +175,13 @@ export default function ListNews({
       if (result.data) {
         setDataNews(result.data);
         setTotal(result.total);
+        setLoading(false);
       }
     });
   };
 
   useEffect(() => {
+    setLoading(true);
     if (isMobileDevice() == true) {
       setDataFilter({ ...DEFAULT_FILTER, limit: 10 });
       fetchDataNewsNoConcat({ skip: 0, limit: 10 });
@@ -324,17 +328,28 @@ export default function ListNews({
               </Row>
             </Col>
           </Row>
-          <Table
-            scroll={{ x: 1200 }}
-            columns={columns}
-            dataSource={dataNews}
-            pagination={false}
-          />
-          <BasicTablePaging
-            handlePaginations={handleChangePage}
-            skip={dataFilter.skip}
-            count={dataNews?.length < dataFilter?.limit}
-          ></BasicTablePaging>
+          {loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: "75vh" }}
+            >
+              <Spin />
+            </div>
+          ) : (
+            <>
+              <Table
+                scroll={{ x: 1200 }}
+                columns={columns}
+                dataSource={dataNews}
+                pagination={false}
+              />
+              <BasicTablePaging
+                handlePaginations={handleChangePage}
+                skip={dataFilter.skip}
+                count={dataNews?.length < dataFilter?.limit}
+              ></BasicTablePaging>
+            </>
+          )}
           <ModalEditUserInfo
             isEditing={isOpenModalDetail}
             toggleEditModal={() => setIsOpenModalDetail(!isOpenModalDetail)}
