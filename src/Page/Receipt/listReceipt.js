@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import {
   Table,
   Input, DatePicker, Space, Select, Button, Popover, Popconfirm, notification,
+  Spin,
 } from 'antd';
 import ReceiptionService from "../../services/receiptionService"
 import "./receipt.scss"
@@ -163,6 +164,7 @@ function ListReceipt() {
 
     ReceiptionService.getListReceiption(filter).then(result => {
       if (result) {
+        setLoading(false)
         setDataReceipt({
           ...result
         })
@@ -174,6 +176,7 @@ function ListReceipt() {
   }
 
   useEffect(() => {
+    setLoading(true)
     if(isMobileDevice() === true){
       dataFilter.limit = 10
     }
@@ -510,6 +513,17 @@ function ListReceipt() {
         setUrlForModalDirectLink : setUrlForModalDirectLink
       })
     }, 1000)
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   return (

@@ -6,7 +6,8 @@ import {
   Table, Form, notification,
   Input, Button, Modal,
   DatePicker, InputNumber, Select,
-  Tabs, Popconfirm, Space, Tooltip, Row, Col, Typography
+  Tabs, Popconfirm, Space, Tooltip, Row, Col, Typography,
+  Spin
 } from 'antd';
 import EditableCell from "../../components/EditableCell"
 import EditableRow from "../../components/EditableRow"
@@ -200,6 +201,7 @@ function ListEditAccreditation() {
   function handleFetchAccreditation(filter) {
     AccreditationService.getList(filter).then(result => {
       if (result) {
+        setLoading(false)
         setDataAccreditation({
           ...result
         })
@@ -265,6 +267,7 @@ function ListEditAccreditation() {
   }
 
   useEffect(() => {
+    setLoading(true)
     isMobileDevice(window.outerWidth)
     handleFetchAccreditation(dataFilter)
   }, [])
@@ -620,6 +623,17 @@ function ListEditAccreditation() {
     };
     setDataFilter(newFilter);
     handleFetchAccreditation(newFilter);
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   return (

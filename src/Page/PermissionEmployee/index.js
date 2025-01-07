@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Table, Input, notification, Form } from "antd";
+import { Table, Input, notification, Form, Spin } from "antd";
 import ManagementService from "../../services/manageService";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
@@ -13,6 +13,7 @@ import { isMobileDevice } from "constants/account";
 
 const PermissionEmployee = () => {
   const { t: translation } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const setting = useSelector((state) => state.setting);
   const [form] = Form.useForm();
@@ -26,6 +27,7 @@ const PermissionEmployee = () => {
     ManagementService.getLists(param).then((result) => {
       if (result) {
         setData(result.data);
+        setIsLoading(false);
       }
     });
   }; 
@@ -54,6 +56,7 @@ const PermissionEmployee = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     if(isMobileDevice() == true){
       setDataFilter({
         ...dataFilter,
@@ -473,6 +476,18 @@ const PermissionEmployee = () => {
       },
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
+
   return (
     <Fragment>
     {setting.enableManagerMenu === 0 ? <UnLock /> :

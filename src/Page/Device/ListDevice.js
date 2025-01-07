@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Space,
+  Spin,
   Table,
   notification,
 } from "antd";
@@ -285,12 +286,14 @@ export default function ListDevice() {
   const fetchData = (filter) => {
     StationDevicesService.getList(filter).then((result) => {
       if (result) {
+        setLoading(false);
         setListDocumentary(result);
       }
     });
   };
 
   useEffect(() => {
+    setLoading(true);
     isMobileDevice(window.outerWidth);
     if (isMobileDevice(window.outerWidth) === true) {
       dataFilter.limit = 10;
@@ -691,6 +694,17 @@ export default function ListDevice() {
     add: "ADD",
     import: "IMPORT",
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

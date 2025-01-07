@@ -32,6 +32,7 @@ import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
 
 function CreateAssignmentHistory() {
   const { t: translation } = useTranslation()
+  const [isLoading, setIsLoading] = useState(true)
   const member = useSelector(state => state.member)
   const setting = useSelector((state) => state.setting);
   const [formAdd] = Form.useForm()
@@ -205,10 +206,12 @@ function CreateAssignmentHistory() {
           description: translation('new.fetchDataFailed')
         })
       }
+      setIsLoading(false)
     })
   }
 
   useEffect(() => {
+    setIsLoading(true)
     isMobileDevice(window.outerWidth)
     if(isMobileDevice(window.outerWidth) === true){
       dataFilter.limit = 10
@@ -268,6 +271,17 @@ function CreateAssignmentHistory() {
       fetchData(newFilter);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

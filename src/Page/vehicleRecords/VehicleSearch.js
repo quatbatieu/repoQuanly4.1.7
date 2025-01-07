@@ -8,6 +8,7 @@ import {
   notification,
   Row,
   Col,
+  Spin,
 } from "antd";
 import { useEffect, useRef, useState, Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -272,6 +273,7 @@ export default function VehicleList() {
     vehicleProfileService.search(filter).then((result) => {
       if (result) {
         setListDocumentary(result);
+        setLoading(false)
       }
     });
   };
@@ -303,6 +305,7 @@ export default function VehicleList() {
     fetchDataStation();
   }, []);
   useEffect(() => {
+    setLoading(true)
     fetchData(dataFilter);
   }, []);
 
@@ -440,6 +443,17 @@ export default function VehicleList() {
     setDataFilter(newFilter);
     fetchData(newFilter);
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

@@ -116,6 +116,7 @@ const SelectSearchApi = ({ save, inputRef, form, handleSave, record }) => {
 }
 
 function EmployeePositionMapping() {
+  const [loading, setLoading] = useState(false)
   const { t: translation } = useTranslation()
   const member = useSelector(state => state.member)
   const setting = useSelector((state) => state.setting);
@@ -493,6 +494,7 @@ function EmployeePositionMapping() {
             appUserWorkStep : item.appUserWorkStep?.split(',').map(item => item.trim())
           }
         })
+        setLoading(false)
         setDataUser(result)
       } else {
         notification.error({
@@ -504,6 +506,7 @@ function EmployeePositionMapping() {
   }
 
   useEffect(() => {
+    setLoading(true)
     isMobileDevice(window.outerWidth)
     if(isMobileDevice(window.outerWidth) === true){
       dataFilter.limit = 10
@@ -574,6 +577,17 @@ function EmployeePositionMapping() {
       }
     }
     callback();
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   return (

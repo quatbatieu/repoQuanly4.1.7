@@ -20,6 +20,7 @@ import {
   Typography,
   Row,
   Col,
+  Spin,
 } from "antd";
 import ModalEditUserInfo from "./ModalEditUserInfo";
 import React, { useEffect, useRef, useState, Fragment } from "react";
@@ -424,6 +425,7 @@ function ListUser() {
   function fetchData(paramFilter) {
     ManagementService.getListUser(paramFilter).then((result) => {
       if (result) {
+        setLoading(false);
         setDataUser(result);
       } else {
         notification.error({
@@ -435,6 +437,7 @@ function ListUser() {
   }
 
   useEffect(() => {
+    setLoading(true);
     isMobileDevice(window.outerWidth);
     if (isMobileDevice(window.outerWidth) === true) {
       dataFilter.limit = 10;
@@ -677,6 +680,17 @@ function ListUser() {
       });
     }, 1000);
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

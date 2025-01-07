@@ -11,6 +11,7 @@ import {
   Col,
   Row,
   Select,
+  Spin,
 } from "antd";
 import { BrowserView } from "react-device-detect";
 import { isMobileDevice } from "constants/account";
@@ -427,11 +428,13 @@ export default function VehicleList() {
     vehicleProfileService.find(filter).then((result) => {
       if (result) {
         setListDocumentary(result);
+        setLoading(false);
       }
     });
   };
 
   useEffect(() => {
+    setLoading(true);
     if (isMobileDevice() === true) {
       dataFilter.limit = 10;
     }
@@ -779,6 +782,17 @@ export default function VehicleList() {
     setDataFilter(newFilter);
     fetchData(newFilter);
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

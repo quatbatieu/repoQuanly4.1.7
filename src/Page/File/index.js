@@ -13,7 +13,8 @@ import {
   List,
   Pagination,
   Popconfirm,
-  Select
+  Select,
+  Spin
 } from "antd";
 import {
   PlusOutlined, ReloadOutlined,
@@ -276,12 +277,14 @@ export default function File() {
   const fetchData = (filter) => {
     listDocumentaryService.getDataStation(filter).then((result) => {
       if (result) {
+        setLoading(false)
         setListDocumentary(result);
       }
     });
   };
 
   useEffect(() => {
+    setLoading(true)
     isMobileDevice(window.outerWidth)
     if(isMobileDevice(window.outerWidth) === true){
       setIsMobie(true)
@@ -421,6 +424,17 @@ export default function File() {
     }
     setDataFilter(newFilter)
     fetchData(newFilter)
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   return (

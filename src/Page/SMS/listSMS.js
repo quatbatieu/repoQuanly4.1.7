@@ -327,11 +327,15 @@ const ListSMS = () => {
 
   const fetchMessage = (filter) => {
     MessageCustomerMarketingService.getList(filter).then((result) => {
-      if (result) setData(result);
+      if (result) {
+        setData(result);
+        setLoading(false);
+      }
     });
   };
 
   useEffect(() => {
+    setLoading(true);
     isMobileDevice(window.outerWidth);
     if (isMobileDevice(window.outerWidth) === true) {
       filter.limit = 10;
@@ -732,6 +736,17 @@ const ListSMS = () => {
       return false;
     }
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <Fragment>

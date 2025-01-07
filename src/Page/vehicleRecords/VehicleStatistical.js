@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import _ from "lodash";
+import _, { set } from "lodash";
 import moment from "moment";
 import {
   Chart as ChartJS,
@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { useTranslation } from "react-i18next";
-import { DatePicker } from "antd";
+import { DatePicker, Spin } from "antd";
 import vehicleProfileService from "services/vehicleProfileService";
 import { VEHICLE_TYPES_STATES_EXPORT } from "../../constants/scheduleImportExport";
 
@@ -49,6 +49,7 @@ const getVehicleTypeColor = (vehicleType) => {
 
 const VehicleStatiscal = () => {
   const { t: translation } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [statisticalData, setStatisticalData] = useState([]);
   const [dataRequest, setDataRequest] = useState([]);
   const [filter, setFilter] = useState({
@@ -61,7 +62,7 @@ const VehicleStatiscal = () => {
       let allData = [];
       let skip = 0;
       const limit = 100;
-
+      setLoading(true);
       while (true) {
         const result = await vehicleProfileService.find({ limit, skip });
 
@@ -72,7 +73,7 @@ const VehicleStatiscal = () => {
           break;
         }
       }
-
+      setLoading(false);
       setStatisticalData(allData);
     } catch (e) {
       console.error(e);
@@ -158,6 +159,17 @@ const VehicleStatiscal = () => {
   const yearFormat = (d) => {
     return d.format("YYYY");
   };
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
+  }
 
   return (
     <div>

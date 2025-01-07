@@ -16,7 +16,8 @@ import {
   Spin,
 } from "antd";
 import {
-  ExceptionOutlined, ReloadOutlined,
+  ExceptionOutlined,
+  ReloadOutlined,
   TransactionOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -39,7 +40,7 @@ import { Not_yetIcon } from "./../../assets/icons";
 import { BUTTON_LOADING_TIME } from "constants/time";
 import TagVehicle from "components/TagVehicle/TagVehicle";
 import { getIndexTagVehicleFromColor } from "constants/listSchedule";
-import { widthLicensePlate } from '../../constants/licenseplates'
+import { widthLicensePlate } from "../../constants/licenseplates";
 import { optionVehicleType } from "constants/vehicleType";
 import { useSelector } from "react-redux";
 import { getMessageCustomerMarketingError } from "constants/errorMessage";
@@ -47,9 +48,9 @@ import Handlebars from "handlebars";
 import { routes } from "App";
 import { useHistory } from "react-router-dom";
 import { ERROR_FAILED } from "constants/errorConstant";
-import UnLock from 'components/UnLock/UnLock';
+import UnLock from "components/UnLock/UnLock";
 import TagVehicleWarn from "components/TagVehicle/TagVehicleWarn";
-import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
+import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
 import { useModalDirectLinkContext } from "components/ModalDirectLink";
 import { XLSX_TYPE } from "constants/excelFileType";
 import ModalProgressCustomer from "components/EmailIcon/importCustomer";
@@ -60,7 +61,7 @@ import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import BasicSearch from "components/BasicSearch";
 
-const { Option } = Select
+const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const SMSListModal = ({ id, visible, onClose }) => {
@@ -97,7 +98,9 @@ const SMSListModal = ({ id, visible, onClose }) => {
           <Button type="link" onClick={onClose}>
             {translation("listCustomers.cancel")}
           </Button>
-          <Button type="primary" onClick={onClose}>{translation("listSchedules.OK")}</Button>
+          <Button type="primary" onClick={onClose}>
+            {translation("listSchedules.OK")}
+          </Button>
         </div>
       }
     >
@@ -108,7 +111,7 @@ const SMSListModal = ({ id, visible, onClose }) => {
               <List.Item className="d-block">
                 <div className="d-flex justify-content-between">
                   <p className="text-one">
-                    {translation('sms.messageSentDate')} :
+                    {translation("sms.messageSentDate")} :
                     <span className="text-day">
                       {message?.createdAt?.slice(11, 16)}{" "}
                       {moment(message?.createdAt?.slice(0, 10)).format(
@@ -124,10 +127,7 @@ const SMSListModal = ({ id, visible, onClose }) => {
                   </p>
                 </div>
                 <p className="text-two">
-                {translation('sms.content')} :
-                  <p>
-                    {message.messageContent}
-                  </p>
+                  {translation("sms.content")} :<p>{message.messageContent}</p>
                 </p>
               </List.Item>
             ))}
@@ -141,25 +141,23 @@ const SMSListModal = ({ id, visible, onClose }) => {
           {/* <div>
 						<p>Tong so SMS: {detail.total}</p>
 					</div> */}
-          {
-            detail?.total > 20 ? (
-              <Pagination
-                total={detail.total}
-                pageSize={pagable.limit}
-                current={pagable.page}
-                simple={true}
-                onChange={(page) =>
-                  setPagable({
-                    ...pagable,
-                    page: page,
-                    skip: (page - 1) * pagable.limit,
-                  })
-                }
-              />
-            ) : (
-              <></>
-            )
-          }
+          {detail?.total > 20 ? (
+            <Pagination
+              total={detail.total}
+              pageSize={pagable.limit}
+              current={pagable.page}
+              simple={true}
+              onChange={(page) =>
+                setPagable({
+                  ...pagable,
+                  page: page,
+                  skip: (page - 1) * pagable.limit,
+                })
+              }
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </Modal>
@@ -169,7 +167,7 @@ const SMSListModal = ({ id, visible, onClose }) => {
 export default function ListCustomer() {
   const { t: translation } = useTranslation();
   const setting = useSelector((state) => state.setting);
-  const user = useSelector((state) => state.member)
+  const user = useSelector((state) => state.member);
 
   const history = useHistory();
   const [listDataCustomers, setListDataCustomer] = useState({
@@ -199,9 +197,9 @@ export default function ListCustomer() {
     endDate: undefined,
     startDate: undefined,
     order: {
-      key: 'customerRecordId',
-      value: 'desc'
-    }
+      key: "customerRecordId",
+      value: "desc",
+    },
   });
   const [dateBySelect, setDateBySelect] = useState("");
   const [fileSelected, setFileSelected] = useState(undefined);
@@ -217,7 +215,8 @@ export default function ListCustomer() {
   const { setUrlForModalDirectLink } = useModalDirectLinkContext();
   const inputRef = useRef();
   const listVehicleType = optionVehicleType(translation);
-  const MESSAGE_CUMTOMER_MARKETING_ERROR = getMessageCustomerMarketingError(translation);
+  const MESSAGE_CUMTOMER_MARKETING_ERROR =
+    getMessageCustomerMarketingError(translation);
   const onExportListCustomers = () => {
     setLoadingUrl(true);
     ListCustomersService.exportListCustomers({
@@ -225,17 +224,17 @@ export default function ListCustomer() {
       skip: undefined,
       limit: undefined,
     }).then((url) => {
-      setTimeout(() => { 
+      setTimeout(() => {
         if (url) {
           // setUrl(url);
-          setUrlForModalDirectLink(url)
+          setUrlForModalDirectLink(url);
         } else {
           notification["error"]({
             description: translation("listCustomers.exportFailed"),
           });
         }
         setLoadingUrl(false);
-      }, 500)
+      }, 500);
     });
   };
 
@@ -261,7 +260,9 @@ export default function ListCustomer() {
         return (
           <div>
             <div>{record.customerRecordFullName}</div>
-            <div style={{ color: '#40E0D0', fontSize: 'smaller' }}>{record?.companyName}</div>
+            <div style={{ color: "#40E0D0", fontSize: "smaller" }}>
+              {record?.companyName}
+            </div>
           </div>
         );
       },
@@ -306,22 +307,32 @@ export default function ListCustomer() {
       width: widthLicensePlate,
       ellipsis: true,
       render: (_, item) => {
-        const { hasCrime, customerRecordPlatenumber, customerRecordPlateColor } = item;
+        const {
+          hasCrime,
+          customerRecordPlatenumber,
+          customerRecordPlateColor,
+        } = item;
         const splitText =
           customerRecordPlatenumber.length >= 14
             ? `${customerRecordPlatenumber.slice(0, 14)}`
             : customerRecordPlatenumber;
         if (!hasCrime) {
           return (
-            <TagVehicle color={getIndexTagVehicleFromColor(customerRecordPlateColor)}>
+            <TagVehicle
+              color={getIndexTagVehicleFromColor(customerRecordPlateColor)}
+            >
               {splitText}
             </TagVehicle>
           );
         }
         return (
-          <TagVehicleWarn onClick={()=>{setCrimePlateNumber(customerRecordPlatenumber)}}>
-						{splitText}
-					</TagVehicleWarn>
+          <TagVehicleWarn
+            onClick={() => {
+              setCrimePlateNumber(customerRecordPlatenumber);
+            }}
+          >
+            {splitText}
+          </TagVehicleWarn>
         );
       },
     },
@@ -363,7 +374,9 @@ export default function ListCustomer() {
               okText={translation("category.yes")}
               cancelText={translation("category.no")}
             >
-              <span style={{ cursor: "pointer", color: "var(--primary-color)" }}>
+              <span
+                style={{ cursor: "pointer", color: "var(--primary-color)" }}
+              >
                 {translation("listCustomers.delete")}
               </span>
             </Popconfirm>
@@ -439,8 +452,8 @@ export default function ListCustomer() {
             customerMessagePhone: cus.customerRecordPhone,
             customerRecordPlatenumber: cus.customerRecordPlatenumber,
             customerId: cus.appUserId,
-            customerRecordCheckExpiredDate: cus.customerRecordCheckExpiredDate
-          }
+            customerRecordCheckExpiredDate: cus.customerRecordCheckExpiredDate,
+          };
           arrCustomers.push(customer);
         });
         setSelectedCustomers(arrCustomers);
@@ -494,11 +507,13 @@ export default function ListCustomer() {
       if (result) {
         setListDataCustomer(result);
       }
+      setIsLoading(false);
     });
   };
 
   useEffect(() => {
-    isMobileDevice(window.outerWidth)
+    setIsLoading(true);
+    isMobileDevice(window.outerWidth);
     fetchData(dataFilter);
   }, []);
 
@@ -598,19 +613,21 @@ export default function ListCustomer() {
   };
 
   const onUpdateCustomer = (values) => {
-    values.customerRecordCheckDuration = values.customerRecordCheckDuration || 0;
+    values.customerRecordCheckDuration =
+      values.customerRecordCheckDuration || 0;
     ListCustomersService.updateCustomerInfo({
       id: selectedCustomer.customerRecordId,
       ...values,
       customerRecordCheckDate:
         moment(values.customerRecordCheckDate).format("DD/MM/YYYY") || "",
-      customerRecordCheckExpiredDate: values.customerRecordCheckExpiredDate ?
-        moment(values.customerRecordCheckExpiredDate)
-          .add(Number(values.customerRecordCheckDuration || 0), "months")
-          .format("DD/MM/YYYY") || "" : "",
+      customerRecordCheckExpiredDate: values.customerRecordCheckExpiredDate
+        ? moment(values.customerRecordCheckExpiredDate)
+            .add(Number(values.customerRecordCheckDuration || 0), "months")
+            .format("DD/MM/YYYY") || ""
+        : "",
     }).then((result) => {
-      const { statusCode, error } = result
-      if (statusCode === 200 ) {
+      const { statusCode, error } = result;
+      if (statusCode === 200) {
         notification["success"]({
           message: "",
           description: translation("listCustomers.updateSuccess"),
@@ -619,12 +636,12 @@ export default function ListCustomer() {
         fetchData(dataFilter);
         return true;
       }
-      if(error === ERROR_FAILED.INVALID_PLATE_NUMBER){
+      if (error === ERROR_FAILED.INVALID_PLATE_NUMBER) {
         notification["error"]({
           message: "",
           description: translation("error.INVALID_PLATE_NUMBER"),
         });
-        return
+        return;
       }
       notification["error"]({
         message: "",
@@ -652,7 +669,7 @@ export default function ListCustomer() {
   };
 
   const onUploadFile = () => {
-    setFileSelected(true)
+    setFileSelected(true);
     // const { file } = info
     // // const file = e.target.files[0] || undefined;
     // if (file && file.type && !XLSX_TYPE.includes(file.type)) {
@@ -678,14 +695,16 @@ export default function ListCustomer() {
   };
 
   const onImportFileToDb = (arr) => {
-    const cleanedCustomers = arr.map(({ customerIndex, customerRecordAdress, ...rest }) => rest);
-    const newArr = cleanedCustomers.map(el => {
-      return {...el, customerStationId : user.stationsId}
-    })
-    setPercents(newArr)
-    setisModalProgress(true)
-    setFileSelected(true)
-    // const fetchPromises = arr.map(url => 
+    const cleanedCustomers = arr.map(
+      ({ customerIndex, customerRecordAdress, ...rest }) => rest
+    );
+    const newArr = cleanedCustomers.map((el) => {
+      return { ...el, customerStationId: user.stationsId };
+    });
+    setPercents(newArr);
+    setisModalProgress(true);
+    setFileSelected(true);
+    // const fetchPromises = arr.map(url =>
     //    AccreditationService.createNewCustomer()
     // );
     // if (!fileSelected) {
@@ -720,8 +739,8 @@ export default function ListCustomer() {
     //             }),
     //             description: `${translation("listCustomers.importSuccess", {
     //               num: result.importSuccess,
-    //             })}. 
-		// 														${translation(
+    //             })}.
+    // 														${translation(
     //               "listCustomers.importSuccessFail",
     //               {
     //                 num:
@@ -739,7 +758,6 @@ export default function ListCustomer() {
     //       setIsLoading(false);
     //       setUpload(false)
     //     });
-    
   };
   function handleSelectAll() {
     if (message.message.includes(listDataCustomers.total.toString())) {
@@ -762,18 +780,18 @@ export default function ListCustomer() {
 
   function sendMessageByList(dataCustomerToSendMessage) {
     history.push(`${routes.sms.path}/sendSMS`, {
-      data: dataCustomerToSendMessage
+      data: dataCustomerToSendMessage,
     });
   }
 
   const handleChangePage = (pageNum) => {
     const newFilter = {
       ...dataFilter,
-      skip : (pageNum -1) * dataFilter.limit
-    }
-    setDataFilter(newFilter)
-    fetchData(newFilter)
-  }
+      skip: (pageNum - 1) * dataFilter.limit,
+    };
+    setDataFilter(newFilter);
+    fetchData(newFilter);
+  };
 
   function sendMessageByFilter({
     customerMessageContent,
@@ -820,18 +838,23 @@ export default function ListCustomer() {
             stationCode: values.stationCode,
             stationsAddress: values.stationsAddress,
             stationsHotline: values.stationsHotline,
-            customerRecordPlatenumber: selectedCustomersApi[i].customerRecordPlatenumber,
-            vehiclePlateNumber: selectedCustomersApi[i].customerRecordPlatenumber,
-            customerRecordCheckExpiredDate: selectedCustomersApi[i].customerRecordCheckExpiredDate,
+            customerRecordPlatenumber:
+              selectedCustomersApi[i].customerRecordPlatenumber,
+            vehiclePlateNumber:
+              selectedCustomersApi[i].customerRecordPlatenumber,
+            customerRecordCheckExpiredDate:
+              selectedCustomersApi[i].customerRecordCheckExpiredDate,
             stationsHotline: values.stationsHotline,
           };
-          selectedCustomersApi[i].customerMessageContent = Handlebars.compile(values.customerMessageContent)(dataObject);
+          selectedCustomersApi[i].customerMessageContent = Handlebars.compile(
+            values.customerMessageContent
+          )(dataObject);
         }
         let dataCustomerToSendMessage = {
           messageTemplateId: values.customerMessageTemplateId,
           template: values,
-          customerList: selectedCustomersApi
-        }
+          customerList: selectedCustomersApi,
+        };
         //send by list
         const status = sendMessageByList(dataCustomerToSendMessage);
         return status;
@@ -852,32 +875,49 @@ export default function ListCustomer() {
     });
   };
 
-  const isMobileDevice = (value) =>{
-    if(value < 768 ){
-      dataFilter.limit = 10
+  const isMobileDevice = (value) => {
+    if (value < 768) {
+      dataFilter.limit = 10;
     }
+  };
+
+  if (isLoading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "75vh" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   return (
     <Fragment>
-    {setting.enableCustomerMenu === 0 ? <UnLock /> : 
-     <main className="list_customers">
-      <div className="row">
-        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
-          <BasicSearch placeholder={translation("listCustomers.search")} onchange={onChangeSearchText} onsearch={onSearch} />
-        </div>
-        <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
-					<RangePicker
-						className="w-100"
-						format="DD/MM/YYYY"
-						onChange={onFilterByDate}
-						placeholder={[
-							translation("listCustomers.startDate"),
-							translation("listCustomers.endDate"),
-						]}
-					/>
-				</div>
-        {/* <div className="col-md-5 col-lg-3 col-xl-2 mb-3">
+      {setting.enableCustomerMenu === 0 ? (
+        <UnLock />
+      ) : (
+        <main className="list_customers">
+          <div className="row">
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+              <BasicSearch
+                placeholder={translation("listCustomers.search")}
+                onchange={onChangeSearchText}
+                onsearch={onSearch}
+              />
+            </div>
+            <div className="col-12 col-sm-12 col-xs-12 col-md-3 col-lg-3 col-xl-2 mb-3">
+              <RangePicker
+                className="w-100"
+                format="DD/MM/YYYY"
+                onChange={onFilterByDate}
+                placeholder={[
+                  translation("listCustomers.startDate"),
+                  translation("listCustomers.endDate"),
+                ]}
+              />
+            </div>
+            {/* <div className="col-md-5 col-lg-3 col-xl-2 mb-3">
 					<Select
 						className="w-100"
 						placeholder={translation("listCustomers.vehicleType")}
@@ -893,16 +933,16 @@ export default function ListCustomer() {
 								}
 					</Select>
 				</div> */}
-        <div className="col-12 col-md-12 col-lg-6 col-xl-4 mb-3">
-          <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
-            <Button
-              onClick={toggleUploadModal}
-              className="d-flex align-items-center gap-1"
-              icon={<VectorIcon />}  
-            >
-              {translation("listCustomers.upload")}
-            </Button>
-            {/* {url ? (
+            <div className="col-12 col-md-12 col-lg-6 col-xl-4 mb-3">
+              <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
+                <Button
+                  onClick={toggleUploadModal}
+                  className="d-flex align-items-center gap-1"
+                  icon={<VectorIcon />}
+                >
+                  {translation("listCustomers.upload")}
+                </Button>
+                {/* {url ? (
               <Button
                 onClick={() => {
                   setLoadingUrl(null)
@@ -913,114 +953,121 @@ export default function ListCustomer() {
                 <a href={url} target="_blank">{translation("Tải về")}</a>
               </Button>
             ) : ( */}
-              <Button
-                onClick={onExportListCustomers}
-                className="d-flex align-items-center gap-1"
-                icon={loadingUrl ? <Spin /> : <AnphaIcon />}
-              >
-                {translation("listCustomers.export")}
-              </Button>
-              {!!setting.enableMarketingMessages && (
-              <Button
-                onClick={toggleMessageModal}
-                type="primary"
-                icon={<UnionIcon />}
-                className="d-flex align-items-center gap-1"
-              >
-                {translation("listCustomers.typeMessage")}
-              </Button>
-            )}
-            {/* )} */}
-            <Button
-              className="d-flex justify-content-center align-items-center"
-              type="default"
-              loading={loading}
-              disabled={loading}
-              onClick={() => {
-                setLoading(true);
-                setTimeout(() => {
-                  fetchData(dataFilter);
-                  setLoading(false);
-                }, BUTTON_LOADING_TIME);
-              }}
-            >
-              {!loading && <ReloadOutlined className="addIcon" />}
-            </Button>
+                <Button
+                  onClick={onExportListCustomers}
+                  className="d-flex align-items-center gap-1"
+                  icon={loadingUrl ? <Spin /> : <AnphaIcon />}
+                >
+                  {translation("listCustomers.export")}
+                </Button>
+                {!!setting.enableMarketingMessages && (
+                  <Button
+                    onClick={toggleMessageModal}
+                    type="primary"
+                    icon={<UnionIcon />}
+                    className="d-flex align-items-center gap-1"
+                  >
+                    {translation("listCustomers.typeMessage")}
+                  </Button>
+                )}
+                {/* )} */}
+                <Button
+                  className="d-flex justify-content-center align-items-center"
+                  type="default"
+                  loading={loading}
+                  disabled={loading}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      fetchData(dataFilter);
+                      setLoading(false);
+                    }, BUTTON_LOADING_TIME);
+                  }}
+                >
+                  {!loading && <ReloadOutlined className="addIcon" />}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {message.message && (
-        <div className="d-flex justify-content-center pb-3">
-          <div>
-            <Button disabled type="text">
-              {message.message}
-            </Button>
-            {/* <Button type="text" onClick={handleSelectAll}>
+          {message.message && (
+            <div className="d-flex justify-content-center pb-3">
+              <div>
+                <Button disabled type="text">
+                  {message.message}
+                </Button>
+                {/* <Button type="text" onClick={handleSelectAll}>
 							{message.button}
 						</Button> */}
+              </div>
+            </div>
+          )}
+          <div className="list_customers">
+            <Table
+              dataSource={listDataCustomers.data}
+              rowSelection={{
+                ...rowSelection,
+                selectedRowKeys: selectedRowKeys,
+              }}
+              columns={columns}
+              scroll={{ x: 1312 }}
+              pagination={false}
+            />
+            <BasicTablePaging
+              handlePaginations={handleChangePage}
+              skip={dataFilter.skip}
+              count={listDataCustomers?.data?.length < dataFilter?.limit}
+            ></BasicTablePaging>
           </div>
-        </div>
+          <ModalEditUserInfo
+            isEditing={isEditing}
+            toggleEditModal={toggleEditModal}
+            onUpdateCustomer={onUpdateCustomer}
+            selectedCustomer={selectedCustomer}
+            inputRef={inputRef}
+          />
+          <ModalMessage
+            visible={isSendMessage}
+            toggleMessageModal={toggleMessageModal}
+            onSendMessage={onSendMessage}
+            message={message.message}
+          />
+          <ModalUpload
+            visible={isUploadFile}
+            toggleUploadModal={toggleUploadModal}
+            onUploadFile={onUploadFile}
+            file={fileSelected}
+            selectingFileTemplateChanged={setSelectingFileTemplate}
+            onImportFileToDb={onImportFileToDb}
+            isLoading={isLoading}
+            dataFilter={dataFilter}
+            upload={upload}
+            setUpload={setUpload}
+          />
+          <SMSListModal
+            id={customerId}
+            visible={isModalSMSOpen}
+            onClose={() => setIsModalSMSOpen(false)}
+          />
+          {!!crimePlateNumber && (
+            <ModalCrime
+              plateNumber={crimePlateNumber}
+              onClose={() => setCrimePlateNumber("")}
+            />
+          )}
+          {isModalProgress && (
+            <ModalProgressCustomer
+              visible={isModalProgress}
+              setVisible={setisModalProgress}
+              data={percents}
+              setUpload={setUpload}
+              toggleUploadModal={toggleUploadModal}
+              setFileSelected={setFileSelected}
+              fetchData={fetchData}
+              dataFilter={dataFilter}
+            />
+          )}
+        </main>
       )}
-      <div className="list_customers">
-        <Table
-          dataSource={listDataCustomers.data}
-          rowSelection={{ ...rowSelection, selectedRowKeys: selectedRowKeys }}
-          columns={columns}
-          scroll={{ x: 1312 }}
-          pagination={false}
-        />
-        <BasicTablePaging handlePaginations={handleChangePage} skip={dataFilter.skip} count={listDataCustomers?.data?.length < dataFilter?.limit}></BasicTablePaging>
-      </div>
-      <ModalEditUserInfo
-        isEditing={isEditing}
-        toggleEditModal={toggleEditModal}
-        onUpdateCustomer={onUpdateCustomer}
-        selectedCustomer={selectedCustomer}
-        inputRef={inputRef}
-      />
-      <ModalMessage
-        visible={isSendMessage}
-        toggleMessageModal={toggleMessageModal}
-        onSendMessage={onSendMessage}
-        message={message.message}
-      />
-      <ModalUpload
-        visible={isUploadFile}
-        toggleUploadModal={toggleUploadModal}
-        onUploadFile={onUploadFile}
-        file={fileSelected}
-        selectingFileTemplateChanged={setSelectingFileTemplate}
-        onImportFileToDb={onImportFileToDb}
-        isLoading={isLoading}
-        dataFilter={dataFilter}
-        upload={upload}
-        setUpload={setUpload}
-      />
-      <SMSListModal
-        id={customerId}
-        visible={isModalSMSOpen}
-        onClose={() => setIsModalSMSOpen(false)}
-      />
-      {!!crimePlateNumber && (
-        <ModalCrime
-          plateNumber={crimePlateNumber}
-          onClose={() => setCrimePlateNumber("")}
-        />
-      )}
-        {isModalProgress && (
-        <ModalProgressCustomer
-          visible={isModalProgress}
-          setVisible={setisModalProgress}
-          data={percents}
-          setUpload={setUpload}
-          toggleUploadModal={toggleUploadModal}
-          setFileSelected={setFileSelected}
-          fetchData={fetchData}
-          dataFilter={dataFilter}
-        />
-      )}
-     </main>
-    }
     </Fragment>
   );
 }
