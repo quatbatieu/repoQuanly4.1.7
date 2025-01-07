@@ -271,17 +271,6 @@ function ListUser() {
     fetchData(newFilter);
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableContactMenu === 0 ? (
@@ -362,18 +351,29 @@ function ListUser() {
           </div>
 
           <div className="phonebook__body">
-            <Table
-              dataSource={dataUser.data}
-              columns={columnsEdit}
-              scroll={{ x: 1700 }}
-              components={components}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={dataUser.data.length < dataFilter.limit}
-            ></BasicTablePaging>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={dataUser.data}
+                  columns={columnsEdit}
+                  scroll={{ x: 1700 }}
+                  components={components}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={dataUser.data.length < dataFilter.limit}
+                ></BasicTablePaging>
+              </>
+            )}
           </div>
         </div>
       )}

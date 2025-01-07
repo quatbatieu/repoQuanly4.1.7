@@ -513,11 +513,18 @@ export default function ListDevice() {
         const { index, ...newItem } = item;
         return {
           ...newItem,
-          deviceStatus : item.deviceStatus === "Mới" ? "NEW" : 
-          item.deviceStatus === "Hoạt động" ? "ACTIVE" : 
-          item.deviceStatus === "Bảo trì" ? "MAINTENANCE" : 
-          item.deviceStatus === "Không hoạt động" ? "INACTIVE" : 
-          item.deviceStatus === "Bảo dưỡng" ? "MAINTENANCE_SERVICE" : "REPAIR"
+          deviceStatus:
+            item.deviceStatus === "Mới"
+              ? "NEW"
+              : item.deviceStatus === "Hoạt động"
+              ? "ACTIVE"
+              : item.deviceStatus === "Bảo trì"
+              ? "MAINTENANCE"
+              : item.deviceStatus === "Không hoạt động"
+              ? "INACTIVE"
+              : item.deviceStatus === "Bảo dưỡng"
+              ? "MAINTENANCE_SERVICE"
+              : "REPAIR",
         };
       });
       setIsUploadFile(false);
@@ -530,8 +537,13 @@ export default function ListDevice() {
   };
 
   const handleExportExcel = async () => {
-    let number = Math.ceil(listDocumentary.data.length / DefaultFilterExport.limit);
-    let params = Array.from(Array.from(new Array(number)),(element, index) => index);
+    let number = Math.ceil(
+      listDocumentary.data.length / DefaultFilterExport.limit
+    );
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
     let results = [];
 
     const percentPlus = 100 / params.length;
@@ -542,7 +554,7 @@ export default function ListDevice() {
     while (true) {
       const result = await fetchExportData(_counter++, dataFilter);
       if (result && result.length > 0) {
-        setPercent(prev => prev + percentPlus);
+        setPercent((prev) => prev + percentPlus);
         results = [...results, ...result];
       } else {
         break;
@@ -695,17 +707,6 @@ export default function ListDevice() {
     import: "IMPORT",
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableDeviceMenu === 0 ? (
@@ -716,12 +717,12 @@ export default function ListDevice() {
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Row gutter={[24, 24]}>
                 <Col xs={24} sm={12} md={6} lg={6} xl={4}>
-                   <BasicSearch
+                  <BasicSearch
                     onsearch={onSearch}
                     onchange={onChangeSearchText}
                     placeholder={translation("device.searchByNameSerial")}
                     value={dataFilter.searchText}
-                    />
+                  />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={6} xl={4}>
                   <Select
@@ -766,12 +767,22 @@ export default function ListDevice() {
           </Row>
 
           <div className="list_customers__body">
-            <Table
-              dataSource={listDocumentary.data}
-              columns={columns}
-              scroll={{ x: 1300 }}
-              pagination={false}
-            />
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <Table
+                dataSource={listDocumentary.data}
+                columns={columns}
+                scroll={{ x: 1300 }}
+                pagination={false}
+              />
+            )}
+
             <BasicTablePaging
               handlePaginations={handleChangePage}
               skip={dataFilter.skip}

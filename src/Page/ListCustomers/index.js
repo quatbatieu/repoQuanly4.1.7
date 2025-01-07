@@ -881,17 +881,6 @@ export default function ListCustomer() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableCustomerMenu === 0 ? (
@@ -1002,16 +991,25 @@ export default function ListCustomer() {
             </div>
           )}
           <div className="list_customers">
-            <Table
-              dataSource={listDataCustomers.data}
-              rowSelection={{
-                ...rowSelection,
-                selectedRowKeys: selectedRowKeys,
-              }}
-              columns={columns}
-              scroll={{ x: 1312 }}
-              pagination={false}
-            />
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <Table
+                dataSource={listDataCustomers.data}
+                rowSelection={{
+                  ...rowSelection,
+                  selectedRowKeys: selectedRowKeys,
+                }}
+                columns={columns}
+                scroll={{ x: 1312 }}
+                pagination={false}
+              />
+            )}
             <BasicTablePaging
               handlePaginations={handleChangePage}
               skip={dataFilter.skip}

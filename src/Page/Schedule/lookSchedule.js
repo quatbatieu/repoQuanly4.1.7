@@ -198,13 +198,12 @@ const TableSchedule = ({
       if (result) {
         setLoading(false);
         setDataSchedules(result);
-      } else
-        setLoading(false);
-        dataListSchedules.data.length > 0 &&
-          setDataSchedules({
-            data: [],
-            total: 0,
-          });
+      } else setLoading(false);
+      dataListSchedules.data.length > 0 &&
+        setDataSchedules({
+          data: [],
+          total: 0,
+        });
     });
   };
 
@@ -396,35 +395,38 @@ const TableSchedule = ({
     fetchListData(newFilter);
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <div className="list_schedules__body row">
       <h3 className="section-title mb-3">{title}</h3>
-      <Table
-        dataSource={dataListSchedules.data}
-        rowClassName={(record) =>
-          `${record && record.CustomerScheduleStatus ? "handled_customer" : ""}`
-        }
-        columns={columns}
-        scroll={{ x: 1700 }}
-        pagination={false}
-      />
-      <BasicTablePaging
-        handlePaginations={handleChangePage}
-        skip={dataFilter.skip}
-        count={dataListSchedules?.data?.length < dataFilter.limit}
-      ></BasicTablePaging>
-
+      {loading ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "75vh" }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        <>
+          <Table
+            dataSource={dataListSchedules.data}
+            rowClassName={(record) =>
+              `${
+                record && record.CustomerScheduleStatus
+                  ? "handled_customer"
+                  : ""
+              }`
+            }
+            columns={columns}
+            scroll={{ x: 1700 }}
+            pagination={false}
+          />
+          <BasicTablePaging
+            handlePaginations={handleChangePage}
+            skip={dataFilter.skip}
+            count={dataListSchedules?.data?.length < dataFilter.limit}
+          ></BasicTablePaging>
+        </>
+      )}
       <ModalPrint
         isOpen={isOpenPrint}
         setIsOpen={setIsOpenPrint}

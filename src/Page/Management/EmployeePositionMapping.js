@@ -1,44 +1,70 @@
-import { FormOutlined, LockOutlined, UnlockOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { notification, Space, Table, Select, Input, Button, message, Modal, Form, Popconfirm, Spin, Typography } from 'antd';
-import ModalEditUserInfo from './ModalEditUserInfo';
-import Explaintation from 'Page/ExplainPower';
-import React, { useEffect, useRef, useState, useCallback, Fragment } from 'react'
-import moment from 'moment';
-import { useTranslation } from 'react-i18next';
-import LoginService from "services/loginService"
-import { useSelector } from 'react-redux';
-import ManagementService from '../../services/manageService';
-import { validatorPassword } from 'helper/commonValidator';
-import './management.scss'
-import ModalAddUser from './ModalAdd';
-import UnLock from 'components/UnLock/UnLock';
-import EditableRow from 'components/EditableRow';
-import EditableCell from 'components/EditableCell';
-import { getListPosition, getListInCharge } from 'constants/management';
-import { USER_ROLES } from 'constants/permission';
-import { UserOutlined , QuestionCircleOutlined } from '@ant-design/icons';
-import AppUserDocumentService from 'services/appUserDocumentService';
-import { DOCUMENT_TYPE } from 'constants/management';
+import {
+  FormOutlined,
+  LockOutlined,
+  UnlockOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
+import {
+  notification,
+  Space,
+  Table,
+  Select,
+  Input,
+  Button,
+  message,
+  Modal,
+  Form,
+  Popconfirm,
+  Spin,
+  Typography,
+} from "antd";
+import ModalEditUserInfo from "./ModalEditUserInfo";
+import Explaintation from "Page/ExplainPower";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  Fragment,
+} from "react";
+import moment from "moment";
+import { useTranslation } from "react-i18next";
+import LoginService from "services/loginService";
+import { useSelector } from "react-redux";
+import ManagementService from "../../services/manageService";
+import { validatorPassword } from "helper/commonValidator";
+import "./management.scss";
+import ModalAddUser from "./ModalAdd";
+import UnLock from "components/UnLock/UnLock";
+import EditableRow from "components/EditableRow";
+import EditableCell from "components/EditableCell";
+import { getListPosition, getListInCharge } from "constants/management";
+import { USER_ROLES } from "constants/permission";
+import { UserOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import AppUserDocumentService from "services/appUserDocumentService";
+import { DOCUMENT_TYPE } from "constants/management";
 import { ReactComponent as PrivacyTip } from "assets/icons/privacy_tip.svg";
-import StationDevicesService from 'services/StationDevicesService';
-import debounce from 'lodash/debounce';
-import ModalPrint from './ModalPrint';
+import StationDevicesService from "services/StationDevicesService";
+import debounce from "lodash/debounce";
+import ModalPrint from "./ModalPrint";
 import { isMobileDevice } from "constants/account";
-import BasicTablePaging from 'components/BasicTablePaging/BasicTablePaging';
-import BasicSearch from 'components/BasicSearch';
+import BasicTablePaging from "components/BasicTablePaging/BasicTablePaging";
+import BasicSearch from "components/BasicSearch";
 
 export const LIST_TYPE_PRINT = {
   ADD_NEW: "ADD_NEW",
   EXPORT_FILE: "EXPORT_FILE",
   PRINT_SLIP: "PRINT_SLIP",
-  VIEW_DETAILS: "VIEW_DETAILS"
+  VIEW_DETAILS: "VIEW_DETAILS",
 };
 
 function renderNotAllowedIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
       height="24px"
       viewBox="0 0 24 24"
       width="24px"
@@ -77,7 +103,7 @@ const SelectSearchApi = ({ save, inputRef, form, handleSave, record }) => {
       }
       setIsLoading(false);
     });
-  }
+  };
 
   useEffect(() => {
     getListDevices(null);
@@ -85,140 +111,161 @@ const SelectSearchApi = ({ save, inputRef, form, handleSave, record }) => {
 
   const handleChange = (value) => {
     form.setFieldsValue({ appUserPosition: value });
-  }
+  };
 
   const handleBlur = async () => {
     const values = await form.validateFields();
     handleSave(values);
-  }
+  };
 
   return (
-    <Select onBlur={handleBlur} onChange={handleChange} autoFocus ref={inputRef} filterOption={false} defaultOpen onSelect={handleBlur} showSearch onSearch={handleSearch}>
+    <Select
+      onBlur={handleBlur}
+      onChange={handleChange}
+      autoFocus
+      ref={inputRef}
+      filterOption={false}
+      defaultOpen
+      onSelect={handleBlur}
+      showSearch
+      onSearch={handleSearch}
+    >
       <Select.Option value={999999999999999911} disabled>
-        <p style={{ color: 'grey', whiteSpace: "pre-line", wordBreak: "break-word" }} className='text-very-small text-center'>{translation('management.searchIfNotFound')}</p>
+        <p
+          style={{
+            color: "grey",
+            whiteSpace: "pre-line",
+            wordBreak: "break-word",
+          }}
+          className="text-very-small text-center"
+        >
+          {translation("management.searchIfNotFound")}
+        </p>
       </Select.Option>
       {searchResults.length === 0 && (
-        <Select.Option value={""}>{translation('management.noAssignment')}</Select.Option>
+        <Select.Option value={""}>
+          {translation("management.noAssignment")}
+        </Select.Option>
       )}
       {isLoading ? (
         <Select.Option>
           <Spin />
         </Select.Option>
       ) : (
-        searchResults.map(item => {
+        searchResults.map((item) => {
           return (
-            <Select.Option value={item.deviceName} key={item.stationDevicesId}>{item.deviceName}</Select.Option>
-          )
+            <Select.Option value={item.deviceName} key={item.stationDevicesId}>
+              {item.deviceName}
+            </Select.Option>
+          );
         })
       )}
     </Select>
-  )
-}
+  );
+};
 
 function EmployeePositionMapping() {
-  const [loading, setLoading] = useState(false)
-  const { t: translation } = useTranslation()
-  const member = useSelector(state => state.member)
+  const [loading, setLoading] = useState(false);
+  const { t: translation } = useTranslation();
+  const member = useSelector((state) => state.member);
   const setting = useSelector((state) => state.setting);
-  const [formAdd] = Form.useForm()
+  const [formAdd] = Form.useForm();
   const [form] = Form.useForm();
   const LIST_POSITION = getListPosition(translation);
   const LIST_IN_CHARGE = getListInCharge(translation);
-  const [isPrint, setIsPrint] = useState(false)
-  const inputAddRef = useRef()
+  const [isPrint, setIsPrint] = useState(false);
+  const inputAddRef = useRef();
   const DEFAULT_FILTER = {
-    "filter": {
-      "active": undefined,
-      "username": undefined,
-      "email": undefined,
-      "phoneNumber": undefined,
-      "stationsId": member.stationsId
+    filter: {
+      active: undefined,
+      username: undefined,
+      email: undefined,
+      phoneNumber: undefined,
+      stationsId: member.stationsId,
     },
-    "skip": 0,
-    "limit": 20,
-    "searchText": undefined,
-  }
-  const [dataFilter, setDataFilter] = useState(DEFAULT_FILTER)
-  const [isCreate , setIsCreate] = useState(false);
-  const [TypePrint , setTypePrint] = useState(LIST_TYPE_PRINT.ADD_NEW);
+    skip: 0,
+    limit: 20,
+    searchText: undefined,
+  };
+  const [dataFilter, setDataFilter] = useState(DEFAULT_FILTER);
+  const [isCreate, setIsCreate] = useState(false);
+  const [TypePrint, setTypePrint] = useState(LIST_TYPE_PRINT.ADD_NEW);
   const [dataUser, setDataUser] = useState({
     total: 0,
-    data: []
-  })
-  const [isEditting, setIsEditting] = useState(false)
-  const inputRef = useRef()
-  const [selectedUser, setSelectedUser] = useState(null)
-  const [searchText, setSearchText] = useState('')
-  const [role, setRole] = useState(false)
+    data: [],
+  });
+  const [isEditting, setIsEditting] = useState(false);
+  const inputRef = useRef();
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [role, setRole] = useState(false);
 
   const LIST_COLOR = {
     1: {
       bg: "#7367f01f",
-      icon: "#7367f0"
+      icon: "#7367f0",
     },
     2: {
       bg: "#28c76f1f",
-      icon: "#28c76f"
+      icon: "#28c76f",
     },
     3: {
       bg: "#ff9f431f",
-      icon: "#ff9f43"
+      icon: "#ff9f43",
     },
     4: {
       bg: "#00cfe81f",
-      icon: "#00cfe8"
+      icon: "#00cfe8",
     },
-  }
+  };
   function getColorByAppUserRoleId(appUserRoleId) {
     if (LIST_COLOR[appUserRoleId]) {
-      return LIST_COLOR[appUserRoleId]
+      return LIST_COLOR[appUserRoleId];
     } else {
       return {
         bg: "#00cfe81f",
-        icon: "#00cfe8"
-      }
+        icon: "#00cfe8",
+      };
     }
   }
 
-
   function handleSave(row, key, isReload) {
-    const { appUserId } = row
-
+    const { appUserId } = row;
 
     updateUserData({
       id: appUserId,
       data: {
-        [key]: row[key]
-      }
-    })
+        [key]: row[key],
+      },
+    });
   }
 
   function handleChangeRow(record, currentIndex) {
-    dataUser.data[currentIndex - 1] = record
-    setDataUser({ ...dataUser })
+    dataUser.data[currentIndex - 1] = record;
+    setDataUser({ ...dataUser });
   }
 
   const columns = [
     {
-      title: 'STT',
-      dataIndex: 'stt',
-      key: 'name',
+      title: "STT",
+      dataIndex: "stt",
+      key: "name",
       width: 60,
       render: (_, __, index) => {
         // return dataFilter.skip ? dataUser.total - (dataFilter.skip + index) : dataUser.total - (index)
-        return dataFilter.skip ? dataFilter.skip + index + 1 : index + 1 
-      }
+        return dataFilter.skip ? dataFilter.skip + index + 1 : index + 1;
+      },
     },
     {
-      title: translation('management.registrarCode'),
-      key: 'employeeCode',
-      dataIndex: 'employeeCode',
+      title: translation("management.registrarCode"),
+      key: "employeeCode",
+      dataIndex: "employeeCode",
       width: 200,
     },
     {
-      title: translation('landing.account'),
-      dataIndex: 'username',
-      key: 'username',
+      title: translation("landing.account"),
+      dataIndex: "username",
+      key: "username",
       width: 250,
       render: (value) => {
         return (
@@ -237,48 +284,69 @@ function EmployeePositionMapping() {
       },
     },
     {
-      title: <div className='style_flex'>
-        <div>{translation('management.role')}</div>
-        <div className='style_question' onClick={() => setRole(true)}><QuestionCircleOutlined /></div>
-      </div>,
-      key: 'appUserRoleName',
-      dataIndex: 'appUserRoleName',
+      title: (
+        <div className="style_flex">
+          <div>{translation("management.role")}</div>
+          <div className="style_question" onClick={() => setRole(true)}>
+            <QuestionCircleOutlined />
+          </div>
+        </div>
+      ),
+      key: "appUserRoleName",
+      dataIndex: "appUserRoleName",
       width: 250,
       render: (_, row) => {
         return (
-          <div className='d-flex align-items-center'>
-            <div className='d-flex me-1 management-roleIcon' style={{ background: getColorByAppUserRoleId(row.appUserRoleId).bg }}>
-              <UserOutlined style={{ color: getColorByAppUserRoleId(row.appUserRoleId).icon }} />
+          <div className="d-flex align-items-center">
+            <div
+              className="d-flex me-1 management-roleIcon"
+              style={{
+                background: getColorByAppUserRoleId(row.appUserRoleId).bg,
+              }}
+            >
+              <UserOutlined
+                style={{
+                  color: getColorByAppUserRoleId(row.appUserRoleId).icon,
+                }}
+              />
             </div>
-            <div>{row.appUserRoleName ? row.appUserRoleName : translation('management.none')}</div>
+            <div>
+              {row.appUserRoleName
+                ? row.appUserRoleName
+                : translation("management.none")}
+            </div>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: translation('management.inCharge'),
-      key: 'appUserWorkStep',
-      dataIndex: 'appUserWorkStep',
+      title: translation("management.inCharge"),
+      key: "appUserWorkStep",
+      dataIndex: "appUserWorkStep",
       width: 250,
       rules: [],
-      componentInput: (inputRef, save, form, setEditing ,handleSave) => {
+      componentInput: (inputRef, save, form, setEditing, handleSave) => {
         const handleChange = (values) => {
-          if (values.findIndex(item => item === null) > 0) {
+          if (values.findIndex((item) => item === null) > 0) {
             form.setFieldsValue({ appUserWorkStep: null });
             return;
           }
 
           if (values[0] === null) {
-            const updatedValues = values.filter(item => item !== null);
+            const updatedValues = values.filter((item) => item !== null);
             form.setFieldsValue({ appUserWorkStep: updatedValues });
           }
-        }
+        };
 
         const handleBlur = async () => {
           const values = await form.validateFields();
-          if (!values.appUserWorkStep || values.appUserWorkStep === null || values.appUserWorkStep?.length === 0) {
+          if (
+            !values.appUserWorkStep ||
+            values.appUserWorkStep === null ||
+            values.appUserWorkStep?.length === 0
+          ) {
             handleSave({
-              appUserWorkStep: null
+              appUserWorkStep: null,
             });
             return;
           }
@@ -286,100 +354,129 @@ function EmployeePositionMapping() {
           handleSave({
             appUserWorkStep: values.appUserWorkStep.join(", "),
           });
-          setEditing(false)
-        }
+          setEditing(false);
+        };
 
         return (
-          <Select mode="multiple" onBlur={handleBlur} onChange={handleChange} ref={inputRef} defaultOpen >
-            <Select.Option value={null} disabled={form.getFieldValue('appUserWorkStep') === null}>
-              {translation('management.notInCharge')}
+          <Select
+            mode="multiple"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            ref={inputRef}
+            defaultOpen
+          >
+            <Select.Option
+              value={null}
+              disabled={form.getFieldValue("appUserWorkStep") === null}
+            >
+              {translation("management.notInCharge")}
             </Select.Option>
-            {LIST_IN_CHARGE.map(item => {
+            {LIST_IN_CHARGE.map((item) => {
               return (
-                <Select.Option value={item.value} key={item.value}>{item.label}</Select.Option>
-              )
+                <Select.Option value={item.value} key={item.value}>
+                  {item.label}
+                </Select.Option>
+              );
             })}
           </Select>
-        )
+        );
       },
       render: (value, record) => {
-
-        if(!value) {
-          return  <p>{value || <span style={{ color: "#1890ff" }}>{"---"}</span>}</p>
+        if (!value) {
+          return (
+            <p>{value || <span style={{ color: "#1890ff" }}>{"---"}</span>}</p>
+          );
         }
 
-        return (
-          <p>{value.join(", ")}</p>
-        );
+        return <p>{value.join(", ")}</p>;
       },
       editable: true,
     },
     {
-      title: translation('management.position'),
-      key: 'appUserPosition',
-      dataIndex: 'appUserPosition',
+      title: translation("management.position"),
+      key: "appUserPosition",
+      dataIndex: "appUserPosition",
       width: 250,
       rules: [],
-      componentInput: (inputRef, save, form, setEditing, handleSave, record) => {
+      componentInput: (
+        inputRef,
+        save,
+        form,
+        setEditing,
+        handleSave,
+        record
+      ) => {
         return (
-          <SelectSearchApi onBlur={(()=> setEditing(false))} inputRef={inputRef} save={save} form={form} handleSave={handleSave} record={record} />
-        )
+          <SelectSearchApi
+            onBlur={() => setEditing(false)}
+            inputRef={inputRef}
+            save={save}
+            form={form}
+            handleSave={handleSave}
+            record={record}
+          />
+        );
       },
       render: (value, record) => {
-        const allowedRoles = [USER_ROLES.ADMIN, USER_ROLES.VEHICLE_INSPECTOR, USER_ROLES.SENIOR_VEHICLE_INSPECTOR];
+        const allowedRoles = [
+          USER_ROLES.ADMIN,
+          USER_ROLES.VEHICLE_INSPECTOR,
+          USER_ROLES.SENIOR_VEHICLE_INSPECTOR,
+        ];
         const isEditableRole = allowedRoles.includes(record.appUserRoleId);
-      
+
         if (!isEditableRole) {
           return renderNotAllowedIcon();
         }
 
         return (
           <p>{value || <span style={{ color: "#1890ff" }}>{"---"}</span>}</p>
-        )
+        );
       },
       editable: true,
     },
     {
       title: translation("receipt.action"),
-      key: 'action',
+      key: "action",
       // width: 200,
       render: (_, record) => {
         return (
-          <div className='d-flex align-items-center justify-content-between'>
-            {
-              record.active === 1 ? (
-                <LockOutlined
-                  onClick={() => updateUserData({
+          <div className="d-flex align-items-center justify-content-between">
+            {record.active === 1 ? (
+              <LockOutlined
+                onClick={() =>
+                  updateUserData({
                     id: record.appUserId,
                     data: {
-                      active: 0
-                    }
-                  })}
-                  style={{ color: "var(--primary-color)" }}
-                />
-              ) : (
-                <UnlockOutlined onClick={() => updateUserData({
-                  id: record.appUserId,
-                  data: {
-                    active: 1
-                  }
-                })} />
-              )
-            }
-            <IconChangePassword
-              record={record}
-              member={member}
-            />
+                      active: 0,
+                    },
+                  })
+                }
+                style={{ color: "var(--primary-color)" }}
+              />
+            ) : (
+              <UnlockOutlined
+                onClick={() =>
+                  updateUserData({
+                    id: record.appUserId,
+                    data: {
+                      active: 1,
+                    },
+                  })
+                }
+              />
+            )}
+            <IconChangePassword record={record} member={member} />
             <Button
-              type='link'
-              className='p-0'
+              type="link"
+              className="p-0"
               onClick={() => {
-                setSelectedUser(record)
-                setIsEditting(true)
+                setSelectedUser(record);
+                setIsEditting(true);
                 if (inputRef && inputRef.current) {
                   setTimeout(() => {
-                    inputRef.current.focus()
-                  }, 100)
+                    inputRef.current.focus();
+                  }, 100);
                 }
               }}
             >
@@ -419,9 +516,9 @@ function EmployeePositionMapping() {
             )
             } */}
           </div>
-        )
+        );
       },
-    }
+    },
   ];
 
   const components = {
@@ -439,9 +536,13 @@ function EmployeePositionMapping() {
     return {
       ...col,
       onCell: (record) => {
-        const allowedRoles = [USER_ROLES.ADMIN, USER_ROLES.VEHICLE_INSPECTOR, USER_ROLES.SENIOR_VEHICLE_INSPECTOR];
+        const allowedRoles = [
+          USER_ROLES.ADMIN,
+          USER_ROLES.VEHICLE_INSPECTOR,
+          USER_ROLES.SENIOR_VEHICLE_INSPECTOR,
+        ];
         const isEditableRole = allowedRoles.includes(record.appUserRoleId);
-        
+
         const nonEditableFields = ["appUserPosition"];
         const isEditableField = !nonEditableFields.includes(col.dataIndex);
 
@@ -454,35 +555,37 @@ function EmployeePositionMapping() {
           componentInput: col.componentInput,
           rules: col.rules,
           handleSave: (row, isReload) => handleSave(row, col.key, isReload),
-          handleChangeRow: (record) => handleChangeRow(record, index)
+          handleChangeRow: (record) => handleChangeRow(record, index),
         };
-      }
+      },
     };
   });
 
   function updateUserData(data, callback = () => false) {
-    ManagementService.updateUser(data).then(result => {
+    ManagementService.updateUser(data).then((result) => {
       if (result.isSuccess) {
-        setSelectedUser(null)
-        fetchData(dataFilter)
-        isEditting && setIsEditting(false)
+        setSelectedUser(null);
+        fetchData(dataFilter);
+        isEditting && setIsEditting(false);
         notification.success({
-          message: '',
-          description: translation('accreditation.updateSuccess')
-        })
-        callback()
+          message: "",
+          description: translation("accreditation.updateSuccess"),
+        });
+        callback();
       } else {
-        callback()
+        callback();
         notification.error({
-          message: '',
-          description: translation(result.error ? result.error : "accreditation.updateError")
-        })
+          message: "",
+          description: translation(
+            result.error ? result.error : "accreditation.updateError"
+          ),
+        });
       }
-    })
+    });
   }
 
   function fetchData(paramFilter) {
-    ManagementService.getListUser(paramFilter).then(result => {
+    ManagementService.getListUser(paramFilter).then((result) => {
       if (result) {
         result.data = result.data.map((item) => {
           if (!item.appUserWorkStep) {
@@ -491,55 +594,57 @@ function EmployeePositionMapping() {
 
           return {
             ...item,
-            appUserWorkStep : item.appUserWorkStep?.split(',').map(item => item.trim())
-          }
-        })
-        setLoading(false)
-        setDataUser(result)
+            appUserWorkStep: item.appUserWorkStep
+              ?.split(",")
+              .map((item) => item.trim()),
+          };
+        });
+        setLoading(false);
+        setDataUser(result);
       } else {
         notification.error({
-          message: '',
-          description: translation('new.fetchDataFailed')
-        })
+          message: "",
+          description: translation("new.fetchDataFailed"),
+        });
       }
-    })
+    });
   }
 
   useEffect(() => {
-    setLoading(true)
-    isMobileDevice(window.outerWidth)
-    if(isMobileDevice(window.outerWidth) === true){
-      dataFilter.limit = 10
+    setLoading(true);
+    isMobileDevice(window.outerWidth);
+    if (isMobileDevice(window.outerWidth) === true) {
+      dataFilter.limit = 10;
     }
-    fetchData(dataFilter)
-  }, [])
+    fetchData(dataFilter);
+  }, []);
 
   const handleChangePage = (pageNum) => {
     const newFilter = {
       ...dataFilter,
-      skip : (pageNum -1) * dataFilter.limit
-    }
-    setDataFilter(newFilter)
-    fetchData(newFilter)
-  }
-  
+      skip: (pageNum - 1) * dataFilter.limit,
+    };
+    setDataFilter(newFilter);
+    fetchData(newFilter);
+  };
+
   const onFilterUserByStatus = (e) => {
-    let newFilter = dataFilter
+    let newFilter = dataFilter;
     if (e || e === 0) {
-      newFilter.filter.active = e
+      newFilter.filter.active = e;
     } else {
-      newFilter.filter.active = undefined
+      newFilter.filter.active = undefined;
     }
-    setDataFilter(newFilter)
-    fetchData(newFilter)
-  }
+    setDataFilter(newFilter);
+    fetchData(newFilter);
+  };
 
   function handleFilter() {
-    let newFilter = dataFilter
+    let newFilter = dataFilter;
     newFilter.skip = 0;
-    newFilter.searchText = searchText ? searchText : undefined
-    setDataFilter(newFilter)
-    fetchData(newFilter)
+    newFilter.searchText = searchText ? searchText : undefined;
+    setDataFilter(newFilter);
+    fetchData(newFilter);
   }
 
   const uploadDocument = async (param, documentType, id) => {
@@ -548,20 +653,23 @@ function EmployeePositionMapping() {
       appUserId: id,
       documentName: name,
       documentType: documentType,
-      documentURL: response
-    })
-  }
+      documentURL: response,
+    });
+  };
 
-  async function uploadDocumentProfile({ id, listProfilePicture, listSampleSignature }, callback) {
+  async function uploadDocumentProfile(
+    { id, listProfilePicture, listSampleSignature },
+    callback
+  ) {
     for (const param of listProfilePicture) {
       const result = await uploadDocument(param, DOCUMENT_TYPE.PROFILE, id);
       if (!result.issSuccess) {
         notification.warn({
-          message: '',
-          description: translation('management.errorAddDocument', {
-            fileName: param.name
-          })
-        })
+          message: "",
+          description: translation("management.errorAddDocument", {
+            fileName: param.name,
+          }),
+        });
       }
     }
 
@@ -569,105 +677,113 @@ function EmployeePositionMapping() {
       const result = await uploadDocument(param, DOCUMENT_TYPE.SIGNATURE, id);
       if (!result.issSuccess) {
         notification.warn({
-          message: '',
-          description: translation('management.errorAddDocument', {
-            fileName: param.name
-          })
-        })
+          message: "",
+          description: translation("management.errorAddDocument", {
+            fileName: param.name,
+          }),
+        });
       }
     }
     callback();
   }
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
-     {setting.enableManagerMenu === 0 ? <UnLock /> :
-      <div className="management managementEmployee">
-      <div className="row">
-        <div className="col-12 col-md-4 col-lg-3 col-xl-2 mb-3">
-          <BasicSearch
-            className="w-100"
-            value={searchText}
-            onpressenter={handleFilter}
-            onsearch={handleFilter}
-            onchange={(e) => setSearchText(e.target.value)}
-            placeholder={translation('landing.search')}
+      {setting.enableManagerMenu === 0 ? (
+        <UnLock />
+      ) : (
+        <div className="management managementEmployee">
+          <div className="row">
+            <div className="col-12 col-md-4 col-lg-3 col-xl-2 mb-3">
+              <BasicSearch
+                className="w-100"
+                value={searchText}
+                onpressenter={handleFilter}
+                onsearch={handleFilter}
+                onchange={(e) => setSearchText(e.target.value)}
+                placeholder={translation("landing.search")}
+              />
+            </div>
+
+            <div className="col-12 col-md-4 col-lg-3 col-xl-2">
+              <Button
+                className="w-100 d-flex align-items-center justify-content-center"
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  setIsPrint(true);
+                  setTypePrint(LIST_TYPE_PRINT.ADD_NEW);
+                  setTimeout(() => {
+                    if (inputAddRef && inputAddRef.current) {
+                      inputAddRef.current.focus();
+                    }
+                  }, 10);
+                }}
+                type="primary"
+              >
+                {translation("management.createAssignmentTicket")}
+              </Button>
+            </div>
+          </div>
+
+          <div className="management__body">
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={dataUser.data}
+                  columns={columnsEdit}
+                  scroll={{ x: 1400 }}
+                  components={components}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={dataUser?.data?.length < dataFilter?.limit}
+                ></BasicTablePaging>
+              </>
+            )}
+          </div>
+          <ModalEditUserInfo
+            isEditing={isEditting}
+            toggleEditModal={() => setIsEditting(!isEditting)}
+            onUpdateUser={updateUserData}
+            selectedUserId={selectedUser?.appUserId}
+            inputRef={inputRef}
+            member={member}
+          />
+          {isPrint && (
+            <ModalPrint
+              isVisible={isPrint}
+              onCancel={() => setIsPrint(false)}
+              member={member}
+              data={dataUser}
+              TypePrint={TypePrint}
             />
+          )}
+          <ModalRole modal={role} onCancel={() => setRole(false)} />
         </div>
-
-        <div className='col-12 col-md-4 col-lg-3 col-xl-2'>
-          <Button
-            className='w-100 d-flex align-items-center justify-content-center'
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setIsPrint(true)
-              setTypePrint(LIST_TYPE_PRINT.ADD_NEW);
-              setTimeout(() => {
-                if (inputAddRef && inputAddRef.current) {
-                  inputAddRef.current.focus()
-                }
-              }, 10)
-            }}
-            type="primary"
-          >{translation('management.createAssignmentTicket')}
-          </Button>
-        </div>
-      </div>
-
-      <div className="management__body">
-        <Table
-          dataSource={dataUser.data}
-          columns={columnsEdit}
-          scroll={{ x: 1400 }}
-          components={components}
-          pagination={false}
-        />
-        <BasicTablePaging handlePaginations={handleChangePage} skip={dataFilter.skip} count={dataUser?.data?.length < dataFilter?.limit}></BasicTablePaging>
-      </div>
-      <ModalEditUserInfo
-        isEditing={isEditting}
-        toggleEditModal={() => setIsEditting(!isEditting)}
-        onUpdateUser={updateUserData}
-        selectedUserId={selectedUser?.appUserId}
-        inputRef={inputRef}
-        member={member}
-      />
-      {isPrint && (
-        <ModalPrint
-          isVisible={isPrint}
-          onCancel={() => setIsPrint(false)}
-          member={member}
-          data={dataUser}
-          TypePrint={TypePrint}
-        />
       )}
-      <ModalRole
-        modal={role}
-        onCancel={() => setRole(false)}
-      />
-      </div>
-     }
     </Fragment>
-  )
+  );
 }
 
 const IconChangePassword = ({ member, record }) => {
-  const [isOpenModalChangePassword, setIsOpenModalChangePassword] = useState(false);
+  const [isOpenModalChangePassword, setIsOpenModalChangePassword] =
+    useState(false);
 
   return (
     <>
-      <span onClick={() => setIsOpenModalChangePassword(true)} className='management-privacyTip'>
+      <span
+        onClick={() => setIsOpenModalChangePassword(true)}
+        className="management-privacyTip"
+      >
         <PrivacyTip />
       </span>
       {member.appUserRoleId === USER_ROLES.ADMIN && (
@@ -675,48 +791,50 @@ const IconChangePassword = ({ member, record }) => {
           {isOpenModalChangePassword && (
             <ModalChangePassword
               isOpen={isOpenModalChangePassword}
-              toggleModal={() => setIsOpenModalChangePassword(!isOpenModalChangePassword)}
+              toggleModal={() =>
+                setIsOpenModalChangePassword(!isOpenModalChangePassword)
+              }
               selectedUserId={record.appUserId}
             />
           )}
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 const ModalChangePassword = ({ isOpen, toggleModal, selectedUserId }) => {
-  const { t: translation } = useTranslation()
-  const [form] = Form.useForm()
+  const { t: translation } = useTranslation();
+  const [form] = Form.useForm();
 
   const onFinish = (values) => {
     LoginService.changePasswordUser({
       id: selectedUserId,
-      ...values
-    }).then(result => {
+      ...values,
+    }).then((result) => {
       if (result && result.isSuccess) {
         notification.success({
           message: "",
           description: translation("listCustomers.success", {
-            type: translation('setting.changePass')
-          })
-        })
-        form.resetFields()
-        toggleModal()
+            type: translation("setting.changePass"),
+          }),
+        });
+        form.resetFields();
+        toggleModal();
       } else {
         notification.error({
           message: "",
           description: translation("listCustomers.failed", {
-            type: translation('setting.changePass')
-          })
-        })
+            type: translation("setting.changePass"),
+          }),
+        });
       }
-    })
-  }
+    });
+  };
   return (
     <Modal
       visible={isOpen}
-      title={translation('setting.changePass')}
+      title={translation("setting.changePass")}
       onCancel={toggleModal}
       footer={null}
     >
@@ -728,39 +846,42 @@ const ModalChangePassword = ({ isOpen, toggleModal, selectedUserId }) => {
               required: false,
               validator(_, value) {
                 return validatorPassword(value, translation);
-              }
-            }
+              },
+            },
           ]}
-          label={translation('landing.newPassword')}
+          label={translation("landing.newPassword")}
         >
-          <Input placeholder={translation('landing.enterNewPassword')} autoFocus />
+          <Input
+            placeholder={translation("landing.enterNewPassword")}
+            autoFocus
+          />
         </Form.Item>
 
         <div className="d-flex w-100 justify-content-end">
           <Button type="primary" htmlType="submit">
-            {translation('landing.confirm')}
+            {translation("landing.confirm")}
           </Button>
         </div>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
-const ModalRole = ({ modal, onCancel,  }) => {
-  const { t: translation } = useTranslation()
+const ModalRole = ({ modal, onCancel }) => {
+  const { t: translation } = useTranslation();
   return (
     <Modal
       visible={modal}
-      title={translation('header.explainPower')}
+      title={translation("header.explainPower")}
       onCancel={onCancel}
       footer={null}
       width="1400px"
     >
-      <div className='modal_role'>
-      <Explaintation />
+      <div className="modal_role">
+        <Explaintation />
       </div>
     </Modal>
-  )
-}
+  );
+};
 
 export default EmployeePositionMapping;

@@ -273,7 +273,7 @@ export default function VehicleList() {
     vehicleProfileService.search(filter).then((result) => {
       if (result) {
         setListDocumentary(result);
-        setLoading(false)
+        setLoading(false);
       }
     });
   };
@@ -305,7 +305,7 @@ export default function VehicleList() {
     fetchDataStation();
   }, []);
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetchData(dataFilter);
   }, []);
 
@@ -444,73 +444,73 @@ export default function VehicleList() {
     fetchData(newFilter);
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
-    {setting.enableVehicleRegistrationMenu === 0 ? (
-      <UnLock />
-    ) : (
-      <main className="list_customers">
-        <Row gutter={[24, 24]} className="mb-3">
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <Row gutter={[24, 24]}>
-              <Col xs={24} sm={12} md={6} lg={6} xl={4}>
-                <BasicSearch
-                  className="w-100"
-                  placeholder={translation("listCustomers.search")}
-                  onchange={onChangeSearchText}
-                  value={dataFilter.searchText}
-                  onsearch={onSearch}
+      {setting.enableVehicleRegistrationMenu === 0 ? (
+        <UnLock />
+      ) : (
+        <main className="list_customers">
+          <Row gutter={[24, 24]} className="mb-3">
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Row gutter={[24, 24]}>
+                <Col xs={24} sm={12} md={6} lg={6} xl={4}>
+                  <BasicSearch
+                    className="w-100"
+                    placeholder={translation("listCustomers.search")}
+                    onchange={onChangeSearchText}
+                    value={dataFilter.searchText}
+                    onsearch={onSearch}
+                  />
+                </Col>
+                <Col xs={24} sm={12} md={12} lg={6} xl={4}>
+                  <Select
+                    onChange={onFilterUserByStationId}
+                    className="w-100"
+                    placeholder="Mã trạm"
+                  >
+                    <Select.Option value={0}>
+                      {translation("PhoneBook.allStations")}
+                    </Select.Option>
+                    {dataStation?.length > 0 &&
+                      dataStation.map((item) => (
+                        <Select.Option
+                          key={item.stationsId}
+                          value={item.stationsId}
+                        >
+                          {item.stationCode}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <div className="list_customers__body">
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={listDocumentary.data}
+                  columns={columns}
+                  scroll={{ x: 1510 }}
+                  pagination={false}
                 />
-              </Col>
-              <Col xs={24} sm={12} md={12} lg={6} xl={4}>
-                <Select
-                  onChange={onFilterUserByStationId}
-                  className="w-100"
-                  placeholder="Mã trạm"
-                >
-                  <Select.Option value={0}>
-                    {translation("PhoneBook.allStations")}
-                  </Select.Option>
-                  {dataStation?.length > 0 &&
-                    dataStation.map((item) => (
-                      <Select.Option
-                        key={item.stationsId}
-                        value={item.stationsId}
-                      >
-                        {item.stationCode}
-                      </Select.Option>
-                    ))}
-                </Select>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <div className="list_customers__body">
-          <Table
-            dataSource={listDocumentary.data}
-            columns={columns}
-            scroll={{ x: 1510 }}
-            pagination={false}
-          />
-          <BasicTablePaging
-            handlePaginations={handleChangePage}
-            skip={dataFilter.skip}
-            count={listDocumentary?.data?.length < dataFilter?.limit}
-          ></BasicTablePaging>
-        </div>
-      </main>
-    )}
-  </Fragment>
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={listDocumentary?.data?.length < dataFilter?.limit}
+                ></BasicTablePaging>
+              </>
+            )}
+          </div>
+        </main>
+      )}
+    </Fragment>
   );
 }

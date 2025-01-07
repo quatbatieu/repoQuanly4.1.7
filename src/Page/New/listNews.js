@@ -285,17 +285,6 @@ export default function ListNews({
     fetchDataNewsNoConcat(newFilter);
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableNewsMenu === 0 ? (
@@ -339,17 +328,28 @@ export default function ListNews({
               </Row>
             </Col>
           </Row>
-          <Table
-            scroll={{ x: 1200 }}
-            columns={columns}
-            dataSource={dataNews}
-            pagination={false}
-          />
-          <BasicTablePaging
-            handlePaginations={handleChangePage}
-            skip={dataFilter.skip}
-            count={dataNews?.length < dataFilter?.limit}
-          ></BasicTablePaging>
+          {loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: "75vh" }}
+            >
+              <Spin />
+            </div>
+          ) : (
+            <>
+              <Table
+                scroll={{ x: 1200 }}
+                columns={columns}
+                dataSource={dataNews}
+                pagination={false}
+              />
+              <BasicTablePaging
+                handlePaginations={handleChangePage}
+                skip={dataFilter.skip}
+                count={dataNews?.length < dataFilter?.limit}
+              ></BasicTablePaging>
+            </>
+          )}
           <ModalEditUserInfo
             isEditing={isOpenModalDetail}
             toggleEditModal={() => setIsOpenModalDetail(!isOpenModalDetail)}

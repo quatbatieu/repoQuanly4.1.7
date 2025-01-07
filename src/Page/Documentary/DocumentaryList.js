@@ -371,17 +371,6 @@ export default function DocumentaryList() {
     return false;
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableDocumentMenu === 0 ? (
@@ -424,12 +413,22 @@ export default function DocumentaryList() {
             </div>
           )}
           <div className="list_customers__body">
-            <Table
-              dataSource={listDocumentary.data}
-              columns={columns}
-              scroll={{ x: 1440 }}
-              pagination={false}
-            />
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <Table
+                dataSource={listDocumentary.data}
+                columns={columns}
+                scroll={{ x: 1440 }}
+                pagination={false}
+              />
+            )}
+
             <BasicTablePaging
               handlePaginations={handleChangePage}
               skip={dataFilter.skip}

@@ -737,17 +737,6 @@ const ListSMS = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
-
   return (
     <Fragment>
       {setting.enableMarketingMessages === 0 ? (
@@ -827,17 +816,28 @@ const ListSMS = () => {
           </div>
 
           <div className="list_sms_body row">
-            <Table
-              dataSource={data.data}
-              columns={columns}
-              scroll={{ x: 2100 }}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              count={data?.data?.length < filter.limit}
-              skip={filter.skip}
-            ></BasicTablePaging>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={data.data}
+                  columns={columns}
+                  scroll={{ x: 2100 }}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  count={data?.data?.length < filter.limit}
+                  skip={filter.skip}
+                ></BasicTablePaging>
+              </>
+            )}
           </div>
           {isModalProgress && (
             <ModalProgress

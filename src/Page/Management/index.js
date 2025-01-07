@@ -623,8 +623,8 @@ function ListUser() {
       ...filter,
       limit: DefaultFilterExport.limit,
       skip: param * DefaultFilterExport.limit,
-    })
-    
+    });
+
     const data = await response.data;
     return data;
   };
@@ -680,17 +680,6 @@ function ListUser() {
       });
     }, 1000);
   };
-
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "75vh" }}
-      >
-        <Spin />
-      </div>
-    );
-  }
 
   return (
     <Fragment>
@@ -776,18 +765,29 @@ function ListUser() {
             </Col>
           </Row>
           <div className="management__body">
-            <Table
-              dataSource={dataUser.data}
-              columns={columnsEdit}
-              scroll={{ x: 1300 }}
-              components={components}
-              pagination={false}
-            />
-            <BasicTablePaging
-              handlePaginations={handleChangePage}
-              skip={dataFilter.skip}
-              count={dataUser?.data?.length < dataFilter.limit}
-            ></BasicTablePaging>
+            {loading ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "75vh" }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Table
+                  dataSource={dataUser.data}
+                  columns={columnsEdit}
+                  scroll={{ x: 1300 }}
+                  components={components}
+                  pagination={false}
+                />
+                <BasicTablePaging
+                  handlePaginations={handleChangePage}
+                  skip={dataFilter.skip}
+                  count={dataUser?.data?.length < dataFilter.limit}
+                ></BasicTablePaging>
+              </>
+            )}
           </div>
           <ModalRole modal={role} onCancel={() => setRole(false)} />
           <ModalLock modal={lock} onCancel={() => setLock(false)} />
