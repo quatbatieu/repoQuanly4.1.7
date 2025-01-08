@@ -23,6 +23,13 @@ const privilegedRoutes = (translation) => {
 const staticRoutes = (translation) => {
   let listHeader = [
     {
+      name: translation('header.layout1'),
+      href: routes.layout1.path,
+      icon: <CodeSandboxCircleFilled  />,
+      permissionName : routes.layout1.permissionName,
+      routerChildren: []
+    },
+    {
       name: translation("header.accreditation"),
       href: routes.accreditation.path,
       icon: <InsertRowBelowOutlined />,
