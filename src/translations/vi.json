@@ -320,7 +320,8 @@
     "explainPower" : "Giải thích quyền hạn",
     "permission_employee" : "Phân quyền cho nhân viên",
     "encryption": "Mã hóa",
-    "overview": "Tổng quan"
+    "overview": "Tổng quan",
+    "layout1":"layout1"
   },
   "integrated" : {
    "title" : "Tích hợp",
