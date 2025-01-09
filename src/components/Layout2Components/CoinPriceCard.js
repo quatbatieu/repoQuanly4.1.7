@@ -1,5 +1,5 @@
 import { ReloadOutlined } from "@ant-design/icons";
-import { Card, Typography } from "antd";
+import {  Typography } from "antd";
 import React from "react";
 
 const CoinPriceCard = ({
@@ -11,7 +11,7 @@ const CoinPriceCard = ({
   chartType,
 }) => {
   return (
-    <Card className="rounded-lg shadow-lg bg-white">
+    <div className="bg-white">
       <div className="d-flex justify-content-between">
         <div>
           <Typography.Title className="m-0" level={3}>
@@ -65,7 +65,7 @@ const CoinPriceCard = ({
           </svg>
         )}
       </div>
-    </Card>
+    </div>
   );
 };
 

@@ -1,7 +1,4 @@
-import {
-  ArrowUpOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { ArrowUpOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Button,
@@ -84,24 +81,17 @@ const Layout2 = () => {
       <Row gutter={[24, 24]} className="mb-3">
         {cardData.map((data, index) => {
           return (
-            <Col
-              xl={6}
-              lg={6}
-              md={6}
-              sm={24}
-              xs={24}
-              key={data.id}
-              className="shadow-lg"
-            >
-              <CoinPriceCard key={index} {...data} />
+            <Col xl={6} lg={6} md={6} sm={24} xs={24} key={data.id}>
+              <div className="p-3 bg-white rounded shadow">
+                <CoinPriceCard key={index} {...data} />
+              </div>
             </Col>
           );
         })}
       </Row>
-      <Row gutter={[24, 24]} className="equal-height-row mb-3 ">
+      <Row gutter={[24, 24]} className="equal-height-row mb-3">
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
           <div className="d-flex justify-content-between bg-white p-3 shadow-lg rounded full-height">
-            {/* Left Section */}
             <div className="flex-grow-1 pr-3">
               <Typography.Title level={4}>
                 Your Portfolio Balance
@@ -165,7 +155,7 @@ const Layout2 = () => {
           </div>
         </Col>
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-          <div className="bg-white full-height shadow-lg">
+          <div className="bg-white full-height shadow">
             <BalanceHistoryChart className="chart-scale" />
           </div>
         </Col>
@@ -173,73 +163,68 @@ const Layout2 = () => {
       <Row gutter={[24, 24]} className="equal-height-row mb-3 height">
         <Col xl={8} lg={8} md={8} sm={24} xs={24}>
           <div className="bg-white shadow-lg rounded full-height p-3">
-            <Card
-              title="Send Money To"
-              extra={
-                <Typography.Text type="link" className="text-primary">
-                  <PlusCircleOutlined /> Add New Account
-                </Typography.Text>
-              }
-              bordered
-            >
-              <Table
-                dataSource={[
-                  {
-                    key: "1",
-                    name: "Jeniffer L.",
-                    transfer: "2 hrs. ago",
-                    avatar:
-                      "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-                  },
-                  {
-                    key: "2",
-                    name: "Jim Green",
-                    transfer: "17 days ago",
-                    avatar:
-                      "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-                  },
-                  {
-                    key: "3",
-                    name: "Joe Black",
-                    transfer: "1 month ago",
-                    avatar:
-                      "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-                  },
-                  {
-                    key: "4",
-                    name: "Mila Alba",
-                    transfer: "1 month ago",
-                    avatar:
-                      "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-                  },
-                ]}
-                columns={[
-                  {
-                    title: "Account Holder Name",
-                    dataIndex: "name",
-                    key: "name",
-                    render: (text, record) => (
-                      <div className="d-flex align-items-center">
-                        <Avatar
-                          src={record.avatar}
-                          style={{ marginRight: 8 }}
-                        />
-                        {text}
-                      </div>
-                    ),
-                  },
-                  {
-                    title: "Last Transfer",
-                    dataIndex: "transfer",
-                  },
-                  {
-                    title: "Action",
-                    render: () => <Button type="link">Pay</Button>,
-                  },
-                ]}
-                pagination={false}
-              />
-            </Card>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <Typography.Title className="p-0 m-0" level={5}>
+                Send Money To
+              </Typography.Title>
+              <Typography.Text className="text-primary p-0 m-0">
+                <PlusCircleOutlined /> Add New Account
+              </Typography.Text>
+            </div>
+            <Table
+              dataSource={[
+                {
+                  key: "1",
+                  name: "Jeniffer L.",
+                  transfer: "2 hrs. ago",
+                  avatar:
+                    "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                },
+                {
+                  key: "2",
+                  name: "Jim Green",
+                  transfer: "17 days ago",
+                  avatar:
+                    "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                },
+                {
+                  key: "3",
+                  name: "Joe Black",
+                  transfer: "1 month ago",
+                  avatar:
+                    "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                },
+                {
+                  key: "4",
+                  name: "Mila Alba",
+                  transfer: "1 month ago",
+                  avatar:
+                    "https://th.bing.com/th/id/OIP.o_1NSEa321or-RYEqvLEbgHaJN?w=131&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                },
+              ]}
+              columns={[
+                {
+                  title: "Account Holder Name",
+                  dataIndex: "name",
+                  key: "name",
+                  render: (text, record) => (
+                    <div className="d-flex align-items-center">
+                      <Avatar src={record.avatar} style={{ marginRight: 8 }} />
+                      {text}
+                    </div>
+                  ),
+                },
+                {
+                  title: "Last Transfer",
+                  dataIndex: "transfer",
+                },
+                {
+                  title: "Action",
+                  render: () => <Button type="link">Pay</Button>,
+                },
+              ]}
+              pagination={false}
+            />
           </div>
         </Col>
         <Col xl={8} lg={8} md={8} sm={24} xs={24}>
@@ -278,7 +263,7 @@ const Layout2 = () => {
         </Col>
         <Col xl={8} lg={8} md={8} sm={24} xs={24}>
           <div className="bg-white shadow-lg rounded full-height p-3">
-            <Card title="Currency Calculator" bordered={false}>
+              <Typography.Title level={4}>Currency Calculator</Typography.Title>
               <Typography.Text>1.87 BTC equals</Typography.Text>
               <Typography.Title level={2} className="text-primary my-2">
                 11466.78 USD
@@ -311,8 +296,7 @@ const Layout2 = () => {
                   Transfer Now
                 </Button>
               </div>
-            </Card>
-          </div>
+            </div>
         </Col>
       </Row>
     </div>
