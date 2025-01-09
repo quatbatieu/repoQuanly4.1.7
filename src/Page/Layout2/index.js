@@ -155,7 +155,7 @@ const Layout2 = () => {
           </div>
         </Col>
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-          <div className="bg-white full-height shadow">
+          <div className="bg-white full-height shadow p-3">
             <BalanceHistoryChart className="chart-scale" />
           </div>
         </Col>
