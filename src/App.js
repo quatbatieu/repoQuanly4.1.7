@@ -75,6 +75,7 @@ import EncryptionPage from "Page/Encryption";
 import EncryptNDecryptPage from "Page/Encryption";
 import Overview from "Page/Overview";
 import Layout1 from "Page/Layout1";
+import Layout2 from "Page/Layout2";
 // import { onMessage , getMessaging , isSupported } from "firebase/messaging";
 // import { firebaseConfig } from "firebase/messaging_init_in_sw";
 // import { initializeApp } from "firebase/app";
@@ -624,6 +625,18 @@ export const routes = {
       isHeaderTextOnly:false
     },
     component:Layout1
+  },
+  layout2:{
+    path:"/layout2",
+    permissionName:"MASTER",
+    isAuth:true,
+    props:{
+      isShowHeader:true,
+      isShowFooter:false,
+      isShowMenu:true,
+      isHeaderTextOnly:false
+    },
+    component:Layout2
   }
 }
 

@@ -321,7 +321,9 @@
     "permission_employee" : "Phân quyền cho nhân viên",
     "encryption": "Mã hóa",
     "overview": "Tổng quan",
-    "layout1":"layout1"
+    "layout1":"layout1",
+    "layout2":"layout2"
+
   },
   "integrated" : {
    "title" : "Tích hợp",

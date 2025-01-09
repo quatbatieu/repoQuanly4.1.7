@@ -1,0 +1,26 @@
+.equal-height-row {
+  display: flex;
+  align-items: stretch;
+
+  .ant-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .full-height {
+    flex: 1;
+  }
+
+  @media screen and (max-width: 480px) {
+    .sm-dflex-between{
+        display: flex;
+        justify-content: space-between;
+    }
+    .circle-progress-scale {
+      transform: scale(0.6) !important;
+    }
+    .chart-scale {
+      transform: scale(0.8) !important;
+    }
+  }
+}
