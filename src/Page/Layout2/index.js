@@ -1,3 +1,4 @@
+
 import {
   ArrowUpOutlined,
   PlusCircleOutlined,
@@ -170,7 +171,6 @@ const Layout2 = () => {
                 </Typography.Text>
               </div>
             </div>
-
             <div className="flex-grow-1 border-left pl-3">
               <Typography.Title level={5}>
                 Portfolio Distribution
@@ -451,6 +451,40 @@ const Layout2 = () => {
               pagination={false}
             />
           </div>
+              <Typography.Title level={4}>Currency Calculator</Typography.Title>
+              <Typography.Text>1.87 BTC equals</Typography.Text>
+              <Typography.Title level={2} className="text-primary my-2">
+                11466.78 USD
+              </Typography.Title>
+              <Typography.Text type="secondary">
+                @ 1 BTC = 6178.72 USD
+              </Typography.Text>
+              <div style={{ marginTop: "20px" }}>
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <label>From</label>
+                    <Select defaultValue="BTC">
+                      <Select.Option value="BTC">BTC</Select.Option>
+                      <Select.Option value="ETH">ETH</Select.Option>
+                    </Select>
+                  </Col>
+                  <Col span={8}>
+                    <label>To</label>
+                    <Select defaultValue="BTC">
+                      <Select.Option value="BTC">BTC</Select.Option>
+                      <Select.Option value="ETH">ETH</Select.Option>
+                    </Select>
+                  </Col>
+                  <Col span={8}>
+                    <label>Amount (BTC):</label>
+                    <Input placeholder="0.0" />
+                  </Col>
+                </Row>
+                <Button type="primary" block style={{ marginTop: "20px" }}>
+                  Transfer Now
+                </Button>
+              </div>
+            </div>
         </Col>
       </Row>
     </div>
