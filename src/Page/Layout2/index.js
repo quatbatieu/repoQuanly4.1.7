@@ -81,7 +81,7 @@ const Layout2 = () => {
       <Row gutter={[24, 24]} className="mb-3">
         {cardData.map((data, index) => {
           return (
-            <Col xl={6} lg={6} md={6} sm={24} xs={24} key={data.id}>
+            <Col xl={6} lg={12} md={12} sm={24} xs={24} key={data.id}>
               <div className="p-3 bg-white rounded shadow">
                 <CoinPriceCard key={index} {...data} />
               </div>
@@ -161,7 +161,7 @@ const Layout2 = () => {
         </Col>
       </Row>
       <Row gutter={[24, 24]} className="equal-height-row mb-3 height">
-        <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+        <Col xl={8} lg={24} md={8} sm={24} xs={24}>
           <div className="bg-white shadow-lg rounded full-height p-3">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <Typography.Title className="p-0 m-0" level={5}>
@@ -227,7 +227,7 @@ const Layout2 = () => {
             />
           </div>
         </Col>
-        <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
           <div
             style={{
               background: "#02283f",
@@ -261,7 +261,7 @@ const Layout2 = () => {
             </div>
           </div>
         </Col>
-        <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
           <div className="bg-white shadow-lg rounded full-height p-3">
               <Typography.Title level={4}>Currency Calculator</Typography.Title>
               <Typography.Text>1.87 BTC equals</Typography.Text>
