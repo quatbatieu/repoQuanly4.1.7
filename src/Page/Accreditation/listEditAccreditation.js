@@ -770,19 +770,14 @@ function ListEditAccreditation() {
   const { onExportExcel, isLoading: isLoadingExport } = ExportFile();
 
   const FIELDS_EXPORT_IMPORT = [
-    { api: "deviceName", content: "Tên thiết bị *" },
-    { api: "deviceType", content: "Loại *" },
-    { api: "deviceSeri", content: "Số Seri *" },
-    { api: "deviceBrand", content: "Nhãn hiệu *" },
-    { api: "deviceManufactureYear", content: "Năm Sản Xuất *" },
-    { api: "deviceStatus", content: "Trạng thái *" },
-    { api: "deviceTestedDate", content: "Ngày kiểm chuẩn thiết bị *" },
-    {
-      api: "deviceExpiredTestedDate",
-      content: "Ngày hết hạn kiểm chuẩn thiết bị *",
-    },
+    { api: "customerRecordFullName", content: "Họ và tên *" },
+    { api: "customerRecordPlatenumber", content: "Biển số xe  *" },
+    { api: "customerRecordPhone", content: "Số điện thoại *" },
+    { api: "customerRecordCheckDate", content: "Ngày đăng kiểm *" },
+    { api: "customerRecordCheckStatus", content: "Trạng thái đăng kiểm *" },
+    { api: "customerRecordCheckExpiredDate", content: "Ngày hết hạn *" },
   ];
-  
+
   const fetchExportData = async (param, filter) => {
     for (let key in filter) {
       if (!filter[key]) {
