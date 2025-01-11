@@ -12,12 +12,29 @@
   }
 
   @media screen and (max-width: 480px) {
-    .sm-dflex-between{
-        display: flex;
-        justify-content: space-between;
+    .sm-dflex-between {
+      display: flex;
+      justify-content: space-between;
     }
     .circle-progress-scale {
       transform: scale(0.6) !important;
     }
+  }
+}
+
+.indicator-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: #ccc solid 1px;
+  }
+
+  .circle.active {
+    border: #007bff solid 1px; 
   }
 }
