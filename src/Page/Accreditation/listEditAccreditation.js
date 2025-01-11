@@ -32,7 +32,7 @@ import {
   ExclamationCircleOutlined,
   ExceptionOutlined,
 } from "@ant-design/icons";
-import { IconCar } from "../../assets/icons";
+import { AnphaIcon, IconCar } from "../../assets/icons";
 import "./accreditation.scss";
 import moment from "moment";
 // import VerifyLicenPlates from '../../constants/licenseplates';
@@ -63,6 +63,7 @@ import { NORMAL_COLUMN_WIDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import { BIG_COLUMN_WIDTH } from "constants/app";
 import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
+import { ExportFile } from "hooks/FileHandler";
 
 const { TabPane } = Tabs;
 
@@ -763,6 +764,90 @@ function ListEditAccreditation() {
     handleFetchAccreditation(newFilter);
   };
 
+  const [percent, setPercent] = useState(0);
+  const [percentPlus, setPercentPlus] = useState(0);
+  const [isModalProgress, setisModalProgress] = useState(false);
+  const { onExportExcel, isLoading: isLoadingExport } = ExportFile();
+
+  const FIELDS_EXPORT_IMPORT = [
+    { api: "customerRecordFullName", content: "Họ và tên *" },
+    { api: "customerRecordPlatenumber", content: "Biển số xe  *" },
+    { api: "customerRecordPhone", content: "Số điện thoại *" },
+    { api: "customerRecordCheckDate", content: "Ngày đăng kiểm *" },
+    { api: "customerRecordCheckStatus", content: "Trạng thái đăng kiểm *" },
+    { api: "customerRecordCheckExpiredDate", content: "Ngày hết hạn *" },
+  ];
+
+  const fetchExportData = async (param, filter) => {
+    for (let key in filter) {
+      if (!filter[key]) {
+        delete filter[key];
+      }
+    }
+
+    const response = await AccreditationService.getList({
+      ...filter,
+      limit: DEFAULT_FILTER.limit,
+      skip: param * DEFAULT_FILTER.limit,
+    });
+
+    const data = await response.data;
+    return data;
+  };
+  const handleExportExcel = async () => {
+    let number = Math.ceil(
+      dataAccreditation.data.length / DEFAULT_FILTER.limit
+    );
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
+    let results = [];
+
+    const percentPlus = 100 / params.length;
+    setPercent(0);
+    setisModalProgress(true);
+
+    let _counter = 0;
+    while (true) {
+      const result = await fetchExportData(_counter++, dataFilter);
+      if (result && result.length > 0) {
+        setPercent((prev) => prev + percentPlus);
+        results = [...results, ...result];
+      } else {
+        break;
+      }
+    }
+
+    const newResult = results.map((item, index) => ({
+      ...item,
+      //   vehicleType: VEHICLE_TYPES_STATES_EXPORT[item.vehicleType] || "",
+    }));
+
+    await setTimeout(() => {
+      setisModalProgress(false);
+      setPercent(0);
+      onExportExcel({
+        fieldApi: FIELDS_EXPORT_IMPORT.map((item) => item.api),
+        fieldExport: FIELDS_EXPORT_IMPORT.map((item) => item.content),
+        data: newResult,
+        informationColumn: [
+          [setting.stationsName, "", "", "Danh sách lịch sử vận hành"],
+          [
+            `Mã: ${setting.stationCode}`,
+            "",
+            "",
+            `Danh sách ngày ${moment().format("DD/MM/YYYY")}`,
+          ],
+          [""],
+        ],
+        timeWait: 0,
+        nameFile: "data.xlsx",
+        setUrlForModalDirectLink: setUrlForModalDirectLink,
+      });
+    }, 1000);
+  };
+
   return (
     <>
       <Tabs
@@ -886,6 +971,13 @@ function ListEditAccreditation() {
                         icon={<PlusOutlined className="addIcon" />}
                       >
                         {translation("inspectionProcess.add")}
+                      </Button>
+                      <Button
+                        onClick={handleExportExcel}
+                        className="d-flex align-items-center gap-1"
+                        icon={loading ? <Spin /> : <AnphaIcon />}
+                      >
+                        {translation("listCustomers.export")}
                       </Button>
                       <Button
                         type="default"

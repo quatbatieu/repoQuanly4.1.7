@@ -34,6 +34,11 @@ import { NORMAL_COLUMN_WIDTH } from "constants/app";
 import { EXTRA_BIG_COLUMND_WITDTH } from "constants/app";
 import { VERY_BIG_COLUMN_WIDTH } from "constants/app";
 import BasicSearch from "components/BasicSearch";
+import { ExportFile } from "hooks/FileHandler";
+import { AnphaIcon } from "assets/icons";
+import moment from "moment";
+import { useModalDirectLinkContext } from "components/ModalDirectLink";
+import ModalProgress from "./ModalProgress";
 
 function ListUser() {
   const { t: translation } = useTranslation();
@@ -271,6 +276,96 @@ function ListUser() {
     fetchData(newFilter);
   };
 
+  const [percent, setPercent] = useState(0);
+  const [percentPlus, setPercentPlus] = useState(0);
+  const [isModalProgress, setisModalProgress] = useState(false);
+  const { onExportExcel, isLoading: isLoadingExport } = ExportFile();
+  const { setUrlForModalDirectLink } = useModalDirectLinkContext();
+  const [arrImport, setArrImport] = useState([]);
+  const [isImport, setIsImport] = useState(false);
+  const [importSummary, setImportSummary] = useState({
+    logs: [],
+    numberError: 0,
+    numberSuccess: 0,
+  });
+  const FIELDS_EXPORT_IMPORT = [
+    { api: "firstName", content: "Tên *" },
+    { api: "lastName", content: "Họ  *" },
+    { api: "stationCode", content: "Mã trạm *" },
+    { api: "stationsName", content: "Tên trạm *" },
+    { api: "appUserRoleName", content: "Vai trò *" },
+    { api: "email", content: "Email *" },
+    { api: "phoneNumber", content: "Số điện thoại *" },
+  ];
+
+  const fetchExportData = async (param, filter) => {
+    for (let key in filter) {
+      if (!filter[key]) {
+        delete filter[key];
+      }
+    }
+
+    const response = await PhonebookService.getListUser({
+      ...filter,
+      limit: DEFAULT_FILTER.limit,
+      skip: param * DEFAULT_FILTER.limit,
+    });
+
+    const data = await response.data;
+    return data;
+  };
+  const handleExportExcel = async () => {
+    let number = Math.ceil(dataUser.data.length / DEFAULT_FILTER.limit);
+    let params = Array.from(
+      Array.from(new Array(number)),
+      (element, index) => index
+    );
+    let results = [];
+
+    const percentPlus = 100 / params.length;
+    setPercent(0);
+    setisModalProgress(true);
+
+    let _counter = 0;
+    while (true) {
+      const result = await fetchExportData(_counter++, dataFilter);
+      if (result && result.length > 0) {
+        setPercent((prev) => prev + percentPlus);
+        results = [...results, ...result];
+      } else {
+        break;
+      }
+    }
+
+    const newResult = results.map((item, index) => ({
+      ...item,
+      //   vehicleType: VEHICLE_TYPES_STATES_EXPORT[item.vehicleType] || "",
+    }));
+
+    await setTimeout(() => {
+      setisModalProgress(false);
+      setPercent(0);
+      onExportExcel({
+        fieldApi: FIELDS_EXPORT_IMPORT.map((item) => item.api),
+        fieldExport: FIELDS_EXPORT_IMPORT.map((item) => item.content),
+        data: newResult,
+        informationColumn: [
+          [setting.stationsName, "", "", "Danh sách lịch sử vận hành"],
+          [
+            `Mã: ${setting.stationCode}`,
+            "",
+            "",
+            `Danh sách ngày ${moment().format("DD/MM/YYYY")}`,
+          ],
+          [""],
+        ],
+        timeWait: 0,
+        nameFile: "data.xlsx",
+        setUrlForModalDirectLink: setUrlForModalDirectLink,
+      });
+    }, 1000);
+  };
+
   return (
     <Fragment>
       {setting.enableContactMenu === 0 ? (
@@ -332,22 +427,32 @@ function ListUser() {
                   ))}
               </Select>
             </div>
+            <div className="col-12 col-md-12 col-lg-5 col-xl-3 mb-3">
+              <div className="d-flex flex-wrap gap-4 justify-content-xl-start justify-content-lg-start">
+                <Button
+                  onClick={handleExportExcel}
+                  className="d-flex align-items-center gap-1"
+                  icon={loading ? <Spin /> : <AnphaIcon />}
+                >
+                  {translation("listCustomers.export")}
+                </Button>
 
-            <div className="col-md-3 col-lg-2 col-xl-2 mb-3">
-              <Button
-                className="d-flex align-items-center justify-content-center"
-                loading={loading}
-                onClick={() => {
-                  setLoading(true);
-                  setTimeout(() => {
-                    fetchData(dataFilter);
-                    setLoading(false);
-                  }, BUTTON_LOADING_TIME);
-                }}
-              >
-                {!loading && <ReloadOutlined />}
-              </Button>
+                <Button
+                  className="d-flex align-items-center justify-content-center"
+                  loading={loading}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      fetchData(dataFilter);
+                      setLoading(false);
+                    }, BUTTON_LOADING_TIME);
+                  }}
+                >
+                  {!loading && <ReloadOutlined />}
+                </Button>
+              </div>
             </div>
+            <div className="col-md-3 col-lg-2 col-xl-2 mb-3"></div>
           </div>
 
           <div className="phonebook__body">
@@ -375,6 +480,18 @@ function ListUser() {
               </>
             )}
           </div>
+          {isModalProgress && (
+            <ModalProgress
+              visible={isModalProgress}
+              setVisible={setisModalProgress}
+              percent={percent}
+              logs={importSummary.logs}
+              isLoading={arrImport.length !== 0}
+              isImport={isImport}
+              numberError={importSummary.numberError}
+              numberSuccess={importSummary.numberSuccess}
+            />
+          )}
         </div>
       )}
     </Fragment>
