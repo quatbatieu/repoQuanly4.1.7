@@ -1,0 +1,24 @@
+.equal-height-row {
+  display: flex;
+  align-items: stretch;
+
+  .ant-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .full-height {
+    flex: 1;
+  }
+
+  @media screen and (max-width: 480px) {
+
+    .ant-col {
+      flex: 1;
+    }
+
+    .sm-none{
+      display: none !important;
+    }
+  }
+}
