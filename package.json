@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
+    "@ant-design/plots": "^2.3.3",
     "@chaunnt/reactjs_buildpackageandnotify": "^1.0.32",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "antd": "^4.16.13",
